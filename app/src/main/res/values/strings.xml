@@ -4,4 +4,5 @@
     <string name="collections">Collections</string>
     <string name="team">Team</string>
     <string name="custom">Custom</string>
+    <string name="no_links_yet">No links yet</string>
 </resources>

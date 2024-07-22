@@ -15,6 +15,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,6 +29,12 @@ import com.tecknobit.refy.ui.theme.displayFontFamily
 
 class MainActivity : ComponentActivity() {
 
+    companion object {
+
+        val snackbarHostState = SnackbarHostState()
+
+    }
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +42,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RefyTheme {
                 Scaffold (
-                    bottomBar = { NavigationHelper.getInstance().BottomNavigationBar() },
+                    snackbarHost = { snackbarHostState },
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = activeTab.value.onFabClick
@@ -45,16 +52,20 @@ class MainActivity : ComponentActivity() {
                                 contentDescription = null
                             )
                         }
-                    }
-                ) {
+                    },
+                    bottomBar = { NavigationHelper.getInstance().BottomNavigationBar() }
+                ) { paddingValues ->
                     Column (
                         modifier = Modifier
                             .fillMaxSize()
+                            .padding(
+                                top = paddingValues.calculateTopPadding() + 16.dp,
+                                bottom = paddingValues.calculateBottomPadding()
+                            ),
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(
-                                    top = it.calculateTopPadding() + 16.dp,
                                     start = 16.dp
                                 ),
                             text = stringResource(activeTab.value.name),
@@ -70,7 +81,13 @@ class MainActivity : ComponentActivity() {
                                     end = 32.dp
                                 ),
                         )
-                        activeTab.value.content.invoke(this)
+                        Column (
+                            modifier = Modifier
+                                .padding(
+                                    all = 16.dp
+                                ),
+                            content = { activeTab.value.content.invoke(this) }
+                        )
                     }
                 }
             }

@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.screen.LinkListScreen
 
 class NavigationHelper private constructor() {
 
@@ -36,7 +37,7 @@ class NavigationHelper private constructor() {
                     // TODO: MAKE FAB ACTION
                 },
                 content = {
-
+                    LinkListScreen().ShowContent()
                 },
             ),
             NavigationTab(
