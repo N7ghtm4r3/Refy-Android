@@ -5,4 +5,8 @@
     <string name="team">Team</string>
     <string name="custom">Custom</string>
     <string name="no_links_yet">No links yet</string>
+    <string name="add_link_to_team">Add link to team</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="add">Add</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>

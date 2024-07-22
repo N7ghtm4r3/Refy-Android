@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.1"
+coilCompose = "2.7.0"
 equinox = "1.0.2"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
@@ -16,6 +17,7 @@ uiTextGoogleFonts = "1.6.8"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 equinox = { module = "com.github.N7ghtm4r3:Equinox", version.ref = "equinox" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

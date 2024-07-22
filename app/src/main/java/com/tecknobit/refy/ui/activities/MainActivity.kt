@@ -2,7 +2,10 @@ package com.tecknobit.refy.ui.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
@@ -27,6 +30,7 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
 
+
 class MainActivity : ComponentActivity() {
 
     companion object {
@@ -39,6 +43,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // TODO: TO REMOVE
+        val policy = ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
+
         setContent {
             RefyTheme {
                 Scaffold (
@@ -77,8 +86,7 @@ class MainActivity : ComponentActivity() {
                         HorizontalDivider(
                             modifier = Modifier
                                 .padding(
-                                    top = 10.dp,
-                                    end = 32.dp
+                                    top = 10.dp
                                 ),
                         )
                         Column (
@@ -92,6 +100,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAffinity()
+            }
+        })
     }
 
 }

@@ -70,6 +70,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.refycore)
+    implementation(libs.coil.compose)
     implementation(libs.equinox)
     implementation("com.github.N7ghtm4r3:Equinox-Compose:1.0.0") {
         exclude("com.github.N7ghtm4r3.Equinox-Compose", "library-jvm")

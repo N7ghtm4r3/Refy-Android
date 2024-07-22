@@ -26,6 +26,13 @@ class LinkListViewModel(
                     RefyLink(
                         "id",
                         "tille",
+                        null,//"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
+                        "https://github.com/N7ghtm4r3"
+                    ),
+                    RefyLink(
+                        "id1",
+                        "tille",
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
                         "https://github.com/N7ghtm4r3"
                     )
                 )
@@ -33,5 +40,15 @@ class LinkListViewModel(
             repeatRoutine = false // TODO: TO REMOVE
         )
     }
+
+    fun addLinkToTeam(
+        link: RefyLink,
+        teams: List<String>,
+        onSuccess: () -> Unit
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
+
 
 }
