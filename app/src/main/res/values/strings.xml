@@ -9,4 +9,8 @@
     <string name="dismiss">Dismiss</string>
     <string name="add">Add</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="add_link_to_collection">Add link to collection</string>
+    <string name="delete_link">Delete link</string>
+    <string name="delete_link_message">By confirming, the link and related data will no longer be available, even in any teams or collections</string>
+    <string name="confirm">Confirm</string>
 </resources>

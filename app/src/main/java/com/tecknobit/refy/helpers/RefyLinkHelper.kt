@@ -3,6 +3,8 @@ package com.tecknobit.refy.helpers
 import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -20,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
@@ -33,8 +36,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,8 +57,8 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
+import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.RefyLink
-import com.tecknobit.refycore.records.Team
 
 class RefyLinkHelper(
     val viewModel: LinkListViewModel, // TODO:CHECK IF HIERARCHY WITH VIEWMODEL TO MANAGE THE REFYLINK
@@ -149,31 +154,38 @@ class RefyLinkHelper(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row {
-                AnimatedVisibility(
-                    visible = user.teams.isNotEmpty() || link.teams.isNotEmpty()
-                ) {
-                    OptionButton(
-                        icon = Icons.Default.GroupAdd,
-                        show = addToGroup,
-                        optionAction = {
-                            AddLinkToTeam(
-                                show = addToGroup,
-                                link = link
-                            )
-                        }
-                    )
-                }
-                AnimatedVisibility(
-                    visible = user.collections.isNotEmpty()
-                ) {
-                    OptionButton(
-                        icon = Icons.Default.AttachFile,
-                        show = addToCollection,
-                        optionAction = {
-
-                        }
-                    )
-                }
+                val teams = getLinkContainers(
+                    userList = user.teams,
+                    linkList = link.teams
+                )
+                OptionButton(
+                    icon = Icons.Default.GroupAdd,
+                    show = addToGroup,
+                    visible = { teams.isNotEmpty() },
+                    optionAction = {
+                        AddLinkToTeam(
+                            show = addToGroup,
+                            availableTeams = teams,
+                            link = link
+                        )
+                    }
+                )
+                val collections = getLinkContainers(
+                    userList = user.collections,
+                    linkList = link.collections
+                )
+                OptionButton(
+                    icon = Icons.Default.AttachFile,
+                    show = addToCollection,
+                    visible = { collections.isNotEmpty() },
+                    optionAction = {
+                        AddLinkToCollection(
+                            show = addToCollection,
+                            availableCollection = collections,
+                            link = link
+                        )
+                    }
+                )
                 IconButton(
                     onClick = {
                         shareLink(
@@ -197,7 +209,10 @@ class RefyLinkHelper(
                     icon = Icons.Default.Delete,
                     show = deleteLink,
                     optionAction = {
-
+                        DeleteLink(
+                            show = deleteLink,
+                            link = link
+                        )
                     },
                     tint = MaterialTheme.colorScheme.error
                 )
@@ -205,56 +220,112 @@ class RefyLinkHelper(
         }
     }
 
+    private fun getLinkContainers(
+        userList: List<RefyItem>,
+        linkList: List<RefyItem>
+    ): List<RefyItem> {
+        val containers = mutableListOf<RefyItem>()
+        containers.addAll(userList)
+        containers.removeAll(linkList)
+        return containers
+    }
+
     @Composable
     private fun OptionButton(
         icon: ImageVector,
+        visible: (() -> Boolean) = { true },
         show: MutableState<Boolean>,
         optionAction: @Composable () -> Unit,
-        tint: Color = LocalContentColor.current
+        tint: Color = LocalContentColor.current,
     ) {
-        IconButton(
-            onClick = { show.value = true }
+        AnimatedVisibility(
+            visible = visible.invoke(),
+            enter = fadeIn(),
+            exit = fadeOut()
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = tint
-            )
+            IconButton(
+                onClick = { show.value = true }
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = tint
+                )
+            }
+            optionAction.invoke()
         }
-        optionAction.invoke()
     }
 
     @Composable
     private fun AddLinkToTeam(
         show: MutableState<Boolean>,
+        availableTeams: List<RefyItem>,
         link: RefyLink
+    ) {
+        AddLinkToItem(
+            show = show,
+            icon = Icons.Default.GroupAdd,
+            availableItems = availableTeams,
+            title = R.string.add_link_to_team,
+            confirmAction = { ids ->
+                viewModel.addLinkToTeam(
+                    link = link,
+                    teams = ids,
+                    onSuccess = { show.value = false },
+                )
+            }
+        )
+    }
+
+    @Composable
+    private fun AddLinkToCollection(
+        show: MutableState<Boolean>,
+        availableCollection: List<RefyItem>,
+        link: RefyLink
+    ) {
+        AddLinkToItem(
+            show = show,
+            icon = Icons.Default.FolderCopy,
+            availableItems = availableCollection,
+            title = R.string.add_link_to_collection,
+            confirmAction = { ids ->
+                viewModel.addLinkToCollection(
+                    link = link,
+                    collections = ids,
+                    onSuccess = { show.value = false },
+                )
+            }
+        )
+    }
+
+    @Composable
+    private fun AddLinkToItem(
+        show: MutableState<Boolean>,
+        icon: ImageVector,
+        availableItems: List<RefyItem>,
+        title: Int,
+        confirmAction: (List<String>) -> Unit
     ) {
         viewModel.SuspendUntilElementOnScreen(
             elementVisible = show
         )
-        val teamsId = mutableListOf<String>()
+        val ids = mutableListOf<String>()
         EquinoxAlertDialog(
             show = show,
-            icon = Icons.Default.GroupAdd,
-            title = stringResource(R.string.add_link_to_team),
+            icon = icon,
+            title = stringResource(title),
             text = {
-                val teams = mutableListOf<Team>()
-                teams.addAll(user.teams)
-                teams.addAll(link.teams)
                 LazyColumn (
                     modifier = Modifier
                         .heightIn(
                             max = 150.dp
                         )
                 ) {
-                    // TODO: TO FIX 
                     items(
-                        items = teams,
-                        key = { team -> team.id }
-                    ) { team ->
-                        var selected = remember {
-                            teams.contains(team)
-                        }
+                        items = availableItems,
+                        key = { item -> item.id }
+                    ) { item ->
+                        var selected by remember { mutableStateOf(ids.contains(item.id)) }
                         Row (
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -263,13 +334,13 @@ class RefyLinkHelper(
                                 onCheckedChange = {
                                     selected = it
                                     if(selected)
-                                        teamsId.add(team.id)
+                                        ids.add(item.id)
                                     else
-                                        teamsId.remove(team.id)
+                                        ids.remove(item.id)
                                 }
                             )
                             Text(
-                                text = team.name
+                                text = item.name
                             )
                         }
                         HorizontalDivider()
@@ -277,14 +348,32 @@ class RefyLinkHelper(
                 }
             },
             dismissText = stringResource(R.string.dismiss),
+            confirmAction = { confirmAction.invoke(ids) },
+            confirmText = stringResource(R.string.add),
+        )
+    }
+
+    @Composable
+    private fun DeleteLink(
+        show: MutableState<Boolean>,
+        link: RefyLink
+    ) {
+        viewModel.SuspendUntilElementOnScreen(
+            elementVisible = show
+        )
+        EquinoxAlertDialog(
+            show = show,
+            icon = Icons.Default.Delete,
+            title = stringResource(R.string.delete_link),
+            text = stringResource(R.string.delete_link_message),
+            dismissText = stringResource(R.string.dismiss),
             confirmAction = {
-                viewModel.addLinkToTeam(
+                viewModel.deleteLink(
                     link = link,
-                    teams = teamsId,
-                    onSuccess = { show.value = false },
+                    onSuccess = { show.value = false }
                 )
             },
-            confirmText = stringResource(R.string.add),
+            confirmText = stringResource(R.string.confirm),
         )
     }
 

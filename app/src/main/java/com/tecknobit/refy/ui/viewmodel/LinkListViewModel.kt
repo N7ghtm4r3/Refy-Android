@@ -50,5 +50,21 @@ class LinkListViewModel(
         onSuccess.invoke()
     }
 
+    fun addLinkToCollection(
+        link: RefyLink,
+        collections: List<String>,
+        onSuccess: () -> Unit
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
+
+    fun deleteLink(
+        link: RefyLink,
+        onSuccess: () -> Unit
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
 
 }
