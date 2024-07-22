@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Refy</string>
+    <string name="links">Links</string>
+    <string name="collections">Collections</string>
+    <string name="team">Team</string>
+    <string name="custom">Custom</string>
 </resources>
