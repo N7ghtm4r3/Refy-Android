@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,6 +82,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     override fun SetFabAction() {
         addLink = remember { mutableStateOf(false) }
         AddLink()
@@ -91,6 +93,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun AddLink() {
         LinkDialog(
             show = addLink,
@@ -101,6 +104,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun EditLink(
         editLink: MutableState<Boolean>,
         link: RefyLink
@@ -115,6 +119,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun LinkDialog(
         show: MutableState<Boolean>,
         icon: ImageVector,
@@ -190,6 +195,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     fun RefyLinkCard(
         link: RefyLink
     ) {
@@ -226,6 +232,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun OptionsBar(
         context: Context,
         link: RefyLink
@@ -316,6 +323,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun AddLinkToTeam(
         show: MutableState<Boolean>,
         availableTeams: List<RefyItem>,
@@ -338,6 +346,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun AddLinkToCollection(
         show: MutableState<Boolean>,
         availableCollection: List<RefyItem>,
@@ -360,6 +369,7 @@ class LinkListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun DeleteLink(
         show: MutableState<Boolean>,
         link: RefyLink

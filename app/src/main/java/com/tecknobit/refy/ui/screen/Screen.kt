@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,6 +73,7 @@ abstract class Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
+    @NonRestartableComposable
     protected fun ItemCard(
         borderColor: Color? = null,
         onClick: () -> Unit,
@@ -169,6 +171,7 @@ abstract class Screen {
         }
 
     @Composable
+    @NonRestartableComposable
     protected open fun OptionsBar(
         options: @Composable RowScope.() -> Unit
     ) {
@@ -206,6 +209,7 @@ abstract class Screen {
     }
 
     @Composable
+    @NonRestartableComposable
     protected fun AddItemToContainer(
         show: MutableState<Boolean>,
         viewModel: EquinoxViewModel,
@@ -262,6 +266,7 @@ abstract class Screen {
     }
 
     @Composable
+    @NonRestartableComposable
     protected fun DeleteItemButton(
         show: MutableState<Boolean>,
         deleteAction: @Composable () -> Unit,
@@ -275,6 +280,7 @@ abstract class Screen {
     }
 
     @Composable
+    @NonRestartableComposable
     protected fun OptionButton(
         icon: ImageVector,
         visible: (() -> Boolean) = { true },

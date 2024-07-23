@@ -1,6 +1,8 @@
 package com.tecknobit.refy.ui.viewmodel
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.MutableState
+import androidx.compose.ui.graphics.Color
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 
 class CreateCollectionViewModel(
@@ -9,5 +11,17 @@ class CreateCollectionViewModel(
     snackbarHostState = snackbarHostState
 ) {
 
+    lateinit var collectionColor: MutableState<Color>
+
+    lateinit var collectionName: MutableState<String>
+
+    lateinit var collectionDescription: MutableState<String>
+
+    fun createCollection(
+        onSuccess: () -> Unit
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
 
 }
