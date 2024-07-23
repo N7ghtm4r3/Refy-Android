@@ -1,16 +1,19 @@
 package com.tecknobit.refy.ui.activities.navigation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import coil.Coil
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.request.CachePolicy
+import com.tecknobit.refy.ui.activities.session.MainActivity
 import com.tecknobit.refycore.records.RefyUser
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
@@ -40,7 +43,14 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
         Coil.imageLoader(applicationContext)
         Coil.setImageLoader(newImageLoader())
         setContent {
+            // TODO: MAKE THE REAL NAVIGATION
+            startActivity(Intent(this, MainActivity::class.java))
         }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finishAffinity()
+            }
+        })
     }
 
     /**

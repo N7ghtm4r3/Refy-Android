@@ -2,6 +2,8 @@
 
 package com.tecknobit.refy.ui.screen
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,16 +46,20 @@ import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.session.CreateCollectionActivity
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.viewmodel.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyItem
+import com.tecknobit.refycore.records.Team.MAX_MEMBERS_DISPLAYED
 
 class CollectionListScreen : Screen() {
 
     private val viewModel = CollectionListViewModel()
 
     private lateinit var collections: List<LinksCollection>
+
+    private lateinit var context: Context
 
     init {
         viewModel.setActiveContext(this::class.java)
@@ -63,6 +69,7 @@ class CollectionListScreen : Screen() {
     override fun ShowContent() {
         viewModel.getCollections()
         collections = viewModel.collections.collectAsState().value
+        SetFabAction()
         if(collections.isEmpty()) {
             EmptyListUI(
                 icon = Icons.Default.PlaylistRemove,
@@ -86,11 +93,11 @@ class CollectionListScreen : Screen() {
 
     @Composable
     override fun SetFabAction() {
-        TODO("Not yet implemented")
+        context = LocalContext.current
     }
 
     override fun executeFabAction() {
-        TODO("Not yet implemented")
+        context.startActivity(Intent(context, CreateCollectionActivity::class.java))
     }
 
     @Composable
@@ -155,6 +162,8 @@ class CollectionListScreen : Screen() {
                         .clickable { expandTeamMembers.value = true }
                 ) {
                     collection.teams[0].members.forEachIndexed { index, member ->
+                        if(index == MAX_MEMBERS_DISPLAYED)
+                            return@forEachIndexed
                         AsyncImage(
                             modifier = Modifier
                                 .padding(

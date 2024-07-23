@@ -34,7 +34,7 @@ class CollectionListViewModel : EquinoxViewModel(
                         "id1",
                         "gggagag",
                         "#DE646E",
-                        "gagag",
+                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
                         listOf(
                             Team("id12", "Ciaogwegw2"),
                             Team("35525", "Ciaogwegw22"),

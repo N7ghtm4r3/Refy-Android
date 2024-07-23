@@ -2,4 +2,7 @@
 <resources>
 
     <style name="Theme.Refy" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Refy.Fullscreen" parent="android:Theme.Material.Light.NoActionBar.Fullscreen" />
+
 </resources>

@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.richeditor.compose)
     implementation(libs.equinox)
+    implementation(libs.colorpicker.compose)
     implementation("com.github.N7ghtm4r3:Equinox-Compose:1.0.0") {
         exclude("com.github.N7ghtm4r3.Equinox-Compose", "library-jvm")
     }
