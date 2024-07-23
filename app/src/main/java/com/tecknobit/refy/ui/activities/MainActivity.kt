@@ -18,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
@@ -51,10 +52,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             RefyTheme {
                 Scaffold (
-                    snackbarHost = { snackbarHostState },
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = activeTab.value.onFabClick
+                            onClick = {
+                                activeTab.value.onFabClick(activeTab.value.screen)
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
@@ -94,7 +97,7 @@ class MainActivity : ComponentActivity() {
                                 .padding(
                                     all = 16.dp
                                 ),
-                            content = { activeTab.value.content.invoke(this) }
+                            content = { activeTab.value.content.invoke(this, activeTab.value.screen) }
                         )
                     }
                 }

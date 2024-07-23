@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.screen.LinkListScreen
+import com.tecknobit.refy.ui.screen.Screen
 
 class NavigationHelper private constructor() {
 
@@ -32,12 +33,13 @@ class NavigationHelper private constructor() {
         private val navigationTabs = listOf(
             NavigationTab(
                 icon = Icons.AutoMirrored.Filled.List,
+                screen = LinkListScreen(),
                 name = R.string.links,
-                onFabClick = {
-                    // TODO: MAKE FAB ACTION
+                onFabClick = { screen ->
+                    screen.executeFabAction()
                 },
-                content = {
-                    LinkListScreen().ShowContent()
+                content = { screen ->
+                    screen.ShowContent()
                 },
             ),
             NavigationTab(
@@ -84,10 +86,11 @@ class NavigationHelper private constructor() {
     }
 
     data class NavigationTab(
+        val screen: Screen = LinkListScreen(), // TODO: TO REMOVE
         val icon: ImageVector,
         val name: Int,
-        val onFabClick: () -> Unit,
-        val content: @Composable ColumnScope.() -> Unit
+        val onFabClick: (Screen) -> Unit,
+        val content: @Composable ColumnScope.(Screen) -> Unit,
     )
 
     @Composable

@@ -7,4 +7,9 @@ abstract class Screen {
     @Composable
     abstract fun ShowContent()
 
+    @Composable
+    abstract fun SetFabAction()
+
+    abstract fun executeFabAction()
+
 }

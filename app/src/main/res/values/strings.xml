@@ -13,4 +13,11 @@
     <string name="delete_link">Delete link</string>
     <string name="delete_link_message">By confirming, the link and related data will no longer be available, even in any teams or collections</string>
     <string name="confirm">Confirm</string>
+    <string name="add_new_link">Add new link</string>
+    <string name="link_reference">Link reference</string>
+    <string name="link_reference_not_valid">Link reference not valid</string>
+    <string name="description">Description</string>
+    <string name="description_not_valid">Description not valid</string>
+    <string name="edit_link">Edit link</string>
+    <string name="edit">Edit</string>
 </resources>
