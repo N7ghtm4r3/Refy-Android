@@ -144,8 +144,8 @@ abstract class Screen {
                             state = state
                         )
                     }
+                    extraContent?.invoke()
                 }
-                extraContent?.invoke()
                 optionsBar.invoke()
             }
         }

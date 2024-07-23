@@ -1,11 +1,13 @@
 package com.tecknobit.refy.ui.viewmodel
 
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
-import com.tecknobit.refy.ui.activities.MainActivity.Companion.snackbarHostState
+import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screen.CollectionListScreen
 import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.Team
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+
 
 class CollectionListViewModel : EquinoxViewModel(
     snackbarHostState = snackbarHostState
@@ -31,8 +33,15 @@ class CollectionListViewModel : EquinoxViewModel(
                     LinksCollection(
                         "id1",
                         "gggagag",
-                        "#42BE2C",
-                        "gagag"
+                        "#DE646E",
+                        "gagag",
+                        listOf(
+                            Team("id12", "Ciaogwegw2"),
+                            Team("35525", "Ciaogwegw22"),
+                            Team("bs", "breberbebre"),
+                            Team("355bsdb25", "breberbeb"),
+                            Team("355bvbesb25", "Ciabreogbwegw22")
+                        )
                     ),
                 )
             },
@@ -43,7 +52,7 @@ class CollectionListViewModel : EquinoxViewModel(
     fun addCollectionToTeam(
         collection: LinksCollection,
         teams: List<String>,
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit,
     ) {
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()
@@ -51,7 +60,7 @@ class CollectionListViewModel : EquinoxViewModel(
 
     fun deleteCollection(
         collection: LinksCollection,
-        onSuccess: () -> Unit
+        onSuccess: () -> Unit,
     ) {
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()

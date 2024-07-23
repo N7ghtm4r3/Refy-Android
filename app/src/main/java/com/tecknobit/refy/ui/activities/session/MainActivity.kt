@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.activities
+package com.tecknobit.refy.ui.activities.session
 
 import android.annotation.SuppressLint
 import android.os.Bundle

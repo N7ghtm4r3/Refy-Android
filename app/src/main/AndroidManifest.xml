@@ -14,12 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Refy">
         <activity
-            android:name=".ui.activities.SplashScreen"
+            android:name=".ui.activities.navigation.SplashScreen"
             android:exported="false"
             android:label="@string/title_activity_splash_screen"
             android:theme="@style/Theme.Refy" />
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name=".ui.activities.session.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Refy">
             <intent-filter>

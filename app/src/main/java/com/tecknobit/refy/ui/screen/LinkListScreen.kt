@@ -35,7 +35,7 @@ import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid

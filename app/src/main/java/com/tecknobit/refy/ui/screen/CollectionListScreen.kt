@@ -1,28 +1,50 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.tecknobit.refy.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.viewmodel.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyItem
@@ -85,9 +107,14 @@ class CollectionListScreen : Screen() {
             },
             title = collection.name,
             description = collection.description,
-            extraContent = {
-
-            },
+            extraContent = if(collection.teams.isNotEmpty()) {
+                {
+                    TeamMembers(
+                        collection = collection
+                    )
+                }
+            } else
+                null,
             optionsBar = {
                 OptionsBar(
                     collection = collection
@@ -103,6 +130,115 @@ class CollectionListScreen : Screen() {
      */
     private fun String.toCollectionColor(): Color {
         return Color(("ff" + removePrefix("#").lowercase()).toLong(16))
+    }
+
+    @Composable
+    private fun TeamMembers(
+        collection: LinksCollection
+    ) {
+        val expandTeamMembers = remember { mutableStateOf(false) }
+        LazyRow(
+            modifier = Modifier
+                .padding(
+                    top = 5.dp,
+                    bottom = 5.dp
+                )
+                .fillMaxSize(),
+        ) {
+            item {
+                ExpandTeamMembers(
+                    show = expandTeamMembers,
+                    collection = collection
+                )
+                Box(
+                    modifier = Modifier
+                        .clickable { expandTeamMembers.value = true }
+                ) {
+                    collection.teams[0].members.forEachIndexed { index, member ->
+                        AsyncImage(
+                            modifier = Modifier
+                                .padding(
+                                    start = index * 15.dp
+                                )
+                                .clip(CircleShape)
+                                .size(25.dp),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(member.profilePic)
+                                .crossfade(enable = true)
+                                .crossfade(500)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun ExpandTeamMembers(
+        collection: LinksCollection,
+        show: MutableState<Boolean>
+    ) {
+        viewModel.SuspendUntilElementOnScreen(
+            elementVisible = show
+        )
+        if(show.value) {
+            ModalBottomSheet(
+                onDismissRequest = { show.value = false }
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    collection.teams.forEach { team ->
+                        item {
+                            Text(
+                                modifier = Modifier
+                                    .padding(
+                                        top = 16.dp,
+                                        start = 16.dp
+                                    ),
+                                text = team.name,
+                                fontFamily = displayFontFamily
+                            )
+                        }
+                        items(
+                            items = team.members
+                        ) { member ->
+                            ListItem(
+                                leadingContent = {
+                                    AsyncImage(
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .size(50.dp),
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(member.profilePic)
+                                            .crossfade(enable = true)
+                                            .crossfade(500)
+                                            .build(),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.FillBounds
+                                    )
+                                },
+                                headlineContent = {
+                                    Text(
+                                        text = member.completeName
+                                    )
+                                },
+                                overlineContent = {
+                                    Text(
+                                        text = member.tagName
+                                    )
+                                }
+                            )
+                            HorizontalDivider()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Composable
@@ -149,6 +285,7 @@ class CollectionListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun AddCollectionToTeam(
         show: MutableState<Boolean>,
         availableTeams: List<RefyItem>,
@@ -171,6 +308,7 @@ class CollectionListScreen : Screen() {
     }
 
     @Composable
+    @NonRestartableComposable
     private fun DeleteCollection(
         show: MutableState<Boolean>,
         collection: LinksCollection

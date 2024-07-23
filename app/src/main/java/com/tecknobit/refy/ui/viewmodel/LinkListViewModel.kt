@@ -2,7 +2,7 @@ package com.tecknobit.refy.ui.viewmodel
 
 import androidx.compose.runtime.MutableState
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
-import com.tecknobit.refy.ui.activities.MainActivity.Companion.snackbarHostState
+import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screen.LinkListScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
