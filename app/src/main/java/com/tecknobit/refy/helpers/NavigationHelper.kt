@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.screen.CollectionListScreen
 import com.tecknobit.refy.ui.screen.LinkListScreen
 import com.tecknobit.refy.ui.screen.Screen
 
@@ -44,12 +45,13 @@ class NavigationHelper private constructor() {
             ),
             NavigationTab(
                 icon = Icons.Default.FolderCopy,
+                screen = CollectionListScreen(),
                 name = R.string.collections,
-                onFabClick = {
-                    // TODO: MAKE FAB ACTION
+                onFabClick = { screen ->
+                    screen.executeFabAction()
                 },
-                content = {
-
+                content = { screen ->
+                    screen.ShowContent()
                 },
             ),
             NavigationTab(

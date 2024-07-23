@@ -20,4 +20,8 @@
     <string name="description_not_valid">Description not valid</string>
     <string name="edit_link">Edit link</string>
     <string name="edit">Edit</string>
+    <string name="no_collections_yet">No collections yet</string>
+    <string name="delete_collection">Delete collection</string>
+    <string name="delete_collection_message">By confirming, the collection and related links will no longer be available, even in any teams</string>
+    <string name="add_collection_to_team">Add collection to team</string>
 </resources>

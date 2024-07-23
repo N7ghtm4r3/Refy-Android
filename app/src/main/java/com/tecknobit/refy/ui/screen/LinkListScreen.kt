@@ -2,25 +2,12 @@ package com.tecknobit.refy.ui.screen
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Delete
@@ -30,42 +17,25 @@ import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
-import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import com.mohamedrejeb.richeditor.ui.material.RichText
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.theme.AppTypography
-import com.tecknobit.refy.ui.theme.bodyFontFamily
-import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
@@ -219,7 +189,6 @@ class LinkListScreen : Screen() {
         )
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun RefyLinkCard(
         link: RefyLink
@@ -232,70 +201,28 @@ class LinkListScreen : Screen() {
                 link = link
             )
         }
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .combinedClickable(
-                    onClick = {
-                        openLink(
-                            context = context,
-                            link = link
-                        )
-                    },
-                    onDoubleClick = {
-                        showLinkReference(
-                            link = link
-                        )
-                    },
-                    onLongClick = { editLink.value = true }
-                ),
-            shape = RoundedCornerShape(
-                size = 8.dp
-            )
-        ) {
-            Column {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(
-                            top = 16.dp,
-                            start = 16.dp,
-                            end = 16.dp,
-                            bottom = 5.dp
-                        )
-                ) {
-                    Text(
-                        text = link.title,
-                        fontFamily = displayFontFamily,
-                        fontSize = 25.sp,
-                        fontStyle = AppTypography.titleMedium.fontStyle
-                    )
-                    link.description?.let { description ->
-                        val state = rememberRichTextState()
-                        state.config.linkColor = MaterialTheme.colorScheme.primary
-                        state.setMarkdown(description)
-                        RichText(
-                            modifier = Modifier
-                                .heightIn(
-                                    max = 75.dp
-                                )
-                                .verticalScroll(rememberScrollState()),
-                            textAlign = TextAlign.Justify,
-                            color = LocalContentColor.current,
-                            fontFamily = bodyFontFamily,
-                            fontSize = 16.sp,
-                            fontStyle = AppTypography.bodyMedium.fontStyle,
-                            state = state
-                        )
-                    }
-                }
+        ItemCard(
+            onClick = {
+                openLink(
+                    context = context,
+                    link = link
+                )
+            },
+            onDoubleClick = {
+                showLinkReference(
+                    link = link
+                )
+            },
+            onLongClick = { editLink.value = true },
+            title = link.title,
+            description = link.description,
+            optionsBar = {
                 OptionsBar(
                     context = context,
                     link = link
                 )
             }
-        }
+        )
     }
 
     @Composable
@@ -303,144 +230,89 @@ class LinkListScreen : Screen() {
         context: Context,
         link: RefyLink
     ) {
-        val addToGroup = remember { mutableStateOf(false) }
+        val addToTeam = remember { mutableStateOf(false) }
         val addToCollection = remember { mutableStateOf(false) }
         val deleteLink = remember { mutableStateOf(false) }
-        val isSystemInDarkTheme = isSystemInDarkTheme()
-        HorizontalDivider(
-            color = if(isSystemInDarkTheme)
-                MaterialTheme.colorScheme.tertiary
-            else
-                MaterialTheme.colorScheme.outlineVariant,
-            thickness = if(isSystemInDarkTheme)
-                0.5.dp
-            else
-                DividerDefaults.Thickness
-        )
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row {
-                val teams = getLinkContainers(
-                    userList = user.teams,
-                    linkList = link.teams
-                )
-                OptionButton(
-                    icon = Icons.Default.GroupAdd,
-                    show = addToGroup,
-                    visible = { teams.isNotEmpty() },
-                    optionAction = {
-                        AddLinkToTeam(
-                            show = addToGroup,
-                            availableTeams = teams,
-                            link = link
-                        )
-                    }
-                )
-                val collections = getLinkContainers(
-                    userList = user.collections,
-                    linkList = link.collections
-                )
-                OptionButton(
-                    icon = Icons.Default.AttachFile,
-                    show = addToCollection,
-                    visible = { collections.isNotEmpty() },
-                    optionAction = {
-                        AddLinkToCollection(
-                            show = addToCollection,
-                            availableCollection = collections,
-                            link = link
-                        )
-                    }
-                )
-                IconButton(
-                    onClick = {
-                        shareLink(
-                            context = context,
-                            link = link
-                        )
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Share,
-                        contentDescription = null
-                    )
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.End
-            ) {
+        OptionsBar(
+            options = {
                 Row {
+                    val teams = getItemRelations(
+                        userList = user.teams,
+                        linkList = link.teams
+                    )
+                    OptionButton(
+                        icon = Icons.Default.GroupAdd,
+                        show = addToTeam,
+                        visible = { teams.isNotEmpty() },
+                        optionAction = {
+                            AddLinkToTeam(
+                                show = addToTeam,
+                                availableTeams = teams,
+                                link = link
+                            )
+                        }
+                    )
+                    val collections = getItemRelations(
+                        userList = user.collections,
+                        linkList = link.collections
+                    )
+                    OptionButton(
+                        icon = Icons.Default.AttachFile,
+                        show = addToCollection,
+                        visible = { collections.isNotEmpty() },
+                        optionAction = {
+                            AddLinkToCollection(
+                                show = addToCollection,
+                                availableCollection = collections,
+                                link = link
+                            )
+                        }
+                    )
                     IconButton(
                         onClick = {
-                            showLinkReference(
+                            shareLink(
+                                context = context,
                                 link = link
                             )
                         }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Visibility,
+                            imageVector = Icons.Default.Share,
                             contentDescription = null
                         )
                     }
-                    OptionButton(
-                        icon = Icons.Default.Delete,
-                        show = deleteLink,
-                        optionAction = {
-                            DeleteLink(
-                                show = deleteLink,
-                                link = link
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Row {
+                        IconButton(
+                            onClick = {
+                                showLinkReference(
+                                    link = link
+                                )
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Visibility,
+                                contentDescription = null
                             )
-                        },
-                        tint = MaterialTheme.colorScheme.error
-                    )
+                        }
+                        DeleteItemButton(
+                            show = deleteLink,
+                            deleteAction = {
+                                DeleteLink(
+                                    show = deleteLink,
+                                    link = link
+                                )
+                            }
+                        )
+                    }
                 }
             }
-        }
-    }
-
-    private fun getLinkContainers(
-        userList: List<RefyItem>,
-        linkList: List<RefyItem>
-    ): List<RefyItem> {
-        val containers = mutableListOf<RefyItem>()
-        containers.addAll(userList)
-        containers.removeAll(linkList)
-        return containers
-    }
-
-    @Composable
-    private fun OptionButton(
-        icon: ImageVector,
-        visible: (() -> Boolean) = { true },
-        show: MutableState<Boolean>,
-        optionAction: @Composable () -> Unit,
-        tint: Color = LocalContentColor.current,
-    ) {
-        AnimatedVisibility(
-            visible = visible.invoke(),
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            IconButton(
-                onClick = { show.value = true }
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = tint
-                )
-            }
-            optionAction.invoke()
-        }
+        )
     }
 
     @Composable
@@ -449,8 +321,9 @@ class LinkListScreen : Screen() {
         availableTeams: List<RefyItem>,
         link: RefyLink
     ) {
-        AddLinkToItem(
+        AddItemToContainer(
             show = show,
+            viewModel = viewModel,
             icon = Icons.Default.GroupAdd,
             availableItems = availableTeams,
             title = R.string.add_link_to_team,
@@ -470,8 +343,9 @@ class LinkListScreen : Screen() {
         availableCollection: List<RefyItem>,
         link: RefyLink
     ) {
-        AddLinkToItem(
+        AddItemToContainer(
             show = show,
+            viewModel = viewModel,
             icon = Icons.Default.FolderCopy,
             availableItems = availableCollection,
             title = R.string.add_link_to_collection,
@@ -482,61 +356,6 @@ class LinkListScreen : Screen() {
                     onSuccess = { show.value = false },
                 )
             }
-        )
-    }
-
-    @Composable
-    private fun AddLinkToItem(
-        show: MutableState<Boolean>,
-        icon: ImageVector,
-        availableItems: List<RefyItem>,
-        title: Int,
-        confirmAction: (List<String>) -> Unit
-    ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
-        val ids = mutableListOf<String>()
-        EquinoxAlertDialog(
-            show = show,
-            icon = icon,
-            title = stringResource(title),
-            text = {
-                LazyColumn (
-                    modifier = Modifier
-                        .heightIn(
-                            max = 150.dp
-                        )
-                ) {
-                    items(
-                        items = availableItems,
-                        key = { item -> item.id }
-                    ) { item ->
-                        var selected by remember { mutableStateOf(ids.contains(item.id)) }
-                        Row (
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(
-                                checked = selected,
-                                onCheckedChange = {
-                                    selected = it
-                                    if(selected)
-                                        ids.add(item.id)
-                                    else
-                                        ids.remove(item.id)
-                                }
-                            )
-                            Text(
-                                text = item.name
-                            )
-                        }
-                        HorizontalDivider()
-                    }
-                }
-            },
-            dismissText = stringResource(R.string.dismiss),
-            confirmAction = { confirmAction.invoke(ids) },
-            confirmText = stringResource(R.string.add),
         )
     }
 
