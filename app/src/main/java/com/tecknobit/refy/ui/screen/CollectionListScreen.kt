@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
@@ -23,18 +23,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
-import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.collection.CollectionActivity
 import com.tecknobit.refy.ui.activities.session.collection.CreateCollectionActivity
 import com.tecknobit.refy.ui.toColor
-import com.tecknobit.refy.ui.viewmodel.collection.CollectionListViewModel
+import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
+import com.tecknobit.refy.ui.utilities.OptionButton
+import com.tecknobit.refy.ui.utilities.OptionsBar
+import com.tecknobit.refy.ui.viewmodel.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 
-class CollectionListScreen : Screen() {
+class CollectionListScreen : Screen(), LinksCollectionUtilities {
 
     private val viewModel = CollectionListViewModel()
 
@@ -149,14 +151,11 @@ class CollectionListScreen : Screen() {
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.End
                 ) {
-                    DeleteItemButton(
-                        show = deleteCollection,
-                        deleteAction = {
-                            DeleteCollection(
-                                show = deleteCollection,
-                                collection = collection
-                            )
-                        }
+                    DeleteCollectionButton(
+                        viewModel = viewModel,
+                        deleteCollection = deleteCollection,
+                        collection = collection,
+                        tint = MaterialTheme.colorScheme.error
                     )
                 }
             }
@@ -183,33 +182,6 @@ class CollectionListScreen : Screen() {
                     onSuccess = { show.value = false },
                 )
             }
-        )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    private fun DeleteCollection(
-        show: MutableState<Boolean>,
-        collection: LinksCollection
-    ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
-        EquinoxAlertDialog(
-            show = show,
-            icon = Icons.Default.Delete,
-            title = stringResource(R.string.delete_collection),
-            text = stringResource(R.string.delete_collection_message),
-            dismissText = stringResource(R.string.dismiss),
-            confirmAction = {
-                viewModel.deleteCollection(
-                    collection = collection,
-                    onSuccess = {
-                        show.value = false
-                    }
-                )
-            },
-            confirmText = stringResource(R.string.confirm),
         )
     }
 

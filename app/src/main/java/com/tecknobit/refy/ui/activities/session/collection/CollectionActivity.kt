@@ -6,12 +6,36 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
@@ -19,13 +43,35 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.mohamedrejeb.richeditor.ui.material.RichText
+import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
+import com.tecknobit.refy.ui.theme.bodyFontFamily
+import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.toColor
-import com.tecknobit.refy.ui.viewmodel.collection.CollectionActivityViewModel
+import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
+import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
+import com.tecknobit.refy.ui.utilities.OptionsBar
+import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
+import com.tecknobit.refy.ui.utilities.UserPlaque
+import com.tecknobit.refy.ui.viewmodel.collections.CollectionActivityViewModel
+import com.tecknobit.refycore.records.RefyLink
 
-class CollectionActivity : CollectionBaseActivity() {
+class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCollectionUtilities {
 
     private lateinit var viewModel: CollectionActivityViewModel
+
+    private var hasTeams = false
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +84,15 @@ class CollectionActivity : CollectionBaseActivity() {
                     InvalidCollectionUi()
                 else {
                     InitViewModel()
+                    var iconsColor: Color = LocalContentColor.current
+                    val collectionColor = linksCollection!!.color.toColor()
+                    hasTeams = linksCollection!!.hasTeams()
                     Scaffold(
                         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                         topBar = {
                             LargeTopAppBar(
                                 navigationIcon = {
+                                    iconsColor = LocalContentColor.current
                                     IconButton(
                                         onClick = { finish() }
                                     ) {
@@ -58,12 +108,62 @@ class CollectionActivity : CollectionBaseActivity() {
                                     )
                                 },
                                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                                    containerColor = linksCollection!!.color.toColor()
-                                )
+                                    containerColor = collectionColor
+                                ),
+                                actions = {
+                                    val deleteCollection = remember { mutableStateOf(false) }
+                                    DeleteCollectionButton(
+                                        viewModel = viewModel,
+                                        deleteCollection = deleteCollection,
+                                        collection = linksCollection!!,
+                                        tint = iconsColor
+                                    )
+                                },
                             )
                         },
-                    ) {
-
+                        floatingActionButton = {
+                            AnimatedVisibility(
+                                visible = hasTeams,
+                                enter = fadeIn(),
+                                exit = fadeOut()
+                            ) {
+                                val expandTeams = remember { mutableStateOf(false) }
+                                FloatingActionButton(
+                                    onClick = { expandTeams.value = true },
+                                    containerColor = collectionColor
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Groups,
+                                        contentDescription = null
+                                    )
+                                }
+                                ExpandTeamMembers(
+                                    viewModel = viewModel,
+                                    show = expandTeams,
+                                    teams = linksCollection!!.teams
+                                )
+                            }
+                        },
+                    ) { paddingValues ->
+                        LazyColumn (
+                            modifier = Modifier
+                                .padding(
+                                    top = paddingValues.calculateTopPadding() + 16.dp,
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                    bottom = 16.dp
+                                ),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(
+                                items = linksCollection!!.links,
+                                key = { link -> link.id }
+                            ) { link ->
+                                RefyLinkCollectionCard(
+                                    link = link
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -80,6 +180,115 @@ class CollectionActivity : CollectionBaseActivity() {
         viewModel.setActiveContext(this::class.java)
         viewModel.refreshCollection()
         linksCollection = viewModel.collection.collectAsState().value
+    }
+
+    // TODO: IMPLEMENT AUTHOR OF THE LINK
+    // TODO: IMPLEMENT THE BADGE IF THE AUTHOR IS THE CURRENT USER
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    @NonRestartableComposable
+    fun RefyLinkCollectionCard(
+        link: RefyLink
+    ) {
+        val context = LocalContext.current
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .combinedClickable(
+                    onClick = {
+                        openLink(
+                            context = context,
+                            link = link
+                        )
+                    },
+                    onDoubleClick = {
+                        showLinkReference(
+                            snackbarHostState = snackbarHostState,
+                            link = link
+                        )
+                    },
+                ),
+            shape = RoundedCornerShape(
+                size = 8.dp
+            )
+        ) {
+            Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = 16.dp,
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 5.dp
+                        )
+                ) {
+                    Text(
+                        text = link.title,
+                        fontFamily = displayFontFamily,
+                        fontSize = 25.sp,
+                        fontStyle = AppTypography.titleMedium.fontStyle
+                    )
+                    link.description?.let { description ->
+                        val state = rememberRichTextState()
+                        state.config.linkColor = MaterialTheme.colorScheme.primary
+                        state.setMarkdown(description)
+                        RichText(
+                            modifier = Modifier
+                                .heightIn(
+                                    max = 75.dp
+                                )
+                                .verticalScroll(rememberScrollState()),
+                            textAlign = TextAlign.Justify,
+                            color = LocalContentColor.current,
+                            fontFamily = bodyFontFamily,
+                            fontSize = 16.sp,
+                            fontStyle = AppTypography.bodyMedium.fontStyle,
+                            state = state
+                        )
+                    }
+                    if(hasTeams) {
+                        UserPlaque(
+                            user = link.owner
+                        )
+                    }
+                }
+                OptionsBar(
+                    options = {
+                        ShareButton(
+                            context = context,
+                            link = link
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.End
+                        ) {
+                            Row {
+                                ViewLinkReferenceButton(
+                                    snackbarHostState = snackbarHostState,
+                                    link = link
+                                )
+                                IconButton(
+                                    onClick = {
+                                        viewModel.removeLinkFromCollection(
+                                            link = link
+                                        )
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Close,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            }
+                        }
+                    }
+                )
+            }
+        }
     }
 
 }

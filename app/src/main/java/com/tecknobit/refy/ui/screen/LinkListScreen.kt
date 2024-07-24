@@ -1,7 +1,6 @@
 package com.tecknobit.refy.ui.screen
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,10 +14,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.LinkOff
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
@@ -31,19 +26,23 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.utilities.DeleteItemButton
+import com.tecknobit.refy.ui.utilities.OptionButton
+import com.tecknobit.refy.ui.utilities.OptionsBar
+import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.RefyLink
 
-class LinkListScreen : Screen() {
+class LinkListScreen : Screen(), RefyLinkUtilities {
 
     private val viewModel = LinkListViewModel()
 
@@ -217,6 +216,7 @@ class LinkListScreen : Screen() {
             },
             onDoubleClick = {
                 showLinkReference(
+                    snackbarHostState = snackbarHostState,
                     link = link
                 )
             },
@@ -277,19 +277,10 @@ class LinkListScreen : Screen() {
                             )
                         }
                     )
-                    IconButton(
-                        onClick = {
-                            shareLink(
-                                context = context,
-                                link = link
-                            )
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = null
-                        )
-                    }
+                    ShareButton(
+                        context = context,
+                        link = link
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -297,18 +288,10 @@ class LinkListScreen : Screen() {
                     horizontalAlignment = Alignment.End
                 ) {
                     Row {
-                        IconButton(
-                            onClick = {
-                                showLinkReference(
-                                    link = link
-                                )
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Visibility,
-                                contentDescription = null
-                            )
-                        }
+                        ViewLinkReferenceButton(
+                            snackbarHostState = snackbarHostState,
+                            link = link
+                        )
                         DeleteItemButton(
                             show = deleteLink,
                             deleteAction = {
@@ -393,35 +376,6 @@ class LinkListScreen : Screen() {
             },
             confirmText = stringResource(R.string.confirm),
         )
-    }
-
-    private fun openLink(
-        context: Context,
-        link: RefyLink
-    ) {
-        val intent = Intent()
-        intent.data = link.referenceLink.toUri()
-        intent.action = Intent.ACTION_VIEW
-        context.startActivity(intent)
-    }
-
-    private fun showLinkReference(
-        link: RefyLink
-    ) {
-        viewModel.showSnackbarMessage(
-            link.referenceLink
-        )
-    }
-
-    private fun shareLink(
-        context: Context,
-        link: RefyLink
-    ) {
-        val intent = Intent()
-        intent.type = "text/plain"
-        intent.action = Intent.ACTION_SEND
-        intent.putExtra(Intent.EXTRA_TEXT, "${link.title}\n${link.referenceLink}")
-        context.startActivity(Intent.createChooser(intent, null))
     }
 
 }

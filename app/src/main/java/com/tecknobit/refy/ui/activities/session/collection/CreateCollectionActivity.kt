@@ -78,7 +78,7 @@ import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.toColor
-import com.tecknobit.refy.ui.viewmodel.collection.CreateCollectionViewModel
+import com.tecknobit.refy.ui.viewmodel.collections.CreateCollectionViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 
 class CreateCollectionActivity : CollectionBaseActivity() {
@@ -165,7 +165,8 @@ class CreateCollectionActivity : CollectionBaseActivity() {
                                         viewModel.manageCollection {
                                             finish()
                                         }
-                                    }
+                                    },
+                                    containerColor = viewModel.collectionColor.value
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Done,

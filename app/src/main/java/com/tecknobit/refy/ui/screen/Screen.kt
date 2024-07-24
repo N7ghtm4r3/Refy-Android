@@ -1,16 +1,11 @@
 package com.tecknobit.refy.ui.screen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -24,19 +19,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -72,6 +59,7 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
+import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
@@ -207,6 +195,7 @@ abstract class Screen {
         ) {
             item {
                 ExpandTeamMembers(
+                    viewModel = screenViewModel,
                     show = expandTeamMembers,
                     teams = teams
                 )
@@ -236,104 +225,6 @@ abstract class Screen {
                 }
             }
         }
-    }
-
-
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    @NonRestartableComposable
-    private fun ExpandTeamMembers(
-        show: MutableState<Boolean>,
-        teams: List<Team>
-    ) {
-        screenViewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
-        if(show.value) {
-            ModalBottomSheet(
-                onDismissRequest = { show.value = false }
-            ) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                ) {
-                    teams.forEach { team ->
-                        item {
-                            Text(
-                                modifier = Modifier
-                                    .padding(
-                                        top = 16.dp,
-                                        start = 16.dp
-                                    ),
-                                text = team.name,
-                                fontFamily = displayFontFamily
-                            )
-                        }
-                        items(
-                            items = team.members,
-                            key = { member -> member.id + team.id }
-                        ) { member ->
-                            ListItem(
-                                leadingContent = {
-                                    AsyncImage(
-                                        modifier = Modifier
-                                            .clip(CircleShape)
-                                            .size(50.dp),
-                                        model = ImageRequest.Builder(LocalContext.current)
-                                            .data(member.profilePic)
-                                            .crossfade(enable = true)
-                                            .crossfade(500)
-                                            .build(),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.FillBounds
-                                    )
-                                },
-                                headlineContent = {
-                                    Text(
-                                        text = member.completeName
-                                    )
-                                },
-                                overlineContent = {
-                                    Text(
-                                        text = member.tagName
-                                    )
-                                }
-                            )
-                            HorizontalDivider()
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    @NonRestartableComposable
-    protected open fun OptionsBar(
-        options: @Composable RowScope.() -> Unit
-    ) {
-        val isSystemInDarkTheme = isSystemInDarkTheme()
-        HorizontalDivider(
-            color = if(isSystemInDarkTheme)
-                MaterialTheme.colorScheme.tertiary
-            else
-                MaterialTheme.colorScheme.outlineVariant,
-            thickness = if(isSystemInDarkTheme)
-                0.5.dp
-            else
-                DividerDefaults.Thickness
-        )
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    end = 16.dp
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            content = options
-        )
     }
 
     protected fun getItemRelations(
@@ -401,47 +292,6 @@ abstract class Screen {
             confirmAction = { confirmAction.invoke(ids) },
             confirmText = stringResource(R.string.add),
         )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    protected fun DeleteItemButton(
-        show: MutableState<Boolean>,
-        deleteAction: @Composable () -> Unit,
-    ) {
-        OptionButton(
-            icon = Icons.Default.Delete,
-            show = show,
-            optionAction = deleteAction,
-            tint = MaterialTheme.colorScheme.error
-        )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    protected fun OptionButton(
-        icon: ImageVector,
-        visible: (() -> Boolean) = { true },
-        show: MutableState<Boolean>,
-        optionAction: @Composable () -> Unit,
-        tint: Color = LocalContentColor.current,
-    ) {
-        AnimatedVisibility(
-            visible = visible.invoke(),
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            IconButton(
-                onClick = { show.value = true }
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = tint
-                )
-            }
-            optionAction.invoke()
-        }
     }
 
 }

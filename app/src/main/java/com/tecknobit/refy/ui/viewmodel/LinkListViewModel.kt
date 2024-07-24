@@ -8,11 +8,8 @@ import com.tecknobit.refy.ui.screen.LinkListScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyLink
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 class LinkListViewModel : EquinoxViewModel(
     snackbarHostState = snackbarHostState
@@ -127,19 +124,6 @@ class LinkListViewModel : EquinoxViewModel(
     ) {
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()
-    }
-
-    /**
-     * Function to display a message with a snackbar
-     *
-     * @param helper: the message to display
-     */
-    fun showSnackbarMessage(
-        message: String
-    ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            snackbarHostState?.showSnackbar(message)
-        }
     }
 
 }
