@@ -27,11 +27,13 @@ class CreateCollectionViewModel(
     private var existingCollection: LinksCollection? = null
 
     fun initExistingCollection(
-        collection : LinksCollection
+        collection : LinksCollection?
     ) {
-        existingCollection = collection
-        existingCollection!!.links.forEach { link ->
-            collectionLinks.add(link.id)
+        if(collection != null) {
+            existingCollection = collection
+            existingCollection!!.links.forEach { link ->
+                collectionLinks.add(link.id)
+            }
         }
     }
 

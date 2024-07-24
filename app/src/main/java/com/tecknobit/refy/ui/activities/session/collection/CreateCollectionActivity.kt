@@ -103,6 +103,9 @@ class CreateCollectionActivity : CollectionBaseActivity() {
                 if(invalidCollection)
                     InvalidCollectionUi()
                 else {
+                    viewModel.initExistingCollection(
+                        collection = linksCollection
+                    )
                     viewModel.collectionColor = remember {
                         mutableStateOf(
                             if(collectionExists)
