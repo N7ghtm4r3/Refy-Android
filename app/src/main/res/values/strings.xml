@@ -25,4 +25,6 @@
     <string name="add_collection_to_team">Add collection to team</string>
     <string name="collection_name">Collection name</string>
     <string name="collection_color">Collection color</string>
+    <string name="invalid_collection">Invalid collection</string>
+    <string name="title_activity_collection">CollectionActivity</string>
 </resources>

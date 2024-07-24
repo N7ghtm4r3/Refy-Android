@@ -1,10 +1,9 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.tecknobit.refy.ui.activities.session
+package com.tecknobit.refy.ui.activities.session.collection
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
@@ -41,7 +40,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -79,12 +77,11 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
-import com.tecknobit.refy.ui.viewmodel.CreateCollectionViewModel
+import com.tecknobit.refy.ui.toColor
+import com.tecknobit.refy.ui.viewmodel.collection.CreateCollectionViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 
-class CreateCollectionActivity : ComponentActivity() {
-
-    private val snackbarHostState = SnackbarHostState()
+class CreateCollectionActivity : CollectionBaseActivity() {
 
     private val viewModel = CreateCollectionViewModel(
         snackbarHostState = snackbarHostState
@@ -101,78 +98,101 @@ class CreateCollectionActivity : ComponentActivity() {
         viewModel.setActiveContext(this::class.java)
         enableEdgeToEdge()
         setContent {
-            viewModel.collectionColor = remember { mutableStateOf(generateRandomColor()) }
-            choseColor = remember { mutableStateOf(false) }
-            editCollectionName = remember { mutableStateOf(false) }
-            viewModel.collectionName = remember { mutableStateOf("") }
-            viewModel.collectionDescription = remember { mutableStateOf("") }
-            viewModel.collectionDescriptionError = remember { mutableStateOf(false) }
+            initCollectionFromIntent()
             RefyTheme {
-                Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-                    topBar = {
-                        LargeTopAppBar(
-                            modifier = Modifier
-                                .clickable { choseColor.value = true },
-                            navigationIcon = {
-                                IconButton(
-                                    onClick = { finish() }
+                if(invalidCollection)
+                    InvalidCollectionUi()
+                else {
+                    viewModel.collectionColor = remember {
+                        mutableStateOf(
+                            if(collectionExists)
+                                linksCollection!!.color.toColor()
+                            else
+                                generateRandomColor()
+                        )
+                    }
+                    choseColor = remember { mutableStateOf(false) }
+                    editCollectionName = remember { mutableStateOf(false) }
+                    viewModel.collectionName = remember {
+                        mutableStateOf(
+                            if(collectionExists)
+                                linksCollection!!.name
+                            else
+                                ""
+                        )
+                    }
+                    viewModel.collectionDescription = remember {
+                        mutableStateOf(
+                            if(collectionExists)
+                                linksCollection!!.description
+                            else
+                                ""
+                        )
+                    }
+                    viewModel.collectionDescriptionError = remember { mutableStateOf(false) }
+                    Scaffold(
+                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                        topBar = {
+                            LargeTopAppBar(
+                                modifier = Modifier
+                                    .clickable { choseColor.value = true },
+                                navigationIcon = {
+                                    IconButton(
+                                        onClick = { finish() }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                            contentDescription = null
+                                        )
+                                    }
+                                },
+                                title = {
+                                    CollectionNameSection()
+                                },
+                                colors = TopAppBarDefaults.largeTopAppBarColors(
+                                    containerColor = viewModel.collectionColor.value
+                                )
+                            )
+                        },
+                        floatingActionButton = {
+                            AnimatedVisibility(
+                                visible = canBeSaved(),
+                                enter = fadeIn(),
+                                exit = fadeOut()
+                            ) {
+                                FloatingActionButton(
+                                    onClick = {
+                                        viewModel.manageCollection {
+                                            finish()
+                                        }
+                                    }
                                 ) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        imageVector = Icons.Default.Done,
                                         contentDescription = null
                                     )
                                 }
-                            },
-                            title = {
-                                CollectionNameSection()
-                            },
-                            colors = TopAppBarDefaults.largeTopAppBarColors(
-                                containerColor = viewModel.collectionColor.value
-                            )
-                        )
-                    },
-                    floatingActionButton = {
-                        AnimatedVisibility(
-                            visible = canBeSaved(),
-                            enter = fadeIn(),
-                            exit = fadeOut()
-                        ) {
-                            FloatingActionButton(
-                                onClick = {
-                                    viewModel.createCollection {
-                                        finish()
-                                    }
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Done,
-                                    contentDescription = null
-                                )
                             }
                         }
-                    }
-                ) {
-                    if(!WindowInsets.isImeVisible) {
-                       LocalFocusManager.current.clearFocus()
-                       editCollectionName.value = false
-                    }
-                    ChoseCollectionColor()
-                    Column (
-                        modifier = Modifier
-                            .padding(
-                                top = it.calculateTopPadding() + 16.dp,
-                                bottom = it.calculateBottomPadding() + 16.dp
-                            )
-                            .fillMaxSize()
                     ) {
-                        DescriptionSection(
+                        if(!WindowInsets.isImeVisible) {
+                            LocalFocusManager.current.clearFocus()
+                            editCollectionName.value = false
+                        }
+                        ChoseCollectionColor()
+                        Column (
                             modifier = Modifier
-                        )
-                        LinksSection(
-                            modifier = Modifier
-                                .weight(1.5f)
-                        )
+                                .padding(
+                                    top = it.calculateTopPadding() + 16.dp,
+                                    bottom = it.calculateBottomPadding() + 16.dp
+                                )
+                                .fillMaxSize()
+                        ) {
+                            DescriptionSection(
+                                modifier = Modifier
+                            )
+                            LinksSection()
+                        }
                     }
                 }
             }
@@ -279,9 +299,7 @@ class CreateCollectionActivity : ComponentActivity() {
 
     @Composable
     @NonRestartableComposable
-    private fun LinksSection(
-        modifier: Modifier
-    ) {
+    private fun LinksSection() {
         val keyboardController = LocalSoftwareKeyboardController.current
         Text(
             modifier = Modifier
@@ -305,7 +323,9 @@ class CreateCollectionActivity : ComponentActivity() {
                 items = user.links,
                 key = { link -> link.id }
             ) { link ->
-                var checked by remember { mutableStateOf(false) }
+                var checked by remember {
+                    mutableStateOf(viewModel.collectionLinks.contains(link.id))
+                }
                 var expanded by remember { mutableStateOf(false) }
                 ListItem(
                     leadingContent = {

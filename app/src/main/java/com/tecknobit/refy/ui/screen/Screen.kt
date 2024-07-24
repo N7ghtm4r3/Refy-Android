@@ -4,8 +4,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -13,10 +15,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -24,11 +29,14 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -46,11 +54,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material.RichText
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
@@ -60,8 +73,12 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refycore.records.RefyItem
+import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
 
 abstract class Screen {
+
+    protected lateinit var screenViewModel: EquinoxViewModel
 
     @Composable
     abstract fun ShowContent()
@@ -81,7 +98,7 @@ abstract class Screen {
         onLongClick: () -> Unit,
         title: String,
         description: String?,
-        extraContent: (@Composable () -> Unit)? = null,
+        teams: List<Team>,
         optionsBar: @Composable () -> Unit
     ) {
         val modifier = Modifier
@@ -146,7 +163,11 @@ abstract class Screen {
                             state = state
                         )
                     }
-                    extraContent?.invoke()
+                    if(teams.isNotEmpty()) {
+                        TeamSections(
+                            teams = teams
+                        )
+                    }
                 }
                 optionsBar.invoke()
             }
@@ -169,6 +190,123 @@ abstract class Screen {
                 strokeWidth = widthPx
             )
         }
+
+    @Composable
+    @NonRestartableComposable
+    private fun TeamSections(
+        teams: List<Team>
+    ) {
+        val expandTeamMembers = remember { mutableStateOf(false) }
+        LazyRow(
+            modifier = Modifier
+                .padding(
+                    top = 5.dp,
+                    bottom = 5.dp
+                )
+                .fillMaxSize(),
+        ) {
+            item {
+                ExpandTeamMembers(
+                    show = expandTeamMembers,
+                    teams = teams
+                )
+                Box(
+                    modifier = Modifier
+                        .clickable { expandTeamMembers.value = true }
+                ) {
+                    teams.forEachIndexed { index, team ->
+                        if(index == MAX_TEAMS_DISPLAYED)
+                            return@forEachIndexed
+                        AsyncImage(
+                            modifier = Modifier
+                                .padding(
+                                    start = index * 15.dp
+                                )
+                                .clip(CircleShape)
+                                .size(25.dp),
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(team.logoPic)
+                                .crossfade(enable = true)
+                                .crossfade(500)
+                                .build(),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillBounds
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    @NonRestartableComposable
+    private fun ExpandTeamMembers(
+        show: MutableState<Boolean>,
+        teams: List<Team>
+    ) {
+        screenViewModel.SuspendUntilElementOnScreen(
+            elementVisible = show
+        )
+        if(show.value) {
+            ModalBottomSheet(
+                onDismissRequest = { show.value = false }
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    teams.forEach { team ->
+                        item {
+                            Text(
+                                modifier = Modifier
+                                    .padding(
+                                        top = 16.dp,
+                                        start = 16.dp
+                                    ),
+                                text = team.name,
+                                fontFamily = displayFontFamily
+                            )
+                        }
+                        items(
+                            items = team.members,
+                            key = { member -> member.id + team.id }
+                        ) { member ->
+                            ListItem(
+                                leadingContent = {
+                                    AsyncImage(
+                                        modifier = Modifier
+                                            .clip(CircleShape)
+                                            .size(50.dp),
+                                        model = ImageRequest.Builder(LocalContext.current)
+                                            .data(member.profilePic)
+                                            .crossfade(enable = true)
+                                            .crossfade(500)
+                                            .build(),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.FillBounds
+                                    )
+                                },
+                                headlineContent = {
+                                    Text(
+                                        text = member.completeName
+                                    )
+                                },
+                                overlineContent = {
+                                    Text(
+                                        text = member.tagName
+                                    )
+                                }
+                            )
+                            HorizontalDivider()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @Composable
     @NonRestartableComposable

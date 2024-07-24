@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.1"
+apimanager = "2.2.3"
 coilCompose = "2.7.0"
 colorpickerCompose = "1.1.2"
 equinox = "1.0.2"
@@ -19,6 +20,7 @@ uiTextGoogleFonts = "1.6.8"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+apimanager = { module = "com.github.N7ghtm4r3:APIManager", version.ref = "apimanager" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 colorpicker-compose = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpickerCompose" }
 equinox = { module = "com.github.N7ghtm4r3:Equinox", version.ref = "equinox" }

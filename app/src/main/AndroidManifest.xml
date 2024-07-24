@@ -27,17 +27,23 @@
         </activity>
         <activity
             android:name=".ui.activities.session.MainActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"
             android:exported="false"
-            android:theme="@style/Theme.Refy" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Refy"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
-            android:name=".ui.activities.session.CreateCollectionActivity"
+            android:name=".ui.activities.session.collection.CreateCollectionActivity"
             android:exported="false"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.Refy"
             android:windowSoftInputMode="adjustResize"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"
-            android:theme="@style/Theme.Refy" />
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".ui.activities.session.collection.CollectionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Refy"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 
 </manifest>

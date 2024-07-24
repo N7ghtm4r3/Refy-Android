@@ -57,6 +57,7 @@ class LinkListScreen : Screen() {
 
     @Composable
     override fun ShowContent() {
+        screenViewModel = viewModel
         viewModel.getLinks()
         links = viewModel.links.collectAsState().value
         SetFabAction()
@@ -222,6 +223,7 @@ class LinkListScreen : Screen() {
             onLongClick = { editLink.value = true },
             title = link.title,
             description = link.description,
+            teams = link.teams,
             optionsBar = {
                 OptionsBar(
                     context = context,
