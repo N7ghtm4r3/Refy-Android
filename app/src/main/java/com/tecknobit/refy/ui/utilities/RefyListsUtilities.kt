@@ -20,6 +20,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemColors
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -34,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -47,6 +50,22 @@ import com.tecknobit.refycore.records.Team
 fun OptionsBar(
     options: @Composable RowScope.() -> Unit
 ) {
+    LineDivider()
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = 16.dp,
+                end = 16.dp
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        content = options
+    )
+}
+
+@Composable
+@NonRestartableComposable
+fun LineDivider() {
     val isSystemInDarkTheme = isSystemInDarkTheme()
     HorizontalDivider(
         color = if(isSystemInDarkTheme)
@@ -57,16 +76,6 @@ fun OptionsBar(
             0.5.dp
         else
             DividerDefaults.Thickness
-    )
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                start = 16.dp,
-                end = 16.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        content = options
     )
 }
 
@@ -161,18 +170,22 @@ fun ExpandTeamMembers(
 @Composable
 @NonRestartableComposable
 fun UserPlaque(
+    colors: ListItemColors = ListItemDefaults.colors(),
+    profilePicSize: Dp = 50.dp,
     user: RefyUser
 ) {
     ListItem(
+        colors = colors,
         leadingContent = {
             AsyncImage(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(50.dp),
+                    .size(profilePicSize),
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(user.profilePic)
                     .crossfade(enable = true)
                     .crossfade(500)
+                    //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds

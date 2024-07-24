@@ -34,6 +34,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -60,6 +61,7 @@ import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
+import com.tecknobit.refy.ui.utilities.LineDivider
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
@@ -73,6 +75,8 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
 
     private var hasTeams = false
 
+    private var collectionColor: Color = Color.Red
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +89,7 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                 else {
                     InitViewModel()
                     var iconsColor: Color = LocalContentColor.current
-                    val collectionColor = linksCollection!!.color.toColor()
+                    collectionColor = linksCollection!!.color.toColor()
                     hasTeams = linksCollection!!.hasTeams()
                     Scaffold(
                         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -214,11 +218,19 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
             )
         ) {
             Column {
+                if(hasTeams) {
+                    TopBarDetails(
+                        link = link
+                    )
+                }
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
-                            top = 16.dp,
+                            top = if(hasTeams)
+                                5.dp
+                            else
+                                16.dp,
                             start = 16.dp,
                             end = 16.dp,
                             bottom = 5.dp
@@ -246,11 +258,6 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                             fontSize = 16.sp,
                             fontStyle = AppTypography.bodyMedium.fontStyle,
                             state = state
-                        )
-                    }
-                    if(hasTeams) {
-                        UserPlaque(
-                            user = link.owner
                         )
                     }
                 }
@@ -289,6 +296,22 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                 )
             }
         }
+    }
+    
+    @Composable
+    @NonRestartableComposable
+    fun TopBarDetails(
+        link: RefyLink
+    ) {
+        UserPlaque(
+            colors = ListItemDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                overlineColor = collectionColor
+            ),
+            profilePicSize = 45.dp,
+            user = link.owner
+        )
+        LineDivider()
     }
 
 }

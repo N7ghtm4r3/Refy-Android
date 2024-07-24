@@ -217,6 +217,7 @@ abstract class Screen {
                                 .data(team.logoPic)
                                 .crossfade(enable = true)
                                 .crossfade(500)
+                                //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
                                 .build(),
                             contentDescription = null,
                             contentScale = ContentScale.FillBounds
