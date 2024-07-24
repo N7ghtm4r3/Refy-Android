@@ -2,9 +2,10 @@ package com.tecknobit.refy.ui.viewmodel
 
 import androidx.compose.runtime.MutableState
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screen.LinkListScreen
-import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkDescriptionValid
+import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyLink
 import kotlinx.coroutines.CoroutineScope
@@ -49,6 +50,7 @@ class LinkListViewModel : EquinoxViewModel(
                         "https://github.com/N7ghtm4r3"
                     )
                 )
+                user.links = _links.value
             },
             repeatRoutine = false // TODO: TO REMOVE
         )
@@ -77,7 +79,7 @@ class LinkListViewModel : EquinoxViewModel(
             linkReferenceError.value = true
             return
         }
-        if(!isLinkDescriptionValid(linkDescription.value)) {
+        if(!isDescriptionValid(linkDescription.value)) {
             linkDescriptionError.value = true
             return
         }
@@ -93,7 +95,7 @@ class LinkListViewModel : EquinoxViewModel(
             linkReferenceError.value = true
             return
         }
-        if(!isLinkDescriptionValid(linkDescription.value)) {
+        if(!isDescriptionValid(linkDescription.value)) {
             linkDescriptionError.value = true
             return
         }

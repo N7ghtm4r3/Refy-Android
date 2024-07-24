@@ -38,7 +38,7 @@ import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
-import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkDescriptionValid
+import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.RefyLink
@@ -167,7 +167,7 @@ class LinkListScreen : Screen() {
                     EquinoxOutlinedTextField(
                         value = viewModel.linkReference,
                         label = stringResource(R.string.link_reference),
-                        validator = { isLinkResourceValid(viewModel.linkReference.value) },
+                        validator = { isLinkResourceValid(it) },
                         isError = viewModel.linkReferenceError,
                         errorText = stringResource(R.string.link_reference_not_valid)
                     )
@@ -175,7 +175,7 @@ class LinkListScreen : Screen() {
                         value = viewModel.linkDescription,
                         isTextArea = true,
                         label = stringResource(R.string.description),
-                        validator = { isLinkDescriptionValid(viewModel.linkDescription.value) },
+                        validator = { isDescriptionValid(it) },
                         isError = viewModel.linkDescriptionError,
                         errorText = stringResource(R.string.description_not_valid)
                     )

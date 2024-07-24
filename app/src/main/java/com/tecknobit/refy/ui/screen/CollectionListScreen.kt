@@ -214,7 +214,8 @@ class CollectionListScreen : Screen() {
                             )
                         }
                         items(
-                            items = team.members
+                            items = team.members,
+                            key = { member -> member.id + team.id }
                         ) { member ->
                             ListItem(
                                 leadingContent = {
