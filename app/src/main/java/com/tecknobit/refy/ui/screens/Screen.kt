@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.screen
+package com.tecknobit.refy.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable

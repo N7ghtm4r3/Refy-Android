@@ -30,7 +30,7 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
 
     companion object {
 
-        // TODO: TO INIT CORRECTLY
+        // TODO: TO INIT CORRECTLY CHECK TO REPLACE WITH LOCALUSER INSTEAD
         val user = RefyUser()
 
     }

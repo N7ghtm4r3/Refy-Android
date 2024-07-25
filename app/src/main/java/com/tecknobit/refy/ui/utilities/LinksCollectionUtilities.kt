@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.viewmodel.collections.LinksCollectionViewModelHelper
+import com.tecknobit.refy.ui.viewmodels.collections.LinksCollectionViewModelHelper
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.Team

@@ -68,7 +68,7 @@ import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.UserPlaque
 import com.tecknobit.refy.ui.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodel.collections.CollectionActivityViewModel
+import com.tecknobit.refy.ui.viewmodels.collections.CollectionActivityViewModel
 import com.tecknobit.refycore.records.RefyLink
 
 class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCollectionUtilities {

@@ -1,10 +1,11 @@
-package com.tecknobit.refy.ui.viewmodel.collections
+package com.tecknobit.refy.ui.viewmodels.collections
 
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
-import com.tecknobit.refy.ui.screen.CollectionListScreen
+import com.tecknobit.refy.ui.screens.CollectionListScreen
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
+import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,11 +38,11 @@ class CollectionListViewModel : LinksCollectionViewModelHelper(
                         "#DE646E",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
                         listOf(
-                            Team("id12", "Ciaogwegw2", "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg"),
-                            Team("35525", "Ciaogwegw22", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg"),
-                            Team("bs", "breberbebre", "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg"),
-                            Team("355bsdb25", "breberbeb", "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg"),
-                            Team("355bvbesb25", "Ciabreogbwegw22", "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg")
+                            Team("id12", "Ciaogwegw2", RefyUser(), "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg"),
+                            Team("35525", "Ciaogwegw22", RefyUser(),  "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg"),
+                            Team("bs", "breberbebre", RefyUser(), "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg"),
+                            Team("355bsdb25", "breberbeb", RefyUser(), "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg"),
+                            Team("355bvbesb25", "Ciabreogbwegw22", RefyUser(), "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg")
                         ),
                         listOf(
                             RefyLink(

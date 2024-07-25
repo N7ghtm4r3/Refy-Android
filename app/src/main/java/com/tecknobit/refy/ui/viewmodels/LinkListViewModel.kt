@@ -1,10 +1,10 @@
-package com.tecknobit.refy.ui.viewmodel
+package com.tecknobit.refy.ui.viewmodels
 
 import androidx.compose.runtime.MutableState
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
-import com.tecknobit.refy.ui.screen.LinkListScreen
+import com.tecknobit.refy.ui.screens.LinkListScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyLink

@@ -23,9 +23,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.screen.CollectionListScreen
-import com.tecknobit.refy.ui.screen.LinkListScreen
-import com.tecknobit.refy.ui.screen.Screen
+import com.tecknobit.refy.ui.screens.CollectionListScreen
+import com.tecknobit.refy.ui.screens.LinkListScreen
+import com.tecknobit.refy.ui.screens.Screen
+import com.tecknobit.refy.ui.screens.TeamsListScreen
 
 class NavigationHelper private constructor() {
 
@@ -41,7 +42,7 @@ class NavigationHelper private constructor() {
                 },
                 content = { screen ->
                     screen.ShowContent()
-                },
+                }
             ),
             NavigationTab(
                 icon = Icons.Default.FolderCopy,
@@ -52,17 +53,18 @@ class NavigationHelper private constructor() {
                 },
                 content = { screen ->
                     screen.ShowContent()
-                },
+                }
             ),
             NavigationTab(
                 icon = Icons.Default.Groups,
-                name = R.string.team,
-                onFabClick = {
-                    // TODO: MAKE FAB ACTION
+                screen = TeamsListScreen(),
+                name = R.string.teams,
+                onFabClick = { screen ->
+                    screen.executeFabAction()
                 },
-                content = {
-
-                },
+                content = { screen ->
+                    screen.ShowContent()
+                }
             ),
             NavigationTab(
                 icon = Icons.Default.DashboardCustomize,

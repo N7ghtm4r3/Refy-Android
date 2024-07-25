@@ -2,7 +2,7 @@
     <string name="app_name">Refy</string>
     <string name="links">Links</string>
     <string name="collections">Collections</string>
-    <string name="team">Team</string>
+    <string name="teams">Teams</string>
     <string name="custom">Custom</string>
     <string name="no_links_yet">No links yet</string>
     <string name="add_link_to_team">Add link to team</string>
@@ -21,11 +21,14 @@
     <string name="edit">Edit</string>
     <string name="no_collections_yet">No collections yet</string>
     <string name="delete_collection">Delete collection</string>
-    <string name="delete_collection_message">By confirming, the collection and related links will no longer be available, even in any teams</string>
+    <string name="delete_collection_message">By confirming, the collection and related links will no longer be available, if the collection is shared with teams the personal links for each member will be kept except for who deleted the collection</string>
     <string name="add_collection_to_team">Add collection to team</string>
     <string name="collection_name">Collection name</string>
     <string name="collection_color">Collection color</string>
     <string name="invalid_collection">Invalid collection</string>
     <string name="title_activity_collection">CollectionActivity</string>
     <string name="add_links_to_collection">Add links to collection</string>
+    <string name="you_re_not_on_any_team">You\'re not on any team</string>
+    <string name="delete_team">Delete team</string>
+    <string name="delete_team_message">By confirming, the team and related data will no longer be available, the personal links for each member will be kept</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.screen
+package com.tecknobit.refy.ui.screens
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +38,7 @@ import com.tecknobit.refy.ui.utilities.OptionButton
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
+import com.tecknobit.refy.ui.viewmodels.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyItem

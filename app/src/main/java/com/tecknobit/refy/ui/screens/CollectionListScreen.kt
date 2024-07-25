@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.screen
+package com.tecknobit.refy.ui.screens
 
 import android.content.Context
 import android.content.Intent
@@ -29,7 +29,7 @@ import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodel.collections.CollectionListViewModel
+import com.tecknobit.refy.ui.viewmodels.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 
@@ -153,7 +153,5 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
             }
         )
     }
-
-
 
 }

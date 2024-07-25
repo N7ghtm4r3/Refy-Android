@@ -15,7 +15,7 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.viewmodel.collections.LinksCollectionViewModelHelper
+import com.tecknobit.refy.ui.viewmodels.collections.LinksCollectionViewModelHelper
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
 import kotlinx.coroutines.CoroutineScope
