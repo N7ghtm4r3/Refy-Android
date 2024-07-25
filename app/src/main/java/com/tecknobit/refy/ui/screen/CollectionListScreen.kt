@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,11 +27,10 @@ import com.tecknobit.refy.ui.activities.session.collection.CollectionActivity
 import com.tecknobit.refy.ui.activities.session.collection.CreateCollectionActivity
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
-import com.tecknobit.refy.ui.utilities.OptionButton
 import com.tecknobit.refy.ui.utilities.OptionsBar
+import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodel.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
-import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 
 class CollectionListScreen : Screen(), LinksCollectionUtilities {
@@ -102,7 +99,7 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
                     destination = CreateCollectionActivity::class.java
                 )
             },
-            title = collection.name,
+            title = collection.title,
             description = collection.description,
             teams = collection.teams,
             optionsBar = {
@@ -134,17 +131,12 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
                     userList = user.teams,
                     linkList = collection.teams
                 )
-                OptionButton(
-                    icon = Icons.Default.GroupAdd,
+                AddTeamsButton(
+                    viewModel = viewModel,
                     show = addToTeam,
-                    visible = { teams.isNotEmpty() },
-                    optionAction = {
-                        AddCollectionToTeam(
-                            show = addToTeam,
-                            availableTeams = teams,
-                            collection = collection
-                        )
-                    }
+                    teams = teams,
+                    collection = collection,
+                    tint = LocalContentColor.current
                 )
                 Column(
                     modifier = Modifier
@@ -162,27 +154,6 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
         )
     }
 
-    @Composable
-    @NonRestartableComposable
-    private fun AddCollectionToTeam(
-        show: MutableState<Boolean>,
-        availableTeams: List<RefyItem>,
-        collection: LinksCollection
-    ) {
-        AddItemToContainer(
-            show = show,
-            viewModel = viewModel,
-            icon = Icons.Default.GroupAdd,
-            availableItems = availableTeams,
-            title = R.string.add_collection_to_team,
-            confirmAction = { ids ->
-                viewModel.addCollectionToTeam(
-                    collection = collection,
-                    teams = ids,
-                    onSuccess = { show.value = false },
-                )
-            }
-        )
-    }
+
 
 }

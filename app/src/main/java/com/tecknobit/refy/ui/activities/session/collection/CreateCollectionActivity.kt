@@ -119,7 +119,7 @@ class CreateCollectionActivity : CollectionBaseActivity() {
                     viewModel.collectionName = remember {
                         mutableStateOf(
                             if(collectionExists)
-                                linksCollection!!.name
+                                linksCollection!!.title
                             else
                                 ""
                         )

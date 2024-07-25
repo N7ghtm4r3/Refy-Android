@@ -2,6 +2,7 @@ package com.tecknobit.refy.ui.utilities
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
@@ -11,8 +12,59 @@ import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.viewmodel.collections.LinksCollectionViewModelHelper
 import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.RefyItem
+import com.tecknobit.refycore.records.Team
 
 interface LinksCollectionUtilities {
+
+    @Composable
+    @NonRestartableComposable
+    fun AddTeamsButton(
+        viewModel: LinksCollectionViewModelHelper,
+        show: MutableState<Boolean>,
+        teams: List<Team>,
+        collection: LinksCollection,
+        tint: Color
+    ) {
+        OptionButton(
+            icon = Icons.Default.GroupAdd,
+            show = show,
+            visible = { teams.isNotEmpty() },
+            optionAction = {
+                AddCollectionToTeam(
+                    viewModel = viewModel,
+                    show = show,
+                    availableTeams = teams,
+                    collection = collection
+                )
+            },
+            tint = tint
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    private fun AddCollectionToTeam(
+        viewModel: LinksCollectionViewModelHelper,
+        show: MutableState<Boolean>,
+        availableTeams: List<RefyItem>,
+        collection: LinksCollection
+    ) {
+        AddItemToContainer(
+            show = show,
+            viewModel = viewModel,
+            icon = Icons.Default.GroupAdd,
+            availableItems = availableTeams,
+            title = R.string.add_collection_to_team,
+            confirmAction = { ids ->
+                viewModel.addCollectionToTeam(
+                    collection = collection,
+                    teams = ids,
+                    onSuccess = { show.value = false },
+                )
+            }
+        )
+    }
 
     @Composable
     @NonRestartableComposable

@@ -30,12 +30,14 @@ import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
+import com.tecknobit.refy.ui.utilities.AddItemToContainer
 import com.tecknobit.refy.ui.utilities.DeleteItemButton
 import com.tecknobit.refy.ui.utilities.OptionButton
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
+import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodel.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid

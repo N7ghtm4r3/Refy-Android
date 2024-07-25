@@ -65,13 +65,4 @@ class CollectionListViewModel : LinksCollectionViewModelHelper(
         )
     }
 
-    fun addCollectionToTeam(
-        collection: LinksCollection,
-        teams: List<String>,
-        onSuccess: () -> Unit,
-    ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
-    }
-
 }

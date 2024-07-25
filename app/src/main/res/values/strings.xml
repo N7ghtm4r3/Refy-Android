@@ -27,4 +27,5 @@
     <string name="collection_color">Collection color</string>
     <string name="invalid_collection">Invalid collection</string>
     <string name="title_activity_collection">CollectionActivity</string>
+    <string name="add_links_to_collection">Add links to collection</string>
 </resources>

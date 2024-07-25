@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material.RichText
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.bodyFontFamily
@@ -66,6 +67,7 @@ import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.UserPlaque
+import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodel.collections.CollectionActivityViewModel
 import com.tecknobit.refycore.records.RefyLink
 
@@ -108,13 +110,37 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                                 },
                                 title = {
                                     Text(
-                                        text = linksCollection!!.name
+                                        text = linksCollection!!.title
                                     )
                                 },
                                 colors = TopAppBarDefaults.largeTopAppBarColors(
                                     containerColor = collectionColor
                                 ),
                                 actions = {
+                                    val links = getItemRelations(
+                                        userList = user.links,
+                                        linkList = linksCollection!!.links
+                                    )
+                                    val addLinks = remember { mutableStateOf(false) }
+                                    AddLinksButton(
+                                        viewModel = viewModel,
+                                        show = addLinks,
+                                        links = links,
+                                        collection = linksCollection!!,
+                                        tint = iconsColor
+                                    )
+                                    val teams = getItemRelations(
+                                        userList = user.teams,
+                                        linkList = linksCollection!!.teams
+                                    )
+                                    val addTeams = remember { mutableStateOf(false) }
+                                    AddTeamsButton(
+                                        viewModel = viewModel,
+                                        show = addTeams,
+                                        teams = teams,
+                                        collection = linksCollection!!,
+                                        tint = iconsColor
+                                    )
                                     val deleteCollection = remember { mutableStateOf(false) }
                                     DeleteCollectionButton(
                                         viewModel = viewModel,
@@ -186,8 +212,6 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
         linksCollection = viewModel.collection.collectAsState().value
     }
 
-    // TODO: IMPLEMENT AUTHOR OF THE LINK
-    // TODO: IMPLEMENT THE BADGE IF THE AUTHOR IS THE CURRENT USER
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     @NonRestartableComposable
@@ -227,7 +251,7 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
-                            top = if(hasTeams)
+                            top = if (hasTeams)
                                 5.dp
                             else
                                 16.dp,

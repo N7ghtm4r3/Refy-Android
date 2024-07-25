@@ -3,14 +3,20 @@ package com.tecknobit.refy.ui.utilities
 import android.content.Context
 import android.content.Intent
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddLink
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
+import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.viewmodel.collections.LinksCollectionViewModelHelper
+import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,34 +24,53 @@ import kotlinx.coroutines.launch
 
 interface RefyLinkUtilities {
 
-    fun openLink(
-        context: Context,
-        link: RefyLink
+    @Composable
+    @NonRestartableComposable
+    fun AddLinksButton(
+        viewModel: LinksCollectionViewModelHelper,
+        show: MutableState<Boolean>,
+        links: List<RefyLink>,
+        collection: LinksCollection,
+        tint: Color
     ) {
-        val intent = Intent()
-        intent.data = link.referenceLink.toUri()
-        intent.action = Intent.ACTION_VIEW
-        context.startActivity(intent)
+        OptionButton(
+            icon = Icons.Default.AddLink,
+            show = show,
+            visible = { links.isNotEmpty() },
+            optionAction = {
+                AddLinksToCollection(
+                    viewModel = viewModel,
+                    show = show,
+                    availableLinks = links,
+                    collection = collection
+                )
+            },
+            tint = tint
+        )
     }
 
-    fun showLinkReference(
-        snackbarHostState: SnackbarHostState,
-        link: RefyLink
+    @Composable
+    @NonRestartableComposable
+    private fun AddLinksToCollection(
+        viewModel: LinksCollectionViewModelHelper,
+        show: MutableState<Boolean>,
+        availableLinks: List<RefyLink>,
+        collection: LinksCollection
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            snackbarHostState.showSnackbar(link.referenceLink)
-        }
-    }
-
-    fun shareLink(
-        context: Context,
-        link: RefyLink
-    ) {
-        val intent = Intent()
-        intent.type = "text/plain"
-        intent.action = Intent.ACTION_SEND
-        intent.putExtra(Intent.EXTRA_TEXT, "${link.title}\n${link.referenceLink}")
-        context.startActivity(Intent.createChooser(intent, null))
+        AddItemToContainer(
+            show = show,
+            viewModel = viewModel,
+            icon = Icons.Default.AddLink,
+            availableItems = availableLinks,
+            title = R.string.add_links_to_collection,
+            confirmAction = { ids ->
+                viewModel.addLinksToCollection(
+                    collection = collection,
+                    links = ids,
+                    onSuccess = { show.value = false },
+                )
+            }
+        )
     }
 
     @Composable
@@ -88,6 +113,36 @@ interface RefyLinkUtilities {
                 contentDescription = null
             )
         }
+    }
+
+    fun openLink(
+        context: Context,
+        link: RefyLink
+    ) {
+        val intent = Intent()
+        intent.data = link.referenceLink.toUri()
+        intent.action = Intent.ACTION_VIEW
+        context.startActivity(intent)
+    }
+
+    fun showLinkReference(
+        snackbarHostState: SnackbarHostState,
+        link: RefyLink
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            snackbarHostState.showSnackbar(link.referenceLink)
+        }
+    }
+
+    fun shareLink(
+        context: Context,
+        link: RefyLink
+    ) {
+        val intent = Intent()
+        intent.type = "text/plain"
+        intent.action = Intent.ACTION_SEND
+        intent.putExtra(Intent.EXTRA_TEXT, "${link.title}\n${link.referenceLink}")
+        context.startActivity(Intent.createChooser(intent, null))
     }
 
 }
