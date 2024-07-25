@@ -38,7 +38,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -254,18 +256,9 @@ fun UserPlaque(
     ListItem(
         colors = colors,
         leadingContent = {
-            AsyncImage(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(profilePicSize),
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(user.profilePic)
-                    .crossfade(enable = true)
-                    .crossfade(500)
-                    //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
-                    .build(),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds
+            Logo(
+                profilePicSize = profilePicSize,
+                profilePicUrl = user.profilePic
             )
         },
         headlineContent = {
@@ -278,5 +271,37 @@ fun UserPlaque(
                 text = user.tagName
             )
         }
+    )
+}
+
+@Composable
+@NonRestartableComposable
+fun Logo(
+    profilePicSize: Dp = 50.dp,
+    addShadow: Boolean = false,
+    shape: Shape = CircleShape,
+    profilePicUrl: String
+) {
+    AsyncImage(
+        modifier = Modifier
+            .clip(shape)
+            .size(profilePicSize)
+            .then(
+                if(addShadow) {
+                    Modifier.shadow(
+                        elevation = 5.dp,
+                        shape = shape
+                    )
+                } else
+                    Modifier
+            ),
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(profilePicUrl)
+            .crossfade(enable = true)
+            .crossfade(500)
+            //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
+            .build(),
+        contentDescription = null,
+        contentScale = ContentScale.FillBounds
     )
 }

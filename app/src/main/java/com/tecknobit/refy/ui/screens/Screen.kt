@@ -105,7 +105,7 @@ abstract class Screen {
                         .fillMaxSize()
                         .padding(
                             top = 16.dp,
-                            start = if(borderColor == null)
+                            start = if (borderColor == null)
                                 16.dp
                             else
                                 21.dp,
@@ -185,31 +185,54 @@ abstract class Screen {
                     show = expandTeamMembers,
                     teams = teams
                 )
-                Box(
-                    modifier = Modifier
-                        .clickable { expandTeamMembers.value = true }
-                ) {
-                    teams.forEachIndexed { index, team ->
-                        if(index == MAX_TEAMS_DISPLAYED)
-                            return@forEachIndexed
-                        AsyncImage(
-                            modifier = Modifier
-                                .padding(
-                                    start = index * 15.dp
-                                )
-                                .clip(CircleShape)
-                                .size(25.dp),
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(team.logoPic)
-                                .crossfade(enable = true)
-                                .crossfade(500)
-                                //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
-                                .build(),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillBounds
-                        )
+                PicturesRow(
+                    pictures = {
+                        val profiles = mutableListOf<String>()
+                        teams.forEach { team ->
+                            profiles.add(team.logoPic)
+                        }
+                        profiles
+                    },
+                    onClick = { expandTeamMembers.value = true }
+                )
+            }
+        }
+    }
+
+    @Composable
+    @NonRestartableComposable
+    protected fun PicturesRow(
+        onClick: (() -> Unit)? = null,
+        pictures: () -> List<String>
+    ) {
+        Box(
+            modifier = Modifier
+                .clickable(
+                    enabled = onClick != null,
+                    onClick = {
+                        onClick?.invoke()
                     }
-                }
+                )
+        ) {
+            pictures.invoke().forEachIndexed { index, picture ->
+                if(index == MAX_TEAMS_DISPLAYED)
+                    return@forEachIndexed
+                AsyncImage(
+                    modifier = Modifier
+                        .padding(
+                            start = index * 15.dp
+                        )
+                        .clip(CircleShape)
+                        .size(25.dp),
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(picture)
+                        .crossfade(enable = true)
+                        .crossfade(500)
+                        //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
+                        .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillBounds
+                )
             }
         }
     }
