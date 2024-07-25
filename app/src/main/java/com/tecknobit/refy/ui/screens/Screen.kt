@@ -7,18 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
@@ -33,20 +28,17 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.mohamedrejeb.richeditor.model.rememberRichTextState
-import com.mohamedrejeb.richeditor.ui.material.RichText
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.theme.AppTypography
-import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
+import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
 
@@ -119,24 +111,9 @@ abstract class Screen {
                         fontSize = 25.sp,
                         fontStyle = AppTypography.titleMedium.fontStyle
                     )
-                    description?.let { description ->
-                        val state = rememberRichTextState()
-                        state.config.linkColor = MaterialTheme.colorScheme.primary
-                        state.setMarkdown(description)
-                        RichText(
-                            modifier = Modifier
-                                .heightIn(
-                                    max = 75.dp
-                                )
-                                .verticalScroll(rememberScrollState()),
-                            textAlign = TextAlign.Justify,
-                            color = LocalContentColor.current,
-                            fontFamily = bodyFontFamily,
-                            fontSize = 16.sp,
-                            fontStyle = AppTypography.bodyMedium.fontStyle,
-                            state = state
-                        )
-                    }
+                    ItemDescription(
+                        description = description
+                    )
                     if(teams.isNotEmpty()) {
                         TeamSections(
                             teams = teams
@@ -203,7 +180,8 @@ abstract class Screen {
     @NonRestartableComposable
     protected fun PicturesRow(
         onClick: (() -> Unit)? = null,
-        pictures: () -> List<String>
+        pictures: () -> List<String>,
+        pictureSize: Dp = 25.dp
     ) {
         Box(
             modifier = Modifier
@@ -223,7 +201,7 @@ abstract class Screen {
                             start = index * 15.dp
                         )
                         .clip(CircleShape)
-                        .size(25.dp),
+                        .size(pictureSize),
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(picture)
                         .crossfade(enable = true)

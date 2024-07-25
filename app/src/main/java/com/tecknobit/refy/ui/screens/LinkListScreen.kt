@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FolderCopy
@@ -268,7 +268,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
                         linkList = link.collections
                     )
                     OptionButton(
-                        icon = Icons.Default.AttachFile,
+                        icon = Icons.Default.CreateNewFolder,
                         show = addToCollection,
                         visible = { collections.isNotEmpty() },
                         optionAction = {

@@ -12,6 +12,24 @@ abstract class TeamViewModelHelper(
     snackbarHostState = snackbarHostState
 ) {
 
+    fun addLinksToTeam(
+        team: Team,
+        links: List<String>,
+        onSuccess: () -> Unit,
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
+
+    fun addCollectionsToTeam(
+        team: Team,
+        collections: List<String>,
+        onSuccess: () -> Unit
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
+
     fun deleteTeam(
         team: Team,
         onSuccess: () -> Unit,

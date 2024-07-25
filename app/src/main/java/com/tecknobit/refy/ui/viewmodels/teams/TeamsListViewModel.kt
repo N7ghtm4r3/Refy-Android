@@ -3,6 +3,8 @@ package com.tecknobit.refy.ui.viewmodels.teams
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screens.TeamsListScreen
+import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.RefyLink
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,13 +25,42 @@ class TeamsListViewModel: TeamViewModelHelper(
             routine = {
                 // TODO: MAKE REQUEST THEN
                 _teams.value = listOf(
-                    Team("id12", "Ciaogwegw2", RefyUser(), "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg"),
-                    Team("35525", "Ciaogwegw22", RefyUser(),  "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg")
+                    Team("id12", "Ciaogwegw2", RefyUser("h"),
+                        "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
+                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
+                        listOf(),
+                        listOf(
+                            RefyLink(
+                                "id",
+                                "tille",
+                                null,//"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
+                                "https://github.com/N7ghtm4r3"
+                            ),
+                            RefyLink(
+                                "id1",
+                                "tille",
+                                "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
+                                "https://github.com/N7ghtm4r3"
+                            )
+                        ),
+                        listOf<LinksCollection>()
+                    ),
+                    Team("35525", "Ciaogwegw22", RefyUser("h"),  "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
+                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
+                    )
                 )
                 user.teams = _teams.value
             },
             repeatRoutine = false // TODO: TO REMOVE
         )
+    }
+
+    fun createJoinLink(
+        onSuccess: (RefyLink) -> Unit
+    ) {
+        // TODO: TO MAKE REQUEST THEN (get from the response)
+        val refyLink = RefyLink()
+        onSuccess.invoke(refyLink)
     }
 
 }

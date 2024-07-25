@@ -31,4 +31,5 @@
     <string name="you_re_not_on_any_team">You\'re not on any team</string>
     <string name="delete_team">Delete team</string>
     <string name="delete_team_message">By confirming, the team and related data will no longer be available, the personal links for each member will be kept</string>
+    <string name="add_links_to_team">Add links to team</string>
 </resources>

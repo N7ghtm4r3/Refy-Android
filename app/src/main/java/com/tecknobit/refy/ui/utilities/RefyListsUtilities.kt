@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
@@ -45,13 +47,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+import com.mohamedrejeb.richeditor.ui.material.RichText
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.theme.AppTypography
+import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.RefyUser
@@ -89,6 +97,31 @@ fun LineDivider() {
         else
             DividerDefaults.Thickness
     )
+}
+
+@Composable
+@NonRestartableComposable
+fun ItemDescription(
+    description: String?
+) {
+    description?.let {
+        val state = rememberRichTextState()
+        state.config.linkColor = MaterialTheme.colorScheme.primary
+        state.setMarkdown(description)
+        RichText(
+            modifier = Modifier
+                .heightIn(
+                    max = 75.dp
+                )
+                .verticalScroll(rememberScrollState()),
+            textAlign = TextAlign.Justify,
+            color = LocalContentColor.current,
+            fontFamily = bodyFontFamily,
+            fontSize = 16.sp,
+            fontStyle = AppTypography.bodyMedium.fontStyle,
+            state = state
+        )
+    }
 }
 
 fun <T: RefyItem> getItemRelations(

@@ -16,8 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.viewmodels.collections.LinksCollectionViewModelHelper
+import com.tecknobit.refy.ui.viewmodels.teams.TeamViewModelHelper
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
+import com.tecknobit.refycore.records.Team
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,6 +68,55 @@ interface RefyLinkUtilities {
             confirmAction = { ids ->
                 viewModel.addLinksToCollection(
                     collection = collection,
+                    links = ids,
+                    onSuccess = { show.value = false },
+                )
+            }
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    fun AddLinksButton(
+        viewModel: TeamViewModelHelper,
+        show: MutableState<Boolean>,
+        links: List<RefyLink>,
+        team: Team,
+        tint: Color
+    ) {
+        OptionButton(
+            icon = Icons.Default.AddLink,
+            show = show,
+            visible = { links.isNotEmpty() },
+            optionAction = {
+                AddLinksToTeam(
+                    viewModel = viewModel,
+                    show = show,
+                    availableLinks = links,
+                    team = team
+                )
+            },
+            tint = tint
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    private fun AddLinksToTeam(
+        viewModel: TeamViewModelHelper,
+        show: MutableState<Boolean>,
+        availableLinks: List<RefyLink>,
+        team: Team
+    ) {
+        AddItemToContainer(
+            show = show,
+            viewModel = viewModel,
+            icon = Icons.Default.AddLink,
+            availableItems = availableLinks,
+            title = R.string.add_link_to_team,
+            confirmAction = { ids ->
+                viewModel.addLinksToTeam(
+                    team = team,
                     links = ids,
                     onSuccess = { show.value = false },
                 )
