@@ -46,7 +46,7 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.ItemDescription
-import com.tecknobit.refy.ui.viewmodels.collections.CreateCollectionViewModel
+import com.tecknobit.refy.ui.viewmodels.create.CreateCollectionViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
 class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectionViewModel>(
@@ -80,7 +80,8 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
             colors = TopAppBarDefaults.largeTopAppBarColors(
                 containerColor = viewModel.collectionColor.value
             ),
-            saveButtonColor = viewModel.collectionColor.value
+            saveButtonColor = viewModel.collectionColor.value,
+            placeholder = R.string.collection_name
         ) {
             LinksSection()
             ChoseCollectionColor()

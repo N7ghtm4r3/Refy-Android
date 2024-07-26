@@ -33,4 +33,6 @@
     <string name="delete_team_message">By confirming, the team and related data will no longer be available, the personal links for each member will be kept</string>
     <string name="add_links_to_team">Add links to team</string>
     <string name="title_activity_create_team">CreateTeamActivity</string>
+    <string name="invalid_team">Invalid team</string>
+    <string name="team_name">Team name</string>
 </resources>

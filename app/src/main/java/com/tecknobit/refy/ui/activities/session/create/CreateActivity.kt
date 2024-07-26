@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.apimanager.annotations.Structure
@@ -55,6 +56,7 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
+import com.tecknobit.refycore.helpers.RefyInputValidator.MAX_TITLE_LENGTH
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.records.RefyItem
 
@@ -115,7 +117,10 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     @NonRestartableComposable
     protected fun ScaffoldContent(
         modifier: Modifier = Modifier,
-        colors: TopAppBarColors = TopAppBarDefaults.largeTopAppBarColors(),
+        colors: TopAppBarColors = TopAppBarDefaults.largeTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        placeholder: Int,
         saveButtonColor: Color = MaterialTheme.colorScheme.primaryContainer,
         customContent: @Composable () -> Unit,
     ) {
@@ -127,7 +132,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                     navigationIcon = { NavButton() },
                     title = {
                         ItemNameSection(
-                            placeholder = R.string.collection_name
+                            placeholder = placeholder
                         )
                     },
                     colors = colors
@@ -158,7 +163,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
 
     @Composable
     @NonRestartableComposable
-    protected fun NavButton() {
+    private fun NavButton() {
         IconButton(
             onClick = { finish() }
         ) {
@@ -172,11 +177,13 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     @Composable
     @NonRestartableComposable
     protected fun ItemNameSection(
+        modifier: Modifier = Modifier,
         placeholder: Int
     ) {
         if(editItemName.value) {
             val localContentColor = LocalContentColor.current
             TextField(
+                modifier = modifier,
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -184,12 +191,15 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                     focusedIndicatorColor = localContentColor
                 ),
                 textStyle = TextStyle(
-                    fontSize = 25.sp
+                    fontSize = 20.sp
                 ),
                 value = viewModel.itemName.value,
                 singleLine = true,
                 onValueChange = {
-                    viewModel.itemName.value = it
+                    if(it.length <= MAX_TITLE_LENGTH)
+                        viewModel.itemName.value = it
+                    else
+                        editItemName.value = false
                 },
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
@@ -200,18 +210,21 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
             )
         } else {
             Text(
-                modifier = Modifier
+                modifier = modifier
                     .clickable { editItemName.value = true },
                 text = viewModel.itemName.value.ifEmpty {
                     stringResource(placeholder)
-                }
+                },
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 22.sp
             )
         }
     }
 
     @Composable
     @NonRestartableComposable
-    protected fun SaveButton(
+    private fun SaveButton(
         color: Color
     ) {
         AnimatedVisibility(
@@ -271,7 +284,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         )
     }
 
-    private fun canBeSaved(): Boolean {
+    protected open fun canBeSaved(): Boolean {
         if(editItemName.value)
             return false
         if(viewModel.itemDescriptionError.value)

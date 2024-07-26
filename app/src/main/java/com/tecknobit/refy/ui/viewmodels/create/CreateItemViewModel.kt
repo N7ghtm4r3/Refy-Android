@@ -15,6 +15,8 @@ abstract class CreateItemViewModel <T : RefyItem> (
     snackbarHostState = snackbarHostState
 ) {
 
+    protected var existingItem: T? = null
+
     lateinit var itemName: MutableState<String>
 
     lateinit var itemDescription: MutableState<String>
@@ -27,7 +29,25 @@ abstract class CreateItemViewModel <T : RefyItem> (
         item : T?
     )
 
-    abstract fun manageItem(
+    fun manageItem(
+        onSuccess: () -> Unit
+    ) {
+        if(existingItem == null) {
+            createItem(
+                onSuccess = onSuccess
+            )
+        } else {
+            editItem(
+                onSuccess = onSuccess
+            )
+        }
+    }
+
+    protected abstract fun createItem(
+        onSuccess: () -> Unit
+    )
+
+    protected abstract fun editItem(
         onSuccess: () -> Unit
     )
 

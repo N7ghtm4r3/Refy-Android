@@ -1,9 +1,8 @@
-package com.tecknobit.refy.ui.viewmodels.collections
+package com.tecknobit.refy.ui.viewmodels.create
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
-import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
 class CreateCollectionViewModel(
@@ -14,45 +13,29 @@ class CreateCollectionViewModel(
 
     lateinit var collectionColor: MutableState<Color>
 
-    private var existingCollection: LinksCollection? = null
-
     override fun initExistingItem(
         item : LinksCollection?
     ) {
         if(item != null) {
-            existingCollection = item
-            existingCollection!!.links.forEach { link ->
+            existingItem = item
+            existingItem!!.links.forEach { link ->
                 idsList.add(link.id)
             }
         }
     }
 
-    override fun manageItem(
-        onSuccess: () -> Unit
-    ) {
-        if(existingCollection == null) {
-            createCollection(
-                onSuccess = onSuccess
-            )
-        } else {
-            editCollection(
-                onSuccess = onSuccess
-            )
-        }
-    }
-
-    private fun createCollection(
+    override fun createItem(
         onSuccess: () -> Unit
     ) {
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()
     }
 
-    private fun editCollection(
+    override fun editItem(
         onSuccess: () -> Unit
     ) {
         // TODO: MAKE THE REQUEST THEN
-        existingCollection!!.id
+        existingItem!!.id
         onSuccess.invoke()
     }
 
