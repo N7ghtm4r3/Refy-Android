@@ -123,6 +123,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         placeholder: Int,
         saveButtonColor: Color = MaterialTheme.colorScheme.primaryContainer,
         customContent: @Composable () -> Unit,
+        extraContent: (@Composable () -> Unit)? = null
     ) {
         Scaffold(
             snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -153,6 +154,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                     )
                     .fillMaxSize()
             ) {
+                extraContent?.invoke()
                 DescriptionSection(
                     modifier = Modifier
                 )

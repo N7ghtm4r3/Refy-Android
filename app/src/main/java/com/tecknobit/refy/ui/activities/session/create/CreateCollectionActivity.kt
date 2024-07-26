@@ -81,11 +81,12 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
                 containerColor = viewModel.collectionColor.value
             ),
             saveButtonColor = viewModel.collectionColor.value,
-            placeholder = R.string.collection_name
-        ) {
-            LinksSection()
-            ChoseCollectionColor()
-        }
+            placeholder = R.string.collection_name,
+            customContent = {
+                LinksSection()
+                ChoseCollectionColor()
+            }
+        )
     }
 
     @Composable

@@ -1,6 +1,7 @@
 package com.tecknobit.refy.ui.viewmodels.create
 
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.MutableState
 import com.tecknobit.refycore.records.Team
 
 class CreateTeamViewModel(
@@ -8,6 +9,8 @@ class CreateTeamViewModel(
 ) : CreateItemViewModel<Team>(
     snackbarHostState = snackbarHostState
 ) {
+
+    lateinit var logoPic: MutableState<String>
 
     override fun initExistingItem(
         item: Team?
