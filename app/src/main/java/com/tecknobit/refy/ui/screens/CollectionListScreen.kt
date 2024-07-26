@@ -30,7 +30,6 @@ import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
-import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 
 class CollectionListScreen : Screen(), LinksCollectionUtilities {
 
@@ -85,14 +84,14 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
         ItemCard(
             borderColor = collection.color.toColor(),
             onClick = {
-                navToDedicatedCollectionActivity(
-                    collectionId = collection.id,
+                navToDedicatedItemActivity(
+                    itemId = collection.id,
                     destination = CollectionActivity::class.java
                 )
             },
             onLongClick = {
-                navToDedicatedCollectionActivity(
-                    collectionId = collection.id,
+                navToDedicatedItemActivity(
+                    itemId = collection.id,
                     destination = CreateCollectionActivity::class.java
                 )
             },
@@ -105,15 +104,6 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
                 )
             }
         )
-    }
-
-    private fun navToDedicatedCollectionActivity(
-        collectionId: String,
-        destination: Class<*>
-    ) {
-        val intent = Intent(context, destination)
-        intent.putExtra(IDENTIFIER_KEY, collectionId)
-        context.startActivity(intent)
     }
 
     @Composable

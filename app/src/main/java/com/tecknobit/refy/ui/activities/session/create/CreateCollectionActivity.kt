@@ -4,21 +4,16 @@ package com.tecknobit.refy.ui.activities.session.create
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -34,7 +29,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.skydoves.colorpicker.compose.ColorEnvelope
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
@@ -42,8 +36,6 @@ import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.generateRandomColor
-import com.tecknobit.refy.ui.theme.AppTypography
-import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refy.ui.viewmodels.create.CreateCollectionViewModel
@@ -125,45 +117,21 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
     @NonRestartableComposable
     private fun LinksSection() {
         val keyboardController = LocalSoftwareKeyboardController.current
-        Text(
-            modifier = Modifier
-                .padding(
-                    top = 16.dp,
-                    start = 16.dp
-                ),
-            text = stringResource(R.string.links),
-            fontFamily = displayFontFamily,
-            style = AppTypography.titleLarge,
-            fontSize = 25.sp,
-            color = MaterialTheme.colorScheme.primary
-        )
-        LazyColumn (
-            contentPadding = PaddingValues(
-                top = 5.dp,
-                bottom = 5.dp
-            )
+        CustomSection(
+            header = R.string.links
         ) {
             items(
                 items = user.links,
                 key = { link -> link.id }
             ) { link ->
-                var checked by remember {
-                    mutableStateOf(viewModel.idsList.contains(link.id))
-                }
+                val checked = remember { mutableStateOf(viewModel.idsList.contains(link.id)) }
                 var expanded by remember { mutableStateOf(false) }
                 ListItem(
                     leadingContent = {
-                        Checkbox(
+                        ItemCheckbox(
                             checked = checked,
-                            onCheckedChange = {
-                                checked = it
-                                keyboardController?.hide()
-                                editItemName.value = false
-                                if(checked)
-                                    viewModel.idsList.add(link.id)
-                                else
-                                    viewModel.idsList.remove(link.id)
-                            }
+                            keyboardController = keyboardController,
+                            itemId = link.id
                         )
                     },
                     overlineContent = {

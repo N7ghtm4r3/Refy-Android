@@ -118,7 +118,10 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                     },
                     onLongClick = if (isMaintainer) {
                         {
-                            // TODO: TO EDIT
+                            navToDedicatedItemActivity(
+                                itemId = team.id,
+                                destination = CreateTeamActivity::class.java
+                            )
                         }
                     } else
                         null

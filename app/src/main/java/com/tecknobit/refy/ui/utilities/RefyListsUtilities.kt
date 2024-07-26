@@ -289,7 +289,8 @@ fun ExpandTeamMembers(
 fun UserPlaque(
     colors: ListItemColors = ListItemDefaults.colors(),
     profilePicSize: Dp = 50.dp,
-    user: RefyUser
+    user: RefyUser,
+    trailingContent: @Composable (() -> Unit)? = null,
 ) {
     ListItem(
         colors = colors,
@@ -308,7 +309,8 @@ fun UserPlaque(
             Text(
                 text = user.tagName
             )
-        }
+        },
+        trailingContent = trailingContent
     )
 }
 

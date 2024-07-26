@@ -1,6 +1,7 @@
 package com.tecknobit.refy.ui.screens
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -41,6 +42,7 @@ import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
 import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
 
 abstract class Screen {
@@ -216,6 +218,15 @@ abstract class Screen {
                 )
             }
         }
+    }
+
+    protected fun navToDedicatedItemActivity(
+        itemId: String,
+        destination: Class<*>
+    ) {
+        val intent = Intent(context, destination)
+        intent.putExtra(IDENTIFIER_KEY, itemId)
+        context.startActivity(intent)
     }
 
 }

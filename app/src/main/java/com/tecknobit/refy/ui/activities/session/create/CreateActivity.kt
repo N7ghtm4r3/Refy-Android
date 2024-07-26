@@ -11,16 +11,20 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,6 +48,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -54,7 +59,9 @@ import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EquinoxTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
+import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
+import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.MAX_TITLE_LENGTH
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
@@ -283,6 +290,54 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             )
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    protected fun CustomSection(
+        header: Int,
+        content: LazyListScope.() -> Unit
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(
+                    top = 16.dp,
+                    start = 16.dp
+                ),
+            text = stringResource(header),
+            fontFamily = displayFontFamily,
+            style = AppTypography.titleLarge,
+            fontSize = 25.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+        LazyColumn (
+            contentPadding = PaddingValues(
+                top = 5.dp,
+                bottom = 5.dp
+            ),
+            content = content
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    protected fun ItemCheckbox(
+        checked: MutableState<Boolean>,
+        keyboardController: SoftwareKeyboardController?,
+        itemId: String
+    ) {
+        Checkbox(
+            checked = checked.value,
+            onCheckedChange = {
+                checked.value = it
+                keyboardController?.hide()
+                editItemName.value = false
+                if(checked.value)
+                    viewModel.idsList.add(itemId)
+                else
+                    viewModel.idsList.remove(itemId)
+            }
         )
     }
 
