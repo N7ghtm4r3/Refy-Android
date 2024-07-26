@@ -1,6 +1,5 @@
 package com.tecknobit.refy.ui.screens
 
-import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.activities.session.collection.CollectionActivity
-import com.tecknobit.refy.ui.activities.session.collection.CreateCollectionActivity
+import com.tecknobit.refy.ui.activities.session.CollectionActivity
+import com.tecknobit.refy.ui.activities.session.create.CreateCollectionActivity
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
 import com.tecknobit.refy.ui.utilities.OptionsBar
@@ -38,8 +37,6 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
     private val viewModel = CollectionListViewModel()
 
     private lateinit var collections: List<LinksCollection>
-
-    private lateinit var context: Context
 
     init {
         viewModel.setActiveContext(this::class.java)

@@ -1,7 +1,7 @@
 package com.tecknobit.refy.ui.viewmodels.collections
 
 import androidx.compose.material3.SnackbarHostState
-import com.tecknobit.refy.ui.activities.session.collection.CollectionActivity
+import com.tecknobit.refy.ui.activities.session.CollectionActivity
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
 import kotlinx.coroutines.flow.MutableStateFlow

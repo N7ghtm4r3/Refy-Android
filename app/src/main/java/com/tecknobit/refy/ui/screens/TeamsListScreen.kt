@@ -2,6 +2,7 @@
 
 package com.tecknobit.refy.ui.screens
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.session.create.CreateTeamActivity
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ItemDescription
@@ -69,6 +71,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
         screenViewModel = viewModel
         viewModel.getTeams()
         teams = viewModel.teams.collectAsState().value
+        SetFabAction()
         if(teams.isEmpty()) {
             EmptyListUI(
                 icon = Icons.Default.GroupOff,
@@ -92,11 +95,11 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
 
     @Composable
     override fun SetFabAction() {
-        TODO("Not yet implemented")
+        context = LocalContext.current
     }
 
     override fun executeFabAction() {
-        TODO("Not yet implemented")
+        context.startActivity(Intent(context, CreateTeamActivity::class.java))
     }
 
     @Composable

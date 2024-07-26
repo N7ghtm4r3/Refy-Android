@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.tecknobit.refy.ui.activities.session.collection
+package com.tecknobit.refy.ui.activities.session
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
@@ -63,9 +64,13 @@ import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.UserPlaque
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionActivityViewModel
+import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
 
-class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCollectionUtilities {
+class CollectionActivity : RefyItemBaseActivity<LinksCollection>(
+    items = user.collections,
+    invalidMessage = R.string.invalid_collection
+), RefyLinkUtilities, LinksCollectionUtilities {
 
     private lateinit var viewModel: CollectionActivityViewModel
 
@@ -78,15 +83,15 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            initCollectionFromIntent()
+            initItemFromIntent()
             RefyTheme {
-                if(invalidCollection)
-                    InvalidCollectionUi()
+                if(invalidItem)
+                    InvalidItemUi()
                 else {
                     InitViewModel()
                     var iconsColor: Color = LocalContentColor.current
-                    collectionColor = linksCollection!!.color.toColor()
-                    hasTeams = linksCollection!!.hasTeams()
+                    collectionColor = item!!.color.toColor()
+                    hasTeams = item!!.hasTeams()
                     Scaffold(
                         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                         topBar = {
@@ -104,7 +109,7 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                                 },
                                 title = {
                                     Text(
-                                        text = linksCollection!!.title
+                                        text = item!!.title
                                     )
                                 },
                                 colors = TopAppBarDefaults.largeTopAppBarColors(
@@ -113,33 +118,33 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                                 actions = {
                                     val links = getItemRelations(
                                         userList = user.links,
-                                        linkList = linksCollection!!.links
+                                        linkList = item!!.links
                                     )
                                     val addLinks = remember { mutableStateOf(false) }
                                     AddLinksButton(
                                         viewModel = viewModel,
                                         show = addLinks,
                                         links = links,
-                                        collection = linksCollection!!,
+                                        collection = item!!,
                                         tint = iconsColor
                                     )
                                     val teams = getItemRelations(
                                         userList = user.teams,
-                                        linkList = linksCollection!!.teams
+                                        linkList = item!!.teams
                                     )
                                     val addTeams = remember { mutableStateOf(false) }
                                     AddTeamsButton(
                                         viewModel = viewModel,
                                         show = addTeams,
                                         teams = teams,
-                                        collection = linksCollection!!,
+                                        collection = item!!,
                                         tint = iconsColor
                                     )
                                     val deleteCollection = remember { mutableStateOf(false) }
                                     DeleteCollectionButton(
                                         viewModel = viewModel,
                                         deleteCollection = deleteCollection,
-                                        collection = linksCollection!!,
+                                        collection = item!!,
                                         tint = iconsColor
                                     )
                                 },
@@ -164,7 +169,7 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                                 ExpandTeamMembers(
                                     viewModel = viewModel,
                                     show = expandTeams,
-                                    teams = linksCollection!!.teams
+                                    teams = item!!.teams
                                 )
                             }
                         },
@@ -180,7 +185,7 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
                             items(
-                                items = linksCollection!!.links,
+                                items = item!!.links,
                                 key = { link -> link.id }
                             ) { link ->
                                 RefyLinkCollectionCard(
@@ -199,11 +204,11 @@ class CollectionActivity : CollectionBaseActivity(), RefyLinkUtilities, LinksCol
     private fun InitViewModel() {
         viewModel = CollectionActivityViewModel(
             snackbarHostState = snackbarHostState,
-            initialCollection = linksCollection!!
+            initialCollection = item!!
         )
         viewModel.setActiveContext(this::class.java)
         viewModel.refreshCollection()
-        linksCollection = viewModel.collection.collectAsState().value
+        item = viewModel.collection.collectAsState().value
     }
 
     @OptIn(ExperimentalFoundationApi::class)

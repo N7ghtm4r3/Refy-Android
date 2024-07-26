@@ -1,5 +1,6 @@
 package com.tecknobit.refy.ui.utilities
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -49,6 +50,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -101,23 +103,26 @@ fun LineDivider() {
 
 @Composable
 @NonRestartableComposable
+@SuppressLint("ModifierParameter")
 fun ItemDescription(
-    description: String?
+    modifier: Modifier = Modifier
+        .heightIn(
+            max = 75.dp
+        )
+        .verticalScroll(rememberScrollState()),
+    description: String?,
+    fontSize: TextUnit = 16.sp
 ) {
     description?.let {
         val state = rememberRichTextState()
         state.config.linkColor = MaterialTheme.colorScheme.primary
         state.setMarkdown(description)
         RichText(
-            modifier = Modifier
-                .heightIn(
-                    max = 75.dp
-                )
-                .verticalScroll(rememberScrollState()),
+            modifier = modifier,
             textAlign = TextAlign.Justify,
             color = LocalContentColor.current,
             fontFamily = bodyFontFamily,
-            fontSize = 16.sp,
+            fontSize = fontSize,
             fontStyle = AppTypography.bodyMedium.fontStyle,
             state = state
         )

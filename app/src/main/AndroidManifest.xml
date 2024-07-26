@@ -32,17 +32,24 @@
             android:theme="@style/Theme.Refy"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
-            android:name=".ui.activities.session.collection.CreateCollectionActivity"
+            android:name=".ui.activities.session.create.CreateCollectionActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Refy"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
-            android:name=".ui.activities.session.collection.CollectionActivity"
+            android:name=".ui.activities.session.CollectionActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Refy"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".ui.activities.session.create.CreateTeamActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Refy"
+            android:windowSoftInputMode="adjustResize"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 

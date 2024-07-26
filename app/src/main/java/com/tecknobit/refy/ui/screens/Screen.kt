@@ -1,5 +1,6 @@
 package com.tecknobit.refy.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -45,6 +46,8 @@ import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
 abstract class Screen {
 
     protected lateinit var screenViewModel: EquinoxViewModel
+
+    protected lateinit var context: Context
 
     @Composable
     abstract fun ShowContent()

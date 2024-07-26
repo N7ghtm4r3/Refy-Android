@@ -2,42 +2,32 @@ package com.tecknobit.refy.ui.viewmodels.collections
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
-import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
+import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
 class CreateCollectionViewModel(
     snackbarHostState: SnackbarHostState
-) : EquinoxViewModel(
+) : CreateItemViewModel<LinksCollection>(
     snackbarHostState = snackbarHostState
 ) {
 
     lateinit var collectionColor: MutableState<Color>
 
-    lateinit var collectionName: MutableState<String>
-
-    lateinit var collectionDescription: MutableState<String>
-
-    lateinit var collectionDescriptionError: MutableState<Boolean>
-
-    val collectionLinks: SnapshotStateList<String> = mutableStateListOf()
-
     private var existingCollection: LinksCollection? = null
 
-    fun initExistingCollection(
-        collection : LinksCollection?
+    override fun initExistingItem(
+        item : LinksCollection?
     ) {
-        if(collection != null) {
-            existingCollection = collection
+        if(item != null) {
+            existingCollection = item
             existingCollection!!.links.forEach { link ->
-                collectionLinks.add(link.id)
+                idsList.add(link.id)
             }
         }
     }
 
-    fun manageCollection(
+    override fun manageItem(
         onSuccess: () -> Unit
     ) {
         if(existingCollection == null) {
