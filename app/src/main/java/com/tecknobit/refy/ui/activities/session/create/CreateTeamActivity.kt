@@ -51,7 +51,8 @@ import com.tecknobit.refycore.records.Team
 
 class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
     items = user.teams,
-    invalidMessage = R.string.invalid_team
+    invalidMessage = R.string.invalid_team,
+    scrollable = true
 ) {
 
     private lateinit var photoPicker: ActivityResultLauncher<PickVisualMediaRequest>
@@ -141,7 +142,6 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
     @Composable
     @NonRestartableComposable
     private fun LogoNotSet() {
-
         val stroke = Stroke(
             width = 4f,
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)

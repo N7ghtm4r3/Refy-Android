@@ -36,7 +36,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Refy"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustPan"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
         <activity
             android:name=".ui.activities.session.CollectionActivity"
@@ -49,7 +49,7 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Refy"
-            android:windowSoftInputMode="adjustResize"
+            android:windowSoftInputMode="adjustPan"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 

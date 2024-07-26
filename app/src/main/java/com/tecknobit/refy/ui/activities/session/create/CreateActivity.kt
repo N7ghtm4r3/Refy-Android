@@ -13,14 +13,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
@@ -70,7 +72,8 @@ import com.tecknobit.refycore.records.RefyItem
 @Structure
 abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     items : List<T>,
-    invalidMessage: Int
+    invalidMessage: Int,
+    val scrollable: Boolean = false
 ) : RefyItemBaseActivity <T> (
     items = items,
     invalidMessage = invalidMessage
@@ -159,7 +162,13 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                         top = paddingValues.calculateTopPadding() + 16.dp,
                         bottom = paddingValues.calculateBottomPadding() + 16.dp
                     )
-                    .fillMaxSize()
+                    .then(
+                        if(scrollable) {
+                            Modifier
+                                .verticalScroll(rememberScrollState())
+                        } else
+                            Modifier
+                    )
             ) {
                 extraContent?.invoke()
                 DescriptionSection(
@@ -312,6 +321,11 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
             color = MaterialTheme.colorScheme.primary
         )
         LazyColumn (
+            modifier = if(scrollable) {
+                Modifier
+                    .height(300.dp)
+            } else
+                Modifier,
             contentPadding = PaddingValues(
                 top = 5.dp,
                 bottom = 5.dp
