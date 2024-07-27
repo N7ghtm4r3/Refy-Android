@@ -41,11 +41,63 @@ class TeamsListViewModel: TeamViewModelHelper(
                                 "tille",
                                 "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                 "https://github.com/N7ghtm4r3"
+                            ),
+                            RefyLink(
+                                "idq1",
+                                "tille",
+                                "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                "https://github.com/N7ghtm4r3"
                             )
                         ),
-                        listOf<LinksCollection>()
+                        listOf<LinksCollection>(
+                            LinksCollection(
+                                "id1",
+                                RefyUser(
+                                    "GEGWEGWHWHG",
+                                    "Greg",
+                                    "Godzilla",
+                                    "greg@godzilla",
+                                    "https://media-assets.wired.it/photos/64f6faa946c2835bd21c9fd3/4:3/w_2880,h_2160,c_limit/ezgif-3-f91e25fbf3.jpg",
+                                    "@godzilla"
+                                ),
+                                "gggagag",
+                                "#DE646E",
+                                "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                listOf(
+                                    Team(
+                                        "id12", "Ciaogwegw2", RefyUser(),
+                                        "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
+                                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                    ),
+                                    Team(
+                                        "35525", "Ciaogwegw22", RefyUser(),
+                                        "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
+                                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                    ),
+                                    Team(
+                                        "bs", "breberbebre", RefyUser(),
+                                        "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
+                                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                    ),
+                                    Team(
+                                        "355bsdb25", "breberbeb", RefyUser(),
+                                        "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
+                                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                    ),
+                                    Team(
+                                        "355bvbesb25", "Ciabreogbwegw22", RefyUser(),
+                                        "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
+                                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
+                                    )
+                                )
+                            )
+                        )
                     ),
-                    Team("35525", "Ciaogwegw22", RefyUser("h"),  "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
+                    Team(
+                        "35525",
+                        "Ciaogwegw22",
+                        RefyUser("h"),
+                        "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                     )
                 )
@@ -56,7 +108,7 @@ class TeamsListViewModel: TeamViewModelHelper(
     }
 
     fun createJoinLink(
-        onSuccess: (RefyLink) -> Unit
+        onSuccess: (RefyLink) -> Unit,
     ) {
         // TODO: TO MAKE REQUEST THEN (get from the response)
         val refyLink = RefyLink()

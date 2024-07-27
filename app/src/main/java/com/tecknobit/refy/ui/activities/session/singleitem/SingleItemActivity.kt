@@ -2,9 +2,6 @@
 
 package com.tecknobit.refy.ui.activities.session.singleitem
 
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
@@ -65,55 +62,56 @@ abstract class SingleItemActivity <T : RefyItem> (
 
     protected var hasTeams: Boolean = true
 
-    protected var overlineColor: Color = Color.Red
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            initItemFromIntent()
-            RefyTheme {
-                if(invalidItem)
-                    InvalidItemUi()
-                else {
-                    InitViewModel()
-                }
-            }
-        }
-    }
+    protected var activityColorTheme: Color = Color.Red
 
     @Composable
     protected abstract fun InitViewModel()
 
     @Composable
     @NonRestartableComposable
-    protected open fun DisplayItem(
+    protected fun DisplayItem(
+        topBarColor: Color? = MaterialTheme.colorScheme.primaryContainer,
+        title: @Composable () -> Unit = {
+            Text(
+                text = item!!.title
+            )
+        },
         actions: @Composable RowScope.() -> Unit,
+        floatingActionButton: @Composable () -> Unit,
         content: @Composable (PaddingValues) -> Unit
     ) {
-        Scaffold(
-            snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-            topBar = {
-                LargeTopAppBar(
-                    navigationIcon = { NavButton() },
-                    title = {
-                        Text(
-                            text = item!!.title
+        initItemFromIntent()
+        RefyTheme {
+            if(invalidItem)
+                InvalidItemUi()
+            else {
+                InitViewModel()
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                    topBar = {
+                        LargeTopAppBar(
+                            navigationIcon = { NavButton() },
+                            title = title,
+                            colors = TopAppBarDefaults.largeTopAppBarColors(
+                                containerColor = if(topBarColor != null)
+                                    topBarColor
+                                else
+                                    activityColorTheme
+                            ),
+                            actions = actions
                         )
                     },
-                    colors = TopAppBarDefaults.largeTopAppBarColors(
-                        containerColor = overlineColor
-                    ),
-                    actions = actions
-                )
-            },
-            content = content
-        )
+                    floatingActionButton = floatingActionButton
+                ) { paddingValues ->
+                    content.invoke(paddingValues)
+                }
+            }
+        }
     }
 
     @Composable
     @NonRestartableComposable
-    protected fun NavButton() {
+    private fun NavButton() {
         iconsColor = LocalContentColor.current
         IconButton(
             onClick = { finish() }
@@ -128,7 +126,7 @@ abstract class SingleItemActivity <T : RefyItem> (
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     @NonRestartableComposable
-    fun RefyLinkCollectionCard(
+    protected fun RefyLinkCollectionCard(
         link: RefyLink,
         removeAction: () -> Unit
     ) {
@@ -158,7 +156,7 @@ abstract class SingleItemActivity <T : RefyItem> (
             Column {
                 if(hasTeams) {
                     TopBarDetails(
-                        link = link
+                        item = link
                     )
                 }
                 Column(
@@ -219,16 +217,16 @@ abstract class SingleItemActivity <T : RefyItem> (
 
     @Composable
     @NonRestartableComposable
-    private fun TopBarDetails(
-        link: RefyLink
+    protected fun TopBarDetails(
+        item: RefyItem
     ) {
         UserPlaque(
             colors = ListItemDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                overlineColor = overlineColor
+                overlineColor = activityColorTheme
             ),
             profilePicSize = 45.dp,
-            user = link.owner
+            user = item.owner
         )
         LineDivider()
     }

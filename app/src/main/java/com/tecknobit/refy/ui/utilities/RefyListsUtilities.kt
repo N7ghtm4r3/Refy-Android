@@ -13,9 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
@@ -107,9 +105,8 @@ fun LineDivider() {
 fun ItemDescription(
     modifier: Modifier = Modifier
         .heightIn(
-            max = 75.dp
-        )
-        .verticalScroll(rememberScrollState()),
+            max = 120.dp
+        ),
     description: String?,
     fontSize: TextUnit = 16.sp
 ) {
@@ -296,8 +293,8 @@ fun UserPlaque(
         colors = colors,
         leadingContent = {
             Logo(
-                profilePicSize = profilePicSize,
-                profilePicUrl = user.profilePic
+                picSize = profilePicSize,
+                picUrl = user.profilePic
             )
         },
         headlineContent = {
@@ -317,15 +314,16 @@ fun UserPlaque(
 @Composable
 @NonRestartableComposable
 fun Logo(
-    profilePicSize: Dp = 50.dp,
+    modifier: Modifier = Modifier,
+    picSize: Dp = 50.dp,
     addShadow: Boolean = false,
     shape: Shape = CircleShape,
-    profilePicUrl: String
+    picUrl: String
 ) {
     AsyncImage(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape)
-            .size(profilePicSize)
+            .size(picSize)
             .then(
                 if(addShadow) {
                     Modifier.shadow(
@@ -336,7 +334,7 @@ fun Logo(
                     Modifier
             ),
         model = ImageRequest.Builder(LocalContext.current)
-            .data(profilePicUrl)
+            .data(picUrl)
             .crossfade(enable = true)
             .crossfade(500)
             //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY

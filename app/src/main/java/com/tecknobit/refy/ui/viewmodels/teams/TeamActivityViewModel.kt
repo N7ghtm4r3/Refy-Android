@@ -2,6 +2,7 @@ package com.tecknobit.refy.ui.viewmodels.teams
 
 import androidx.compose.material3.SnackbarHostState
 import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
+import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
 import com.tecknobit.refycore.records.Team
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,9 +30,14 @@ class TeamActivityViewModel(
         )
     }
 
-
     fun removeLinkFromTeam(
         link: RefyLink
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+    }
+
+    fun removeCollectionFromTeam(
+        collection: LinksCollection
     ) {
         // TODO: MAKE THE REQUEST THEN
     }

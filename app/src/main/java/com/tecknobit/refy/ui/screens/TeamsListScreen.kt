@@ -172,12 +172,12 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
             ),
             leadingContent = {
                 Logo(
-                    profilePicSize = 115.dp,
+                    picSize = 115.dp,
                     shape = RoundedCornerShape(
                         size = 10.dp
                     ),
                     addShadow = true,
-                    profilePicUrl = team.logoPic,
+                    picUrl = team.logoPic,
                 )
             },
             overlineContent = {
