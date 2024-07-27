@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.GroupRemove
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Card
@@ -57,8 +56,8 @@ import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refy.ui.utilities.Logo
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
+import com.tecknobit.refy.ui.utilities.TeamMemberPlaque
 import com.tecknobit.refy.ui.utilities.TeamsUtilities
-import com.tecknobit.refy.ui.utilities.UserPlaque
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
@@ -396,28 +395,10 @@ class TeamActivity : SingleItemActivity<Team>(
                         items = item!!.members,
                         key = { member -> member.id }
                     ) { member ->
-                        val authorizedUser = item!!.isMaintainer(user) && member.id != user.id
-                        UserPlaque(
-                            user = member,
-                            viewModel = viewModel,
-                            authorizedUser = authorizedUser,
-                            trailingContent = if(authorizedUser) {
-                                {
-                                    IconButton(
-                                        onClick = {
-                                            viewModel.removeMember(
-                                                member = member
-                                            )
-                                        }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Default.GroupRemove,
-                                            contentDescription = null
-                                        )
-                                    }
-                                }
-                            } else
-                                null
+                        TeamMemberPlaque(
+                            team = item!!,
+                            member = member,
+                            viewModel = viewModel
                         )
                     }
                 }

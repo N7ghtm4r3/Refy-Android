@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.GroupRemove
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DropdownMenu
@@ -62,6 +63,7 @@ import com.mohamedrejeb.richeditor.ui.material.RichText
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -289,16 +291,56 @@ fun ExpandTeamMembers(
     }
 }
 
-// TODO: TO OPTIMIZE AND CHECK IF THE MAINTAINER LOCK WORKS AND AVOID TO REMOVE ADMIN OR CHANGE ROLE IF NOT ADMIN
+@Composable
+@NonRestartableComposable
+fun TeamMemberPlaque(
+    team: Team,
+    member: RefyTeamMember,
+    viewModel: TeamActivityViewModel
+) {
+    val isMemberAdmin = team.isAdmin(member)
+    val currentUserIsAdmin = team.isAdmin(user)
+    val isAuthorizedUser = team.isMaintainer(user) && member.id != user.id
+    val enableOption = (((isMemberAdmin && currentUserIsAdmin) || (isAuthorizedUser && !isMemberAdmin))
+            && !team.isTheAuthor(member))
+    UserPlaque(
+        user = member,
+        supportingContent = {
+            RolesMenu(
+                enableOption = enableOption,
+                viewModel = viewModel,
+                member = member
+            )
+        },
+        trailingContent = if(enableOption) {
+            {
+                IconButton(
+                    onClick = {
+                        viewModel.removeMember(
+                            member = member
+                        )
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.GroupRemove,
+                        contentDescription = null
+                    )
+                }
+            }
+        } else
+            null
+    )
+    HorizontalDivider()
+}
+
 @Composable
 @NonRestartableComposable
 fun UserPlaque(
     colors: ListItemColors = ListItemDefaults.colors(),
     profilePicSize: Dp = 50.dp,
     user: RefyUser,
-    trailingContent: @Composable (() -> Unit)? = null,
-    authorizedUser: Boolean = false,
-    viewModel: TeamActivityViewModel? = null
+    supportingContent: @Composable (() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null
 ) {
     ListItem(
         colors = colors,
@@ -313,52 +355,7 @@ fun UserPlaque(
                 text = user.completeName
             )
         },
-        supportingContent = if(viewModel != null) {
-            {
-                val role = ((user) as RefyTeamMember).role
-                val changeRole = remember { mutableStateOf(false) }
-                Column {
-                    Text(
-                        modifier = Modifier
-                            .clickable(
-                                enabled = authorizedUser
-                            ) {
-                                changeRole.value = true
-                            },
-                        text = role.name,
-                        color = if(role == ADMIN)
-                            MaterialTheme.colorScheme.error
-                        else
-                            Color.Unspecified
-                    )
-                    viewModel.SuspendUntilElementOnScreen(
-                        elementVisible = changeRole
-                    )
-                    DropdownMenu(
-                        expanded = changeRole.value,
-                        onDismissRequest = { changeRole.value = false }
-                    ) {
-                        TeamRole.entries.forEach { role ->
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = role.name
-                                    )
-                                },
-                                onClick = {
-                                    viewModel.changeMemberRole(
-                                        member = user,
-                                        role = role,
-                                        onSuccess = { changeRole.value = false }
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-        } else
-            null,
+        supportingContent = supportingContent,
         overlineContent = {
             Text(
                 text = user.tagName
@@ -366,6 +363,56 @@ fun UserPlaque(
         },
         trailingContent = trailingContent
     )
+}
+
+@Composable
+@NonRestartableComposable
+private fun RolesMenu(
+    enableOption: Boolean,
+    viewModel: TeamActivityViewModel,
+    member: RefyUser
+) {
+    val role = ((member) as RefyTeamMember).role
+    val changeRole = remember { mutableStateOf(false) }
+    Column {
+        Text(
+            modifier = Modifier
+                .clickable(
+                    enabled = enableOption
+                ) {
+                    changeRole.value = true
+                },
+            text = role.name,
+            color = if(role == ADMIN)
+                MaterialTheme.colorScheme.error
+            else
+                Color.Unspecified
+        )
+        viewModel.SuspendUntilElementOnScreen(
+            elementVisible = changeRole
+        )
+        DropdownMenu(
+            expanded = changeRole.value,
+            onDismissRequest = { changeRole.value = false }
+        ) {
+            TeamRole.entries.forEach { role ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = role.name
+                        )
+                    },
+                    onClick = {
+                        viewModel.changeMemberRole(
+                            member = member,
+                            role = role,
+                            onSuccess = { changeRole.value = false }
+                        )
+                    }
+                )
+            }
+        }
+    }
 }
 
 @Composable
