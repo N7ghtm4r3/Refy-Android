@@ -1,5 +1,6 @@
 package com.tecknobit.refy.ui.utilities
 
+import android.app.Activity
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Delete
@@ -69,6 +70,7 @@ interface TeamsUtilities {
     @Composable
     @NonRestartableComposable
     fun DeleteTeamButton(
+        activity: Activity?,
         viewModel: TeamViewModelHelper,
         deleteTeam: MutableState<Boolean>,
         team: Team,
@@ -78,6 +80,7 @@ interface TeamsUtilities {
             show = deleteTeam,
             deleteAction = {
                 DeleteTeam(
+                    activity = activity,
                     show = deleteTeam,
                     team = team,
                     viewModel = viewModel
@@ -90,6 +93,7 @@ interface TeamsUtilities {
     @Composable
     @NonRestartableComposable
     private fun DeleteTeam(
+        activity: Activity?,
         viewModel: TeamViewModelHelper,
         show: MutableState<Boolean>,
         team: Team
@@ -108,6 +112,7 @@ interface TeamsUtilities {
                     team = team,
                     onSuccess = {
                         show.value = false
+                        activity?.finish()
                     }
                 )
             },

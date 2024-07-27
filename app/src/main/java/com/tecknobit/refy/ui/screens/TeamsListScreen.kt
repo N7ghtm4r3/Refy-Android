@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
 import com.tecknobit.refy.ui.activities.session.create.CreateTeamActivity
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -114,7 +115,10 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                 .wrapContentHeight()
                 .combinedClickable(
                     onClick = {
-                        // TODO: NAV TO TEAM
+                        navToDedicatedItemActivity(
+                            itemId = team.id,
+                            destination = TeamActivity::class.java
+                        )
                     },
                     onLongClick = if (isMaintainer) {
                         {
@@ -268,6 +272,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                 ) {
                     if(team.isTheAuthor(user)) {
                         DeleteTeamButton(
+                            activity = null,
                             viewModel = viewModel,
                             deleteTeam = deleteTeam,
                             team = team,

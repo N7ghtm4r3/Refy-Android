@@ -79,7 +79,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     invalidMessage = invalidMessage
 ) {
 
-    protected lateinit var editItemName: MutableState<Boolean>
+    private lateinit var editItemName: MutableState<Boolean>
 
     protected lateinit var viewModel: V
 

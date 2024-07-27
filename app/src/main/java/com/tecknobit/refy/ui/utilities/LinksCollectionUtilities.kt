@@ -1,5 +1,6 @@
 package com.tecknobit.refy.ui.utilities
 
+import android.app.Activity
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.GroupAdd
@@ -69,6 +70,7 @@ interface LinksCollectionUtilities {
     @Composable
     @NonRestartableComposable
     fun DeleteCollectionButton(
+        activity: Activity?,
         viewModel: LinksCollectionViewModelHelper,
         deleteCollection: MutableState<Boolean>,
         collection: LinksCollection,
@@ -78,6 +80,7 @@ interface LinksCollectionUtilities {
             show = deleteCollection,
             deleteAction = {
                 DeleteCollection(
+                    activity = activity,
                     show = deleteCollection,
                     collection = collection,
                     viewModel = viewModel
@@ -90,6 +93,7 @@ interface LinksCollectionUtilities {
     @Composable
     @NonRestartableComposable
     private fun DeleteCollection(
+        activity: Activity?,
         viewModel: LinksCollectionViewModelHelper,
         show: MutableState<Boolean>,
         collection: LinksCollection
@@ -108,6 +112,7 @@ interface LinksCollectionUtilities {
                     collection = collection,
                     onSuccess = {
                         show.value = false
+                        activity?.finish()
                     }
                 )
             },

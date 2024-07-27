@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.activities.session.CollectionActivity
+import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refy.ui.activities.session.create.CreateCollectionActivity
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
@@ -131,6 +131,7 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
                     horizontalAlignment = Alignment.End
                 ) {
                     DeleteCollectionButton(
+                        activity = null,
                         viewModel = viewModel,
                         deleteCollection = deleteCollection,
                         collection = collection,
