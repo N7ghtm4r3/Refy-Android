@@ -1,6 +1,7 @@
 package com.tecknobit.refy.ui.activities.session.singleitem
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,14 +25,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.GroupRemove
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -53,10 +58,12 @@ import com.tecknobit.refy.ui.utilities.Logo
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.TeamsUtilities
+import com.tecknobit.refy.ui.utilities.UserPlaque
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 
 class TeamActivity : SingleItemActivity<Team>(
     items = user.teams,
@@ -67,6 +74,8 @@ class TeamActivity : SingleItemActivity<Team>(
 
     private lateinit var linksExpanded: MutableState<Boolean>
 
+    private lateinit var membersExpanded: MutableState<Boolean>
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,26 +83,32 @@ class TeamActivity : SingleItemActivity<Team>(
         setContent {
             RefyTheme {
                 activityColorTheme = MaterialTheme.colorScheme.primary
+                membersExpanded = remember { mutableStateOf(false) }
                 DisplayItem(
                     topBarColor = MaterialTheme.colorScheme.primaryContainer,
                     title = {
                         Box {
                             Logo(
                                 modifier = Modifier
-                                    .padding(
-                                        top = 30.dp
-                                    )
                                     .align(Alignment.BottomStart),
-                                picSize = 100.dp,
+                                picSize = 65.dp,
                                 picUrl = item!!.logoPic
                             )
-                            Text(
+                            Column (
                                 modifier = Modifier
-                                    .padding(
-                                        start = 20.dp
-                                    ),
-                                text = item!!.title
-                            )
+                                    .fillMaxHeight(),
+                                verticalArrangement = Arrangement.Bottom
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(Alignment.End)
+                                        .padding(
+                                            start = 35.dp
+                                        ),
+                                    text = item!!.title,
+                                    fontSize = 24.sp
+                                )
+                            }
                         }
                     },
                     actions = {
@@ -138,8 +153,9 @@ class TeamActivity : SingleItemActivity<Team>(
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
+                            TeamMembers()
                             FloatingActionButton(
-                                onClick = { /*TODO*/ }
+                                onClick = { membersExpanded.value = true }
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.People,
@@ -187,7 +203,6 @@ class TeamActivity : SingleItemActivity<Team>(
                     ),
                 description = item!!.description
             )
-            HorizontalDivider()
             ItemsSection(
                 isSectionVisible = item!!.links.isNotEmpty(),
                 header = R.string.links,
@@ -207,7 +222,6 @@ class TeamActivity : SingleItemActivity<Team>(
                     )
                 }
             }
-            HorizontalDivider()
             ItemsSection(
                 isSectionVisible = item!!.collections.isNotEmpty(),
                 header = R.string.collections,
@@ -239,6 +253,7 @@ class TeamActivity : SingleItemActivity<Team>(
         items: LazyListScope.() -> Unit
     ) {
         if(isSectionVisible) {
+            HorizontalDivider()
             ControlSectionHeader(
                 header = header,
                 iconCheck = visible
@@ -313,7 +328,10 @@ class TeamActivity : SingleItemActivity<Team>(
                 size = 8.dp
             ),
             onClick = {
-
+                // TODO: TO FIX BECAUSE THE COLLECTION CANNOT BE FOUND
+                val intent = Intent(this, CollectionActivity::class.java)
+                intent.putExtra(IDENTIFIER_KEY, collection.id)
+                startActivity(intent)
             }
         ) {
             Column {
@@ -359,6 +377,50 @@ class TeamActivity : SingleItemActivity<Team>(
                         }
                     }
                 )
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    @NonRestartableComposable
+    private fun TeamMembers() {
+        if(membersExpanded.value) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    membersExpanded.value = false
+                }
+            ) {
+                LazyColumn {
+                    items(
+                        items = item!!.members,
+                        key = { member -> member.id }
+                    ) { member ->
+                        val authorizedUser = item!!.isMaintainer(user) && member.id != user.id
+                        UserPlaque(
+                            user = member,
+                            viewModel = viewModel,
+                            authorizedUser = authorizedUser,
+                            trailingContent = if(authorizedUser) {
+                                {
+                                    IconButton(
+                                        onClick = {
+                                            viewModel.removeMember(
+                                                member = member
+                                            )
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.GroupRemove,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+                            } else
+                                null
+                        )
+                    }
+                }
             }
         }
     }

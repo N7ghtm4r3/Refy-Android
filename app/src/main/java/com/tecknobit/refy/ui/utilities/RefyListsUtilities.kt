@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -61,9 +65,13 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
+import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.Team.RefyTeamMember
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN
 
 @Composable
 @NonRestartableComposable
@@ -281,6 +289,7 @@ fun ExpandTeamMembers(
     }
 }
 
+// TODO: TO OPTIMIZE AND CHECK IF THE MAINTAINER LOCK WORKS AND AVOID TO REMOVE ADMIN OR CHANGE ROLE IF NOT ADMIN
 @Composable
 @NonRestartableComposable
 fun UserPlaque(
@@ -288,6 +297,8 @@ fun UserPlaque(
     profilePicSize: Dp = 50.dp,
     user: RefyUser,
     trailingContent: @Composable (() -> Unit)? = null,
+    authorizedUser: Boolean = false,
+    viewModel: TeamActivityViewModel? = null
 ) {
     ListItem(
         colors = colors,
@@ -302,6 +313,52 @@ fun UserPlaque(
                 text = user.completeName
             )
         },
+        supportingContent = if(viewModel != null) {
+            {
+                val role = ((user) as RefyTeamMember).role
+                val changeRole = remember { mutableStateOf(false) }
+                Column {
+                    Text(
+                        modifier = Modifier
+                            .clickable(
+                                enabled = authorizedUser
+                            ) {
+                                changeRole.value = true
+                            },
+                        text = role.name,
+                        color = if(role == ADMIN)
+                            MaterialTheme.colorScheme.error
+                        else
+                            Color.Unspecified
+                    )
+                    viewModel.SuspendUntilElementOnScreen(
+                        elementVisible = changeRole
+                    )
+                    DropdownMenu(
+                        expanded = changeRole.value,
+                        onDismissRequest = { changeRole.value = false }
+                    ) {
+                        TeamRole.entries.forEach { role ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = role.name
+                                    )
+                                },
+                                onClick = {
+                                    viewModel.changeMemberRole(
+                                        member = user,
+                                        role = role,
+                                        onSuccess = { changeRole.value = false }
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        } else
+            null,
         overlineContent = {
             Text(
                 text = user.tagName
@@ -325,7 +382,7 @@ fun Logo(
             .clip(shape)
             .size(picSize)
             .then(
-                if(addShadow) {
+                if (addShadow) {
                     Modifier.shadow(
                         elevation = 5.dp,
                         shape = shape
