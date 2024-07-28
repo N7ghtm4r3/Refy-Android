@@ -52,12 +52,14 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
+import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refy.ui.utilities.Logo
 import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.TeamMemberPlaque
 import com.tecknobit.refy.ui.utilities.TeamsUtilities
+import com.tecknobit.refy.ui.utilities.drawOneSideBorder
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
@@ -232,7 +234,7 @@ class TeamActivity : SingleItemActivity<Team>(
                 ) { link ->
                     RefyLinkContainerCard(
                         link = link,
-                        hideOptions = isUserMaintainer,
+                        hideOptions = !isUserMaintainer,
                         removeAction = {
                             viewModel.removeLinkFromTeam(
                                 link = link
@@ -336,7 +338,15 @@ class TeamActivity : SingleItemActivity<Team>(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .drawOneSideBorder(
+                    width = 10.dp,
+                    color = collection.color.toColor(),
+                    shape = RoundedCornerShape(
+                        topStart = 8.dp,
+                        bottomStart = 8.dp
+                    )
+                ),
             shape = RoundedCornerShape(
                 size = 8.dp
             ),
@@ -349,14 +359,15 @@ class TeamActivity : SingleItemActivity<Team>(
         ) {
             Column {
                 TopBarDetails(
-                    item = collection
+                    item = collection,
+                    overlineColor = collection.color.toColor()
                 )
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
                             top = 5.dp,
-                            start = 16.dp,
+                            start = 21.dp,
                             end = 16.dp,
                             bottom = 5.dp
                         )
@@ -372,7 +383,7 @@ class TeamActivity : SingleItemActivity<Team>(
                     )
                 }
                 AnimatedVisibility(
-                    visible = item!!.isMaintainer(user.id),
+                    visible = isUserMaintainer,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {

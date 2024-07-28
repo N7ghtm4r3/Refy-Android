@@ -185,7 +185,7 @@ abstract class SingleItemActivity <T : RefyItem> (
                 }
                 OptionsBar(
                     options = {
-                        if(hideOptions) {
+                        if(!hideOptions) {
                             ShareButton(
                                 context = context,
                                 link = link
@@ -201,7 +201,7 @@ abstract class SingleItemActivity <T : RefyItem> (
                                     snackbarHostState = snackbarHostState,
                                     link = link
                                 )
-                                if(hideOptions) {
+                                if(!hideOptions) {
                                     IconButton(
                                         onClick = removeAction
                                     ) {
@@ -223,12 +223,13 @@ abstract class SingleItemActivity <T : RefyItem> (
     @Composable
     @NonRestartableComposable
     protected fun TopBarDetails(
-        item: RefyItem
+        item: RefyItem,
+        overlineColor: Color = activityColorTheme
     ) {
         UserPlaque(
             colors = ListItemDefaults.colors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                overlineColor = activityColorTheme
+                overlineColor = overlineColor
             ),
             profilePicSize = 45.dp,
             user = item.owner

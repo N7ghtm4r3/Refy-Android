@@ -23,11 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
@@ -41,6 +37,7 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
 import com.tecknobit.refy.ui.utilities.ItemDescription
+import com.tecknobit.refy.ui.utilities.drawOneSideBorder
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
@@ -129,23 +126,6 @@ abstract class Screen {
             }
         }
     }
-
-    private fun Modifier.drawOneSideBorder(
-        width: Dp,
-        color: Color,
-        shape: Shape = RectangleShape
-    ) = this
-        .clip(shape)
-        .drawWithContent {
-            val widthPx = width.toPx()
-            drawContent()
-            drawLine(
-                color = color,
-                start = Offset(widthPx / 2, 0f),
-                end = Offset(widthPx / 2, size.height),
-                strokeWidth = widthPx
-            )
-        }
 
     @Composable
     @NonRestartableComposable

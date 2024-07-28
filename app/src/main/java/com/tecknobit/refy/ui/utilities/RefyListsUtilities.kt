@@ -44,8 +44,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -145,6 +148,23 @@ fun <T: RefyItem> getItemRelations(
     containers.removeAll(linkList)
     return containers
 }
+
+fun Modifier.drawOneSideBorder(
+    width: Dp,
+    color: Color,
+    shape: Shape = RectangleShape
+) = this
+    .clip(shape)
+    .drawWithContent {
+        val widthPx = width.toPx()
+        drawContent()
+        drawLine(
+            color = color,
+            start = Offset(widthPx / 2, 0f),
+            end = Offset(widthPx / 2, size.height),
+            strokeWidth = widthPx
+        )
+    }
 
 @Composable
 @NonRestartableComposable

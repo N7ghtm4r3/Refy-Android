@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -47,38 +48,46 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
             DisplayItem(
                 topBarColor = null,
                 actions = {
-                    val links = getItemRelations(
-                        userList = user.links,
-                        linkList = item!!.links
-                    )
-                    val addLinks = remember { mutableStateOf(false) }
-                    AddLinksButton(
-                        viewModel = viewModel,
-                        show = addLinks,
-                        links = links,
-                        collection = item!!,
-                        tint = iconsColor
-                    )
-                    val teams = getItemRelations(
-                        userList = user.teams,
-                        linkList = item!!.teams
-                    )
-                    val addTeams = remember { mutableStateOf(false) }
-                    AddTeamsButton(
-                        viewModel = viewModel,
-                        show = addTeams,
-                        teams = teams,
-                        collection = item!!,
-                        tint = iconsColor
-                    )
-                    val deleteCollection = remember { mutableStateOf(false) }
-                    DeleteCollectionButton(
-                        activity = this@CollectionActivity,
-                        viewModel = viewModel,
-                        deleteCollection = deleteCollection,
-                        collection = item!!,
-                        tint = iconsColor
-                    )
+                    AnimatedVisibility(
+                        visible = item!!.canBeUpdatedByUser(user.id),
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Row {
+                            val links = getItemRelations(
+                                userList = user.links,
+                                linkList = item!!.links
+                            )
+                            val addLinks = remember { mutableStateOf(false) }
+                            AddLinksButton(
+                                viewModel = viewModel,
+                                show = addLinks,
+                                links = links,
+                                collection = item!!,
+                                tint = iconsColor
+                            )
+                            val teams = getItemRelations(
+                                userList = user.teams,
+                                linkList = item!!.teams
+                            )
+                            val addTeams = remember { mutableStateOf(false) }
+                            AddTeamsButton(
+                                viewModel = viewModel,
+                                show = addTeams,
+                                teams = teams,
+                                collection = item!!,
+                                tint = iconsColor
+                            )
+                            val deleteCollection = remember { mutableStateOf(false) }
+                            DeleteCollectionButton(
+                                activity = this@CollectionActivity,
+                                viewModel = viewModel,
+                                deleteCollection = deleteCollection,
+                                collection = item!!,
+                                tint = iconsColor
+                            )
+                        }
+                    }
                 },
                 floatingActionButton = {
                     AnimatedVisibility(
@@ -104,6 +113,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                     }
                 },
                 content = { paddingValues ->
+                    val userCanUpdate = item!!.canBeUpdatedByUser(user.id)
                     LazyColumn (
                         modifier = Modifier
                             .padding(
@@ -120,6 +130,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                         ) { link ->
                             RefyLinkContainerCard(
                                 link = link,
+                                hideOptions = !userCanUpdate,
                                 removeAction = {
                                     viewModel.removeLinkFromCollection(
                                         link = link
