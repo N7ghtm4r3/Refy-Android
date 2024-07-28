@@ -1,6 +1,9 @@
 package com.tecknobit.refy.ui.screens
 
 import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -246,43 +249,50 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
         val deleteLink = remember { mutableStateOf(false) }
         OptionsBar(
             options = {
-                Row {
-                    val teams = getItemRelations(
-                        userList = user.teams,
-                        linkList = link.teams
-                    )
-                    OptionButton(
-                        icon = Icons.Default.GroupAdd,
-                        show = addToTeam,
-                        visible = { teams.isNotEmpty() },
-                        optionAction = {
-                            AddLinkToTeam(
-                                show = addToTeam,
-                                availableTeams = teams,
-                                link = link
-                            )
-                        }
-                    )
-                    val collections = getItemRelations(
-                        userList = user.collections,
-                        linkList = link.collections
-                    )
-                    OptionButton(
-                        icon = Icons.Default.CreateNewFolder,
-                        show = addToCollection,
-                        visible = { collections.isNotEmpty() },
-                        optionAction = {
-                            AddLinkToCollection(
-                                show = addToCollection,
-                                availableCollection = collections,
-                                link = link
-                            )
-                        }
-                    )
-                    ShareButton(
-                        context = context,
-                        link = link
-                    )
+                val userCanUpdate = link.canBeUpdatedByUser(user.id)
+                AnimatedVisibility(
+                    visible = userCanUpdate,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Row {
+                        val collections = getItemRelations(
+                            userList = user.collections,
+                            linkList = link.collections
+                        )
+                        OptionButton(
+                            icon = Icons.Default.CreateNewFolder,
+                            show = addToCollection,
+                            visible = { collections.isNotEmpty() },
+                            optionAction = {
+                                AddLinkToCollection(
+                                    show = addToCollection,
+                                    availableCollection = collections,
+                                    link = link
+                                )
+                            }
+                        )
+                        val teams = getItemRelations(
+                            userList = user.teams,
+                            linkList = link.teams
+                        )
+                        OptionButton(
+                            icon = Icons.Default.GroupAdd,
+                            show = addToTeam,
+                            visible = { teams.isNotEmpty() },
+                            optionAction = {
+                                AddLinkToTeam(
+                                    show = addToTeam,
+                                    availableTeams = teams,
+                                    link = link
+                                )
+                            }
+                        )
+                        ShareButton(
+                            context = context,
+                            link = link
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier
@@ -294,15 +304,17 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
                             snackbarHostState = snackbarHostState,
                             link = link
                         )
-                        DeleteItemButton(
-                            show = deleteLink,
-                            deleteAction = {
-                                DeleteLink(
-                                    show = deleteLink,
-                                    link = link
-                                )
-                            }
-                        )
+                        if(userCanUpdate) {
+                            DeleteItemButton(
+                                show = deleteLink,
+                                deleteAction = {
+                                    DeleteLink(
+                                        show = deleteLink,
+                                        link = link
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }

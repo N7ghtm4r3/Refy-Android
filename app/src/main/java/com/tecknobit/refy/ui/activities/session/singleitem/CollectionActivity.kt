@@ -118,7 +118,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                             items = item!!.links,
                             key = { link -> link.id }
                         ) { link ->
-                            RefyLinkCollectionCard(
+                            RefyLinkContainerCard(
                                 link = link,
                                 removeAction = {
                                     viewModel.removeLinkFromCollection(

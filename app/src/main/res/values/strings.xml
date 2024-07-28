@@ -35,5 +35,7 @@
     <string name="title_activity_create_team">CreateTeamActivity</string>
     <string name="invalid_team">Invalid team</string>
     <string name="team_name">Team name</string>
-    <string name="members">Members</string>ì
+    <string name="members">Members</string>
+    <string name="leave_team">Leave team</string>
+    <string name="leave_team_message">By confirming, the team and related data will no longer be available for you</string>
 </resources>

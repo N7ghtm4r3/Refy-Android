@@ -8,6 +8,7 @@ import com.tecknobit.refy.ui.screens.LinkListScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyLink
+import com.tecknobit.refycore.records.RefyUser
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -38,13 +39,16 @@ class LinkListViewModel : EquinoxViewModel(
                         "id",
                         "tille",
                         null,//"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper. Fusce ut justo egestas, consectetur ipsum eget, suscipit felis. Vivamus sodales iaculis ligula vitae pretium. Suspendisse interdum varius sem, sed porta elit hendrerit sed. Suspendisse accumsan auctor lectus a venenatis. Maecenas id fermentum leo. Praesent aliquam sagittis aliquam.",
-                        "https://github.com/N7ghtm4r3"
+                        "https://github.com/N7ghtm4r3",
                     ),
                     RefyLink(
                         "id1",
+                        RefyUser("h"),
                         "tille",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
-                        "https://github.com/N7ghtm4r3"
+                        "https://github.com/N7ghtm4r3",
+                        listOf(),
+                        listOf()
                     )
                 )
                 user.links = _links.value

@@ -44,8 +44,8 @@ import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
 import com.tecknobit.refy.ui.activities.session.create.CreateTeamActivity
+import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ItemDescription
@@ -108,7 +108,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
     private fun TeamCard(
         team: Team
     ) {
-        val isMaintainer = team.isMaintainer(user)
+        val isMaintainer = team.isMaintainer(user.id)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -148,15 +148,10 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                         team = team
                     )
                 }
-                AnimatedVisibility(
-                    visible = isMaintainer,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    OptionsBar(
-                        team = team
-                    )
-                }
+                OptionsBar(
+                    isMaintainer = isMaintainer,
+                    team = team
+                )
             }
         }
     }
@@ -215,54 +210,62 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
     @Composable
     @NonRestartableComposable
     private fun OptionsBar(
+        isMaintainer: Boolean,
         team: Team
     ) {
         val addLinks = remember { mutableStateOf(false) }
         val addCollections = remember { mutableStateOf(false) }
+        val leaveTeam = remember { mutableStateOf(false) }
         val deleteTeam = remember { mutableStateOf(false) }
         val context = LocalContext.current
         OptionsBar(
             options = {
-                Row {
-                    val iconsColor = LocalContentColor.current
-                    val links = getItemRelations(
-                        userList = user.links,
-                        linkList = team.links
-                    )
-                    AddLinksButton(
-                        viewModel = viewModel,
-                        show = addLinks,
-                        links = links,
-                        team = team,
-                        tint = iconsColor
-                    )
-                    val collections = getItemRelations(
-                        userList = user.collections,
-                        linkList = team.collections
-                    )
-                    AddCollectionsButton(
-                        viewModel = viewModel,
-                        show = addCollections,
-                        collections = collections,
-                        team = team,
-                        tint = iconsColor
-                    )
-                    IconButton(
-                        onClick = {
-                            viewModel.createJoinLink(
-                                onSuccess = { joinLink ->
-                                    shareLink(
-                                        context = context,
-                                        link = joinLink
-                                    )
-                                }
+                AnimatedVisibility(
+                    visible = isMaintainer,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    Row {
+                        val iconsColor = LocalContentColor.current
+                        val links = getItemRelations(
+                            userList = user.links,
+                            linkList = team.links
+                        )
+                        AddLinksButton(
+                            viewModel = viewModel,
+                            show = addLinks,
+                            links = links,
+                            team = team,
+                            tint = iconsColor
+                        )
+                        val collections = getItemRelations(
+                            userList = user.collections,
+                            linkList = team.collections
+                        )
+                        AddCollectionsButton(
+                            viewModel = viewModel,
+                            show = addCollections,
+                            collections = collections,
+                            team = team,
+                            tint = iconsColor
+                        )
+                        IconButton(
+                            onClick = {
+                                viewModel.createJoinLink(
+                                    onSuccess = { joinLink ->
+                                        shareLink(
+                                            context = context,
+                                            link = joinLink
+                                        )
+                                    }
+                                )
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Share,
+                                contentDescription = null
                             )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = null
-                        )
                     }
                 }
                 Column(
@@ -270,14 +273,23 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.End
                 ) {
-                    if(team.isTheAuthor(user)) {
-                        DeleteTeamButton(
+                    Row {
+                        LeaveTeamButton(
                             activity = null,
                             viewModel = viewModel,
-                            deleteTeam = deleteTeam,
+                            leaveTeam = leaveTeam,
                             team = team,
-                            tint = MaterialTheme.colorScheme.error
+                            tint = MaterialTheme.colorScheme.primary
                         )
+                        if(team.isTheAuthor(user.id)) {
+                            DeleteTeamButton(
+                                activity = null,
+                                viewModel = viewModel,
+                                deleteTeam = deleteTeam,
+                                team = team,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
                     }
                 }
             }

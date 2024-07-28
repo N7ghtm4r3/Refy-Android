@@ -126,8 +126,9 @@ abstract class SingleItemActivity <T : RefyItem> (
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     @NonRestartableComposable
-    protected fun RefyLinkCollectionCard(
+    protected fun RefyLinkContainerCard(
         link: RefyLink,
+        hideOptions: Boolean = false,
         removeAction: () -> Unit
     ) {
         val context = LocalContext.current
@@ -184,10 +185,12 @@ abstract class SingleItemActivity <T : RefyItem> (
                 }
                 OptionsBar(
                     options = {
-                        ShareButton(
-                            context = context,
-                            link = link
-                        )
+                        if(hideOptions) {
+                            ShareButton(
+                                context = context,
+                                link = link
+                            )
+                        }
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -198,14 +201,16 @@ abstract class SingleItemActivity <T : RefyItem> (
                                     snackbarHostState = snackbarHostState,
                                     link = link
                                 )
-                                IconButton(
-                                    onClick = removeAction
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Close,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.error
-                                    )
+                                if(hideOptions) {
+                                    IconButton(
+                                        onClick = removeAction
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.error
+                                        )
+                                    }
                                 }
                             }
                         }

@@ -75,6 +75,8 @@ class TeamActivity : SingleItemActivity<Team>(
 
     private lateinit var membersExpanded: MutableState<Boolean>
 
+    private var isUserMaintainer: Boolean = false
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,32 +113,48 @@ class TeamActivity : SingleItemActivity<Team>(
                         }
                     },
                     actions = {
-                        val links = getItemRelations(
-                            userList = user.links,
-                            linkList = item!!.links
-                        )
-                        val addLinks = remember { mutableStateOf(false) }
-                        AddLinksButton(
+                        AnimatedVisibility(
+                            visible = isUserMaintainer,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            Row {
+                                val links = getItemRelations(
+                                    userList = user.links,
+                                    linkList = item!!.links
+                                )
+                                val addLinks = remember { mutableStateOf(false) }
+                                AddLinksButton(
+                                    viewModel = viewModel,
+                                    show = addLinks,
+                                    links = links,
+                                    team = item!!,
+                                    tint = iconsColor
+                                )
+                                val addCollections = remember { mutableStateOf(false) }
+                                val collections = getItemRelations(
+                                    userList = user.collections,
+                                    linkList = item!!.collections
+                                )
+                                AddCollectionsButton(
+                                    viewModel = viewModel,
+                                    show = addCollections,
+                                    collections = collections,
+                                    team = item!!,
+                                    tint = iconsColor
+                                )
+                            }
+                        }
+                        val leaveTeam = remember { mutableStateOf(false) }
+                        LeaveTeamButton(
+                            activity = this@TeamActivity,
                             viewModel = viewModel,
-                            show = addLinks,
-                            links = links,
+                            leaveTeam = leaveTeam,
                             team = item!!,
                             tint = iconsColor
                         )
-                        val addCollections = remember { mutableStateOf(false) }
-                        val collections = getItemRelations(
-                            userList = user.collections,
-                            linkList = item!!.collections
-                        )
-                        AddCollectionsButton(
-                            viewModel = viewModel,
-                            show = addCollections,
-                            collections = collections,
-                            team = item!!,
-                            tint = iconsColor
-                        )
-                        val deleteTeam = remember { mutableStateOf(false) }
-                        if(item!!.isTheAuthor(user)) {
+                        if(item!!.isTheAuthor(user.id)) {
+                            val deleteTeam = remember { mutableStateOf(false) }
                             DeleteTeamButton(
                                 activity = this@TeamActivity,
                                 viewModel = viewModel,
@@ -184,6 +202,7 @@ class TeamActivity : SingleItemActivity<Team>(
         viewModel.setActiveContext(this::class.java)
         viewModel.refreshTeam()
         item = viewModel.team.collectAsState().value
+        isUserMaintainer = item!!.isMaintainer(user.id)
     }
 
     @Composable
@@ -211,8 +230,9 @@ class TeamActivity : SingleItemActivity<Team>(
                     items = item!!.links,
                     key = { link -> link.id }
                 ) { link ->
-                    RefyLinkCollectionCard(
+                    RefyLinkContainerCard(
                         link = link,
+                        hideOptions = isUserMaintainer,
                         removeAction = {
                             viewModel.removeLinkFromTeam(
                                 link = link
@@ -231,12 +251,7 @@ class TeamActivity : SingleItemActivity<Team>(
                     key = { collection -> collection.id }
                 ) { collection ->
                     LinksCollectionTeamCard(
-                        collection = collection,
-                        removeAction = {
-                            viewModel.removeCollectionFromTeam(
-                                collection = collection
-                            )
-                        }
+                        collection = collection
                     )
                 }
             }
@@ -316,8 +331,7 @@ class TeamActivity : SingleItemActivity<Team>(
     @Composable
     @NonRestartableComposable
     private fun LinksCollectionTeamCard(
-        collection: LinksCollection,
-        removeAction: () -> Unit
+        collection: LinksCollection
     ) {
         Card(
             modifier = Modifier
@@ -327,7 +341,7 @@ class TeamActivity : SingleItemActivity<Team>(
                 size = 8.dp
             ),
             onClick = {
-                // TODO: TO FIX BECAUSE THE COLLECTION CANNOT BE FOUND
+                user.collections = item!!.collections
                 val intent = Intent(this, CollectionActivity::class.java)
                 intent.putExtra(IDENTIFIER_KEY, collection.id)
                 startActivity(intent)
@@ -357,25 +371,35 @@ class TeamActivity : SingleItemActivity<Team>(
                         description = collection.description
                     )
                 }
-                OptionsBar(
-                    options = {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            IconButton(
-                                onClick = removeAction
+                AnimatedVisibility(
+                    visible = item!!.isMaintainer(user.id),
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    OptionsBar(
+                        options = {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.End
                             ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error
-                                )
+                                IconButton(
+                                    onClick = {
+                                        viewModel.removeCollectionFromTeam(
+                                            collection = collection
+                                        )
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Close,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.error
+                                    )
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

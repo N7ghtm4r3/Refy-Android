@@ -30,6 +30,14 @@ abstract class TeamViewModelHelper(
         onSuccess.invoke()
     }
 
+    fun leaveTeam(
+        team: Team,
+        onSuccess: () -> Unit,
+    ) {
+        // TODO: MAKE THE REQUEST THEN
+        onSuccess.invoke()
+    }
+
     fun deleteTeam(
         team: Team,
         onSuccess: () -> Unit,

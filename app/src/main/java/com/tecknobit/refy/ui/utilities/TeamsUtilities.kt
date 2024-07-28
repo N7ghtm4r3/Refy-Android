@@ -2,6 +2,7 @@ package com.tecknobit.refy.ui.utilities
 
 import android.app.Activity
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FolderCopy
@@ -109,6 +110,60 @@ interface TeamsUtilities {
             dismissText = stringResource(R.string.dismiss),
             confirmAction = {
                 viewModel.deleteTeam(
+                    team = team,
+                    onSuccess = {
+                        show.value = false
+                        activity?.finish()
+                    }
+                )
+            },
+            confirmText = stringResource(R.string.confirm),
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    fun LeaveTeamButton(
+        activity: Activity?,
+        viewModel: TeamViewModelHelper,
+        leaveTeam: MutableState<Boolean>,
+        team: Team,
+        tint: Color
+    ) {
+        OptionButton(
+            icon = Icons.AutoMirrored.Filled.ExitToApp,
+            show = leaveTeam,
+            optionAction = {
+                LeaveTeam(
+                    activity = activity,
+                    show = leaveTeam,
+                    team = team,
+                    viewModel = viewModel
+                )
+            },
+            tint = tint
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
+    private fun LeaveTeam(
+        activity: Activity?,
+        viewModel: TeamViewModelHelper,
+        show: MutableState<Boolean>,
+        team: Team
+    ) {
+        viewModel.SuspendUntilElementOnScreen(
+            elementVisible = show
+        )
+        EquinoxAlertDialog(
+            show = show,
+            icon = Icons.AutoMirrored.Filled.ExitToApp,
+            title = stringResource(R.string.leave_team),
+            text = stringResource(R.string.leave_team_message),
+            dismissText = stringResource(R.string.dismiss),
+            confirmAction = {
+                viewModel.leaveTeam(
                     team = team,
                     onSuccess = {
                         show.value = false

@@ -1,6 +1,9 @@
 package com.tecknobit.refy.ui.screens
 
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,16 +25,17 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refy.ui.activities.session.create.CreateCollectionActivity
+import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
 import com.tecknobit.refy.ui.utilities.OptionsBar
+import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
-class CollectionListScreen : Screen(), LinksCollectionUtilities {
+class CollectionListScreen : Screen(), RefyLinkUtilities, LinksCollectionUtilities {
 
     private val viewModel = CollectionListViewModel()
 
@@ -99,9 +103,15 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
             description = collection.description,
             teams = collection.teams,
             optionsBar = {
-                OptionsBar(
-                    collection = collection
-                )
+                AnimatedVisibility(
+                    visible = collection.canBeUpdatedByUser(user.id),
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    OptionsBar(
+                        collection = collection
+                    )
+                }
             }
         )
     }
@@ -110,10 +120,22 @@ class CollectionListScreen : Screen(), LinksCollectionUtilities {
     private fun OptionsBar(
         collection: LinksCollection
     ) {
+        val addLinks = remember { mutableStateOf(false) }
         val addToTeam = remember { mutableStateOf(false) }
         val deleteCollection = remember { mutableStateOf(false) }
         OptionsBar(
             options = {
+                val links = getItemRelations(
+                    userList = user.links,
+                    linkList = collection.links
+                )
+                AddLinksButton(
+                    viewModel = viewModel,
+                    show = addLinks,
+                    links = links,
+                    collection = collection,
+                    tint = LocalContentColor.current
+                )
                 val teams = getItemRelations(
                     userList = user.teams,
                     linkList = collection.teams
