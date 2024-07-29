@@ -6,7 +6,6 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.DashboardCustomize
 import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.Groups
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -20,13 +19,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.screens.CollectionListScreen
-import com.tecknobit.refy.ui.screens.LinkListScreen
 import com.tecknobit.refy.ui.screens.Screen
 import com.tecknobit.refy.ui.screens.TeamsListScreen
+import com.tecknobit.refy.ui.screens.links.CustomLinksScreen
+import com.tecknobit.refy.ui.screens.links.LinkListScreen
 
 class NavigationHelper private constructor() {
 
@@ -36,48 +34,22 @@ class NavigationHelper private constructor() {
             NavigationTab(
                 icon = Icons.AutoMirrored.Filled.List,
                 screen = LinkListScreen(),
-                name = R.string.links,
-                onFabClick = { screen ->
-                    screen.executeFabAction()
-                },
-                content = { screen ->
-                    screen.ShowContent()
-                }
+                name = R.string.links
             ),
             NavigationTab(
                 icon = Icons.Default.FolderCopy,
                 screen = CollectionListScreen(),
-                name = R.string.collections,
-                onFabClick = { screen ->
-                    screen.executeFabAction()
-                },
-                content = { screen ->
-                    screen.ShowContent()
-                }
+                name = R.string.collections
             ),
             NavigationTab(
                 icon = Icons.Default.Groups,
                 screen = TeamsListScreen(),
-                name = R.string.teams,
-                onFabClick = { screen ->
-                    screen.executeFabAction()
-                },
-                content = { screen ->
-                    screen.ShowContent()
-                }
+                name = R.string.teams
             ),
             NavigationTab(
                 icon = Icons.Default.DashboardCustomize,
-                name = R.string.custom,
-                onFabClick = {
-                    // TODO: MAKE FAB ACTION
-                },
-                content = {
-                    EmptyListUI(
-                        icon = Icons.Default.Warning,
-                        subText = stringResource(id = R.string.app_name)
-                    )
-                },
+                screen = CustomLinksScreen(),
+                name = R.string.custom
             )
         )
 
@@ -90,11 +62,15 @@ class NavigationHelper private constructor() {
     }
 
     data class NavigationTab(
-        val screen: Screen = LinkListScreen(), // TODO: TO REMOVE
+        val screen: Screen,
         val icon: ImageVector,
         val name: Int,
-        val onFabClick: (Screen) -> Unit,
-        val content: @Composable ColumnScope.(Screen) -> Unit,
+        val onFabClick: (Screen) -> Unit = {
+            screen.executeFabAction()
+        },
+        val content: @Composable ColumnScope.(Screen) -> Unit = {
+            screen.ShowContent()
+        },
     )
 
     @Composable

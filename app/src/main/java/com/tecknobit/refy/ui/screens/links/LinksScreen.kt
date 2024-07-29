@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.screens
+package com.tecknobit.refy.ui.screens.links
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
@@ -29,35 +29,37 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
+import com.tecknobit.refy.ui.screens.Screen
 import com.tecknobit.refy.ui.utilities.AddItemToContainer
 import com.tecknobit.refy.ui.utilities.DeleteItemButton
 import com.tecknobit.refy.ui.utilities.OptionButton
-import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodels.LinkListViewModel
+import com.tecknobit.refy.ui.viewmodels.links.LinksViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyItem
-import com.tecknobit.refycore.records.RefyLink
+import com.tecknobit.refycore.records.links.RefyLink
 
-class LinkListScreen : Screen(), RefyLinkUtilities {
-
-    private val viewModel = LinkListViewModel()
-
-    private lateinit var links: List<RefyLink>
-
-    private lateinit var addLink: MutableState<Boolean>
+@Structure
+abstract class LinksScreen <T : RefyLink> (
+    val viewModel: LinksViewModel<T>
+) : Screen(), RefyLinkUtilities<T> {
 
     init {
         viewModel.setActiveContext(this::class.java)
     }
+
+    private lateinit var links: List<T>
+
+    private lateinit var addLink: MutableState<Boolean>
 
     @Composable
     override fun ShowContent() {
@@ -78,13 +80,19 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
                     items = links,
                     key = { link -> link.id }
                 ) { link ->
-                    RefyLinkCard(
+                    LinkCard(
                         link = link
                     )
                 }
             }
         }
     }
+
+    @Composable
+    @NonRestartableComposable
+    abstract fun LinkCard(
+        link: T
+    )
 
     @Composable
     @NonRestartableComposable
@@ -112,7 +120,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
     @NonRestartableComposable
     private fun EditLink(
         editLink: MutableState<Boolean>,
-        link: RefyLink
+        link: T
     ) {
         LinkDialog(
             show = editLink,
@@ -130,7 +138,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
         icon: ImageVector,
         title: Int,
         confirmText: Int,
-        link: RefyLink? = null
+        link: T? = null
     ) {
         viewModel.linkReference = remember {
             mutableStateOf(
@@ -201,8 +209,9 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
 
     @Composable
     @NonRestartableComposable
-    fun RefyLinkCard(
-        link: RefyLink
+    open fun RefyLinkCard(
+        link: T,
+        extraOption: (@Composable () -> Unit)?,
     ) {
         val context = LocalContext.current
         val editLink = remember { mutableStateOf(false) }
@@ -229,6 +238,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
             title = link.title,
             description = link.description,
             teams = link.teams,
+            extraOption = extraOption,
             optionsBar = {
                 OptionsBar(
                     context = context,
@@ -242,12 +252,12 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
     @NonRestartableComposable
     private fun OptionsBar(
         context: Context,
-        link: RefyLink
+        link: T
     ) {
         val addToTeam = remember { mutableStateOf(false) }
         val addToCollection = remember { mutableStateOf(false) }
         val deleteLink = remember { mutableStateOf(false) }
-        OptionsBar(
+        com.tecknobit.refy.ui.utilities.OptionsBar(
             options = {
                 val userCanUpdate = link.canBeUpdatedByUser(user.id)
                 AnimatedVisibility(
@@ -304,7 +314,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
                             snackbarHostState = snackbarHostState,
                             link = link
                         )
-                        if(userCanUpdate) {
+                        if (userCanUpdate) {
                             DeleteItemButton(
                                 show = deleteLink,
                                 deleteAction = {
@@ -326,7 +336,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
     private fun AddLinkToTeam(
         show: MutableState<Boolean>,
         availableTeams: List<RefyItem>,
-        link: RefyLink
+        link: T
     ) {
         AddItemToContainer(
             show = show,
@@ -349,7 +359,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
     private fun AddLinkToCollection(
         show: MutableState<Boolean>,
         availableCollection: List<RefyItem>,
-        link: RefyLink
+        link: T
     ) {
         AddItemToContainer(
             show = show,
@@ -371,7 +381,7 @@ class LinkListScreen : Screen(), RefyLinkUtilities {
     @NonRestartableComposable
     private fun DeleteLink(
         show: MutableState<Boolean>,
-        link: RefyLink
+        link: T
     ) {
         viewModel.SuspendUntilElementOnScreen(
             elementVisible = show

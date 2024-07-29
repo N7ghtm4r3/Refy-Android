@@ -1,35 +1,15 @@
-package com.tecknobit.refy.ui.viewmodels
+package com.tecknobit.refy.ui.viewmodels.links
 
-import androidx.compose.runtime.MutableState
-import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
-import com.tecknobit.refy.ui.screens.LinkListScreen
+import com.tecknobit.refy.ui.screens.links.LinkListScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
-import com.tecknobit.refycore.records.RefyLink
 import com.tecknobit.refycore.records.RefyUser
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.tecknobit.refycore.records.links.RefyLink
 
-class LinkListViewModel : EquinoxViewModel(
-    snackbarHostState = snackbarHostState
-) {
+class LinkListViewModel : LinksViewModel<RefyLink>() {
 
-    private val _links = MutableStateFlow<List<RefyLink>>(
-        value = emptyList()
-    )
-    val links: StateFlow<List<RefyLink>> = _links
-
-    lateinit var linkReference: MutableState<String>
-
-    lateinit var linkReferenceError: MutableState<Boolean>
-
-    lateinit var linkDescription: MutableState<String>
-
-    lateinit var linkDescriptionError: MutableState<Boolean>
-
-    fun getLinks() {
+    override fun getLinks() {
         execRefreshingRoutine(
             currentContext = LinkListScreen::class.java,
             routine = {
@@ -57,23 +37,7 @@ class LinkListViewModel : EquinoxViewModel(
         )
     }
 
-    fun manageLink(
-        link: RefyLink? = null,
-        onSuccess: () -> Unit
-    ) {
-        if(link == null) {
-            addNewLink {
-                onSuccess.invoke()
-            }
-        } else {
-            editLink(
-                link = link,
-                onSuccess = onSuccess
-            )
-        }
-    }
-
-    private fun addNewLink(
+    override fun addNewLink(
         onSuccess: () -> Unit
     ) {
         if(!isLinkResourceValid(linkReference.value)) {
@@ -88,7 +52,7 @@ class LinkListViewModel : EquinoxViewModel(
         onSuccess.invoke()
     }
 
-    private fun editLink(
+    override fun editLink(
         link: RefyLink,
         onSuccess: () -> Unit
     ) {
@@ -104,7 +68,7 @@ class LinkListViewModel : EquinoxViewModel(
         onSuccess.invoke()
     }
 
-    fun addLinkToTeam(
+    override fun addLinkToTeam(
         link: RefyLink,
         teams: List<String>,
         onSuccess: () -> Unit
@@ -113,7 +77,7 @@ class LinkListViewModel : EquinoxViewModel(
         onSuccess.invoke()
     }
 
-    fun addLinkToCollection(
+    override fun addLinkToCollection(
         link: RefyLink,
         collections: List<String>,
         onSuccess: () -> Unit
@@ -122,7 +86,7 @@ class LinkListViewModel : EquinoxViewModel(
         onSuccess.invoke()
     }
 
-    fun deleteLink(
+    override fun deleteLink(
         link: RefyLink,
         onSuccess: () -> Unit
     ) {

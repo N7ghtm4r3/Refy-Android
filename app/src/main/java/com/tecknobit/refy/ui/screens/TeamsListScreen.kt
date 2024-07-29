@@ -56,8 +56,9 @@ import com.tecknobit.refy.ui.utilities.TeamsUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.teams.TeamsListViewModel
 import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.links.RefyLink
 
-class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
+class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
 
     private val viewModel = TeamsListViewModel()
 

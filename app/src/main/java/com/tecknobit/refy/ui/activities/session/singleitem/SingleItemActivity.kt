@@ -47,7 +47,7 @@ import com.tecknobit.refy.ui.utilities.OptionsBar
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.UserPlaque
 import com.tecknobit.refycore.records.RefyItem
-import com.tecknobit.refycore.records.RefyLink
+import com.tecknobit.refycore.records.links.RefyLink
 
 @Structure
 abstract class SingleItemActivity <T : RefyItem> (
@@ -56,7 +56,7 @@ abstract class SingleItemActivity <T : RefyItem> (
 ): RefyItemBaseActivity<T> (
     items = items,
     invalidMessage = invalidMessage
-), RefyLinkUtilities {
+), RefyLinkUtilities<RefyLink> {
 
     protected var iconsColor: Color = Color.Red
 

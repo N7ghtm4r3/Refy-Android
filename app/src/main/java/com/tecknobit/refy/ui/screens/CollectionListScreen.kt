@@ -34,8 +34,9 @@ import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.links.RefyLink
 
-class CollectionListScreen : Screen(), RefyLinkUtilities, LinksCollectionUtilities {
+class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollectionUtilities {
 
     private val viewModel = CollectionListViewModel()
 

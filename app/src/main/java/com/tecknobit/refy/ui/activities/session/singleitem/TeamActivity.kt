@@ -65,11 +65,12 @@ import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
+import com.tecknobit.refycore.records.links.RefyLink
 
 class TeamActivity : SingleItemActivity<Team>(
     items = user.teams,
     invalidMessage = R.string.invalid_team
-), RefyLinkUtilities, TeamsUtilities {
+), RefyLinkUtilities<RefyLink>, TeamsUtilities {
 
     private lateinit var viewModel: TeamActivityViewModel
 

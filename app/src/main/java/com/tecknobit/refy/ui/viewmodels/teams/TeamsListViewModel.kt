@@ -4,7 +4,7 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screens.TeamsListScreen
 import com.tecknobit.refycore.records.LinksCollection
-import com.tecknobit.refycore.records.RefyLink
+import com.tecknobit.refycore.records.links.RefyLink
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.RefyTeamMember

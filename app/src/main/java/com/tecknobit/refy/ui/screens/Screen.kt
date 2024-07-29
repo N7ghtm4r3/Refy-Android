@@ -67,6 +67,7 @@ abstract class Screen {
         title: String,
         description: String?,
         teams: List<Team>,
+        extraOption: (@Composable () -> Unit)? = null,
         optionsBar: @Composable () -> Unit
     ) {
         val modifier = Modifier
@@ -121,6 +122,7 @@ abstract class Screen {
                             teams = teams
                         )
                     }
+                    extraOption?.invoke()
                 }
                 optionsBar.invoke()
             }

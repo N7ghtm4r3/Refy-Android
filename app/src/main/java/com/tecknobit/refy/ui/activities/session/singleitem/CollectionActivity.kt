@@ -32,11 +32,12 @@ import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.links.RefyLink
 
 class CollectionActivity : SingleItemActivity<LinksCollection>(
     items = user.collections,
     invalidMessage = R.string.invalid_collection
-), RefyLinkUtilities, LinksCollectionUtilities {
+), RefyLinkUtilities<RefyLink>, LinksCollectionUtilities {
 
     private lateinit var viewModel: CollectionActivityViewModel
 

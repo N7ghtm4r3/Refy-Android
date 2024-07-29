@@ -18,20 +18,20 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.viewmodels.collections.LinksCollectionViewModelHelper
 import com.tecknobit.refy.ui.viewmodels.teams.TeamViewModelHelper
 import com.tecknobit.refycore.records.LinksCollection
-import com.tecknobit.refycore.records.RefyLink
 import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.links.RefyLink
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-interface RefyLinkUtilities {
+interface RefyLinkUtilities<T : RefyLink> {
 
     @Composable
     @NonRestartableComposable
     fun AddLinksButton(
         viewModel: LinksCollectionViewModelHelper,
         show: MutableState<Boolean>,
-        links: List<RefyLink>,
+        links: List<T>,
         collection: LinksCollection,
         tint: Color
     ) {
@@ -56,7 +56,7 @@ interface RefyLinkUtilities {
     private fun AddLinksToCollection(
         viewModel: LinksCollectionViewModelHelper,
         show: MutableState<Boolean>,
-        availableLinks: List<RefyLink>,
+        availableLinks: List<T>,
         collection: LinksCollection
     ) {
         AddItemToContainer(
@@ -80,7 +80,7 @@ interface RefyLinkUtilities {
     fun AddLinksButton(
         viewModel: TeamViewModelHelper,
         show: MutableState<Boolean>,
-        links: List<RefyLink>,
+        links: List<T>,
         team: Team,
         tint: Color
     ) {
@@ -105,7 +105,7 @@ interface RefyLinkUtilities {
     private fun AddLinksToTeam(
         viewModel: TeamViewModelHelper,
         show: MutableState<Boolean>,
-        availableLinks: List<RefyLink>,
+        availableLinks: List<T>,
         team: Team
     ) {
         AddItemToContainer(
@@ -128,7 +128,7 @@ interface RefyLinkUtilities {
     @NonRestartableComposable
     fun ShareButton(
         context: Context,
-        link: RefyLink
+        link: T
     ) {
         IconButton(
             onClick = {
@@ -149,7 +149,7 @@ interface RefyLinkUtilities {
     @NonRestartableComposable
     fun ViewLinkReferenceButton(
         snackbarHostState: SnackbarHostState,
-        link: RefyLink
+        link: T
     ) {
         IconButton(
             onClick = {
@@ -168,7 +168,7 @@ interface RefyLinkUtilities {
 
     fun openLink(
         context: Context,
-        link: RefyLink
+        link: T
     ) {
         val intent = Intent()
         intent.data = link.referenceLink.toUri()
@@ -178,7 +178,7 @@ interface RefyLinkUtilities {
 
     fun showLinkReference(
         snackbarHostState: SnackbarHostState,
-        link: RefyLink
+        link: T
     ) {
         CoroutineScope(Dispatchers.IO).launch {
             snackbarHostState.showSnackbar(link.referenceLink)
@@ -187,7 +187,7 @@ interface RefyLinkUtilities {
 
     fun shareLink(
         context: Context,
-        link: RefyLink
+        link: T
     ) {
         val intent = Intent()
         intent.type = "text/plain"
