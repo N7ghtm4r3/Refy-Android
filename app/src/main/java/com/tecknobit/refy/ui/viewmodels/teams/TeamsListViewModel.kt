@@ -7,8 +7,11 @@ import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyLink
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team
+import com.tecknobit.refycore.records.Team.RefyTeamMember
+import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+
 
 class TeamsListViewModel: TeamViewModelHelper(
     snackbarHostState = snackbarHostState
@@ -57,23 +60,28 @@ class TeamsListViewModel: TeamViewModelHelper(
                                 "#DE646E",
                                 "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                 listOf(
-                                    Team("id12", "Ciaogwegw2", RefyUser(),
+                                    Team(
+                                        "id12", "Ciaogwegw2", RefyUser(),
                                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("35525", "Ciaogwegw22", RefyUser(),
+                                    Team(
+                                        "35525", "Ciaogwegw22", RefyUser(),
                                         "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("bs", "breberbebre", RefyUser(),
+                                    Team(
+                                        "bs", "breberbebre", RefyUser(),
                                         "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("355bsdb25", "breberbeb", RefyUser(),
+                                    Team(
+                                        "355bsdb25", "breberbeb", RefyUser(),
                                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("355bvbesb25", "Ciabreogbwegw22", RefyUser(),
+                                    Team(
+                                        "355bvbesb25", "Ciabreogbwegw22", RefyUser(),
                                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     )
@@ -98,7 +106,34 @@ class TeamsListViewModel: TeamViewModelHelper(
                     Team("i1d12", "TestNOAdmin", RefyUser("h1"),
                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
-                        listOf(),
+                        listOf(
+                            RefyTeamMember(
+                                "h",
+                                "User",
+                                "One",
+                                "p@gmail.com",
+                                "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                                "@h",
+                                TeamRole.ADMIN
+                            ),
+                            RefyTeamMember(
+                                "h1",
+                                "User",
+                                "One",
+                                "p@gmail.com",
+                                "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                                "@h",
+                                TeamRole.ADMIN
+                            ),
+                            RefyTeamMember(
+                                "iegwgwed2",
+                                "User",
+                                "One",
+                                "p@gmail.com",
+                                "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                                "@id2",
+                                TeamRole.VIEWER
+                            )),
                         listOf(
                             RefyLink(
                                 "id",
@@ -127,23 +162,28 @@ class TeamsListViewModel: TeamViewModelHelper(
                                 "#DE646E",
                                 "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                 listOf(
-                                    Team("id12", "Ciaogwegw2", RefyUser(),
+                                    Team(
+                                        "id12", "Ciaogwegw2", RefyUser(),
                                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("35525", "Ciaogwegw22", RefyUser(),
+                                    Team(
+                                        "35525", "Ciaogwegw22", RefyUser(),
                                         "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("bs", "breberbebre", RefyUser(),
+                                    Team(
+                                        "bs", "breberbebre", RefyUser(),
                                         "https://res.cloudinary.com/momentum-media-group-pty-ltd/image/upload/v1686795211/Space%20Connect/space-exploration-sc_fm1ysf.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("355bsdb25", "breberbeb", RefyUser(),
+                                    Team(
+                                        "355bsdb25", "breberbeb", RefyUser(),
                                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     ),
-                                    Team("355bvbesb25", "Ciabreogbwegw22", RefyUser(),
+                                    Team(
+                                        "355bvbesb25", "Ciabreogbwegw22", RefyUser(),
                                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                                     )

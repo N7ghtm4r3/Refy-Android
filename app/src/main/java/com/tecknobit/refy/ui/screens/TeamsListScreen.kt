@@ -108,7 +108,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
     private fun TeamCard(
         team: Team
     ) {
-        val isMaintainer = team.isMaintainer(user.id)
+        val isAdmin = team.isAdmin(user.id)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -120,7 +120,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                             destination = TeamActivity::class.java
                         )
                     },
-                    onLongClick = if (isMaintainer) {
+                    onLongClick = if (isAdmin) {
                         {
                             navToDedicatedItemActivity(
                                 itemId = team.id,
@@ -149,7 +149,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities {
                     )
                 }
                 OptionsBar(
-                    isMaintainer = isMaintainer,
+                    isMaintainer = isAdmin,
                     team = team
                 )
             }

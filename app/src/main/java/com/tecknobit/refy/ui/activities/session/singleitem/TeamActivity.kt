@@ -77,7 +77,7 @@ class TeamActivity : SingleItemActivity<Team>(
 
     private lateinit var membersExpanded: MutableState<Boolean>
 
-    private var isUserMaintainer: Boolean = false
+    private var isUserAdmin: Boolean = false
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,7 +116,7 @@ class TeamActivity : SingleItemActivity<Team>(
                     },
                     actions = {
                         AnimatedVisibility(
-                            visible = isUserMaintainer,
+                            visible = isUserAdmin,
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
@@ -204,7 +204,7 @@ class TeamActivity : SingleItemActivity<Team>(
         viewModel.setActiveContext(this::class.java)
         viewModel.refreshTeam()
         item = viewModel.team.collectAsState().value
-        isUserMaintainer = item!!.isMaintainer(user.id)
+        isUserAdmin = item!!.isAdmin(user.id)
     }
 
     @Composable
@@ -234,7 +234,7 @@ class TeamActivity : SingleItemActivity<Team>(
                 ) { link ->
                     RefyLinkContainerCard(
                         link = link,
-                        hideOptions = !isUserMaintainer,
+                        hideOptions = !isUserAdmin,
                         removeAction = {
                             viewModel.removeLinkFromTeam(
                                 link = link
@@ -383,7 +383,7 @@ class TeamActivity : SingleItemActivity<Team>(
                     )
                 }
                 AnimatedVisibility(
-                    visible = isUserMaintainer,
+                    visible = isUserAdmin,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {

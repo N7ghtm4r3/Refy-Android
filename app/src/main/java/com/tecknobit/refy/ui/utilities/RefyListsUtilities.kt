@@ -318,11 +318,8 @@ fun TeamMemberPlaque(
     member: RefyTeamMember,
     viewModel: TeamActivityViewModel
 ) {
-    val isMemberAdmin = team.isAdmin(member.id)
-    val currentUserIsAdmin = team.isAdmin(user.id)
-    val isAuthorizedUser = team.isMaintainer(user.id) && member.id != user.id
-    val enableOption = (((isMemberAdmin && currentUserIsAdmin) || (isAuthorizedUser && !isMemberAdmin))
-            && !team.isTheAuthor(member.id))
+    val isAuthorizedUser = team.isAdmin(user.id) && member.id != user.id
+    val enableOption = isAuthorizedUser && !team.isTheAuthor(member.id)
     UserPlaque(
         user = member,
         supportingContent = {
