@@ -67,7 +67,6 @@ abstract class Screen {
         title: String,
         description: String?,
         teams: List<Team>,
-        extraOption: (@Composable () -> Unit)? = null,
         optionsBar: @Composable () -> Unit
     ) {
         val modifier = Modifier
@@ -122,7 +121,6 @@ abstract class Screen {
                             teams = teams
                         )
                     }
-                    extraOption?.invoke()
                 }
                 optionsBar.invoke()
             }
@@ -141,7 +139,6 @@ abstract class Screen {
                     top = 5.dp,
                     bottom = 5.dp
                 )
-                .fillMaxSize(),
         ) {
             item {
                 ExpandTeamMembers(

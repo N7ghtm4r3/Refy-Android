@@ -38,4 +38,6 @@
     <string name="members">Members</string>
     <string name="leave_team">Leave team</string>
     <string name="leave_team_message">By confirming, the team and related data will no longer be available for you</string>
+    <string name="invalid_custom_link">Invalid custom link</string>
+    <string name="custom_link_title">Link title</string>
 </resources>

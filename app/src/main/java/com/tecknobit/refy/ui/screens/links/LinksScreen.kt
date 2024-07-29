@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.LinkOff
@@ -25,14 +24,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
-import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
@@ -43,8 +40,6 @@ import com.tecknobit.refy.ui.utilities.OptionButton
 import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.links.LinksViewModel
-import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
-import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.links.RefyLink
 
@@ -53,16 +48,10 @@ abstract class LinksScreen <T : RefyLink> (
     val viewModel: LinksViewModel<T>
 ) : Screen(), RefyLinkUtilities<T> {
 
-    init {
-        viewModel.setActiveContext(this::class.java)
-    }
-
     private lateinit var links: List<T>
 
-    private lateinit var addLink: MutableState<Boolean>
-
     @Composable
-    override fun ShowContent() {
+    protected fun LinksList() {
         screenViewModel = viewModel
         viewModel.getLinks()
         links = viewModel.links.collectAsState().value
@@ -96,124 +85,17 @@ abstract class LinksScreen <T : RefyLink> (
 
     @Composable
     @NonRestartableComposable
-    override fun SetFabAction() {
-        addLink = remember { mutableStateOf(false) }
-        AddLink()
-    }
-
-    override fun executeFabAction() {
-        addLink.value = true
-    }
-
-    @Composable
-    @NonRestartableComposable
-    private fun AddLink() {
-        LinkDialog(
-            show = addLink,
-            icon = Icons.Default.Edit,
-            title = R.string.add_new_link,
-            confirmText = R.string.add
-        )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    private fun EditLink(
+    protected abstract fun EditLink(
         editLink: MutableState<Boolean>,
         link: T
-    ) {
-        LinkDialog(
-            show = editLink,
-            link = link,
-            icon = Icons.Default.Edit,
-            title = R.string.edit_link,
-            confirmText = R.string.edit
-        )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    private fun LinkDialog(
-        show: MutableState<Boolean>,
-        icon: ImageVector,
-        title: Int,
-        confirmText: Int,
-        link: T? = null
-    ) {
-        viewModel.linkReference = remember {
-            mutableStateOf(
-                if(link != null)
-                    link.referenceLink
-                else
-                    ""
-            )
-        }
-        viewModel.linkReferenceError = remember { mutableStateOf(false) }
-        viewModel.linkDescription = remember {
-            mutableStateOf(
-                if(link != null && link.description != null)
-                    link.description
-                else
-                    ""
-            )
-        }
-        viewModel.linkDescriptionError = remember { mutableStateOf(false) }
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
-        val resetLayout = {
-            show.value = false
-            viewModel.linkReference.value = ""
-            viewModel.linkReferenceError.value = false
-            viewModel.linkDescription.value = ""
-            viewModel.linkDescriptionError.value = false
-        }
-        EquinoxAlertDialog(
-            show = show,
-            icon = icon,
-            onDismissAction = resetLayout,
-            title = stringResource(title),
-            text = {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    EquinoxOutlinedTextField(
-                        value = viewModel.linkReference,
-                        label = stringResource(R.string.link_reference),
-                        validator = { isLinkResourceValid(it) },
-                        isError = viewModel.linkReferenceError,
-                        errorText = stringResource(R.string.link_reference_not_valid)
-                    )
-                    EquinoxOutlinedTextField(
-                        value = viewModel.linkDescription,
-                        isTextArea = true,
-                        label = stringResource(R.string.description),
-                        validator = { isDescriptionValid(it) },
-                        isError = viewModel.linkDescriptionError,
-                        errorText = stringResource(R.string.description_not_valid)
-                    )
-                }
-            },
-            dismissText = stringResource(R.string.dismiss),
-            confirmText = stringResource(confirmText),
-            confirmAction = {
-                viewModel.manageLink(
-                    link = link,
-                    onSuccess = {
-                        resetLayout.invoke()
-                    }
-                )
-            }
-        )
-    }
+    )
 
     @Composable
     @NonRestartableComposable
     open fun RefyLinkCard(
         link: T,
-        extraOption: (@Composable () -> Unit)?,
+        onClick: () -> Unit,
     ) {
-        val context = LocalContext.current
         val editLink = remember { mutableStateOf(false) }
         if(editLink.value) {
             EditLink(
@@ -222,12 +104,7 @@ abstract class LinksScreen <T : RefyLink> (
             )
         }
         ItemCard(
-            onClick = {
-                openLink(
-                    context = context,
-                    link = link
-                )
-            },
+            onClick = onClick,
             onDoubleClick = {
                 showLinkReference(
                     snackbarHostState = snackbarHostState,
@@ -238,10 +115,9 @@ abstract class LinksScreen <T : RefyLink> (
             title = link.title,
             description = link.description,
             teams = link.teams,
-            extraOption = extraOption,
             optionsBar = {
                 OptionsBar(
-                    context = context,
+                    context = LocalContext.current,
                     link = link
                 )
             }

@@ -19,7 +19,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                     CustomRefyLink(
                         "id",
                         RefyUser("h"),
-                        "tille",
+                        "title",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                         "https://github.com/N7ghtm4r3",
                         listOf(),
@@ -32,7 +32,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                     CustomRefyLink(
                         "id1",
                         RefyUser("h"),
-                        "tille",
+                        "title",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
                         "https://github.com/N7ghtm4r3",
                         listOf(),

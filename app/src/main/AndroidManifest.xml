@@ -58,6 +58,13 @@
             android:windowSoftInputMode="adjustPan"
             tools:ignore="DiscouragedApi,LockedOrientationActivity"
             android:theme="@style/Theme.Refy" />
+        <activity
+            android:name=".ui.activities.session.create.CreateCustomLinkActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Refy"
+            android:windowSoftInputMode="adjustPan"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 
 </manifest>

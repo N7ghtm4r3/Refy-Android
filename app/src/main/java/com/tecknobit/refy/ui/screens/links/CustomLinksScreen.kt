@@ -1,10 +1,11 @@
 package com.tecknobit.refy.ui.screens.links
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DatasetLinked
-import androidx.compose.material3.Icon
+import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.ui.platform.LocalContext
+import com.tecknobit.refy.ui.activities.session.create.CreateCustomLinkActivity
 import com.tecknobit.refy.ui.viewmodels.links.CustomLinksViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 
@@ -12,19 +13,46 @@ class CustomLinksScreen : LinksScreen<CustomRefyLink>(
     viewModel = CustomLinksViewModel()
 ) {
 
+    init {
+        viewModel.setActiveContext(this::class.java)
+    }
+
+    @Composable
+    override fun ShowContent() {
+        LinksList()
+    }
+
+    @Composable
+    override fun SetFabAction() {
+        context = LocalContext.current
+    }
+
+    override fun executeFabAction() {
+        context.startActivity(Intent(context, CreateCustomLinkActivity::class.java))
+    }
+
     @Composable
     @NonRestartableComposable
     override fun LinkCard(
         link: CustomRefyLink
     ) {
         RefyLinkCard(
-            link = link
-        ) {
-            Icon(
-                imageVector = Icons.Default.DatasetLinked,
-                contentDescription = null
-            )
-        }
+            link = link,
+            onClick = {
+                // TODO: NAV TO DETAILS SCREEN 
+            }
+        )
+    }
+
+    @Composable
+    override fun EditLink(
+        editLink: MutableState<Boolean>,
+        link: CustomRefyLink
+    ) {
+        navToDedicatedItemActivity(
+            itemId = link.id,
+            destination = CreateCustomLinkActivity::class.java
+        )
     }
 
 }
