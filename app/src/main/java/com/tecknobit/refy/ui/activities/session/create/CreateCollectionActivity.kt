@@ -124,7 +124,7 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
                 items = user.links,
                 key = { link -> link.id }
             ) { link ->
-                val checked = remember { mutableStateOf(viewModel.idsList.contains(link.id)) }
+                val checked = remember { mutableStateOf(viewModel.itemDedicatedList.contains(link.id)) }
                 var expanded by remember { mutableStateOf(false) }
                 ListItem(
                     leadingContent = {

@@ -197,7 +197,7 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
                 items = currentUsers,
                 key = { member -> member.id }
             ) { member ->
-                val checked = remember { mutableStateOf(viewModel.idsList.contains(member.id)) }
+                val checked = remember { mutableStateOf(viewModel.itemDedicatedList.contains(member.id)) }
                 UserPlaque(
                     user = member,
                     trailingContent = {

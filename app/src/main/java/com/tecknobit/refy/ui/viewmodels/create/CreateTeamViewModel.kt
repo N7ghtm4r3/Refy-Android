@@ -29,7 +29,7 @@ class CreateTeamViewModel(
         if(item != null) {
             existingItem = item
             existingItem!!.members.forEach { member ->
-                idsList.add(member.id)
+                itemDedicatedList.add(member.id)
             }
         }
     }

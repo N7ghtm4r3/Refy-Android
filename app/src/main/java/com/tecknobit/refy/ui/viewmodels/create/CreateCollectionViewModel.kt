@@ -19,7 +19,7 @@ class CreateCollectionViewModel(
         if(item != null) {
             existingItem = item
             existingItem!!.links.forEach { link ->
-                idsList.add(link.id)
+                itemDedicatedList.add(link.id)
             }
         }
     }

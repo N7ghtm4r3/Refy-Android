@@ -23,7 +23,7 @@ abstract class CreateItemViewModel <T : RefyItem> (
 
     lateinit var itemDescriptionError: MutableState<Boolean>
 
-    val idsList: SnapshotStateList<String> = mutableStateListOf()
+    val itemDedicatedList: SnapshotStateList<String> = mutableStateListOf()
 
     abstract fun initExistingItem(
         item : T?

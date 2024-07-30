@@ -26,8 +26,8 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         listOf(),
                         false,
                         CustomRefyLink.ExpiredTime.NO_EXPIRATION,
-                        java.util.HashMap(),
-                        java.util.HashMap()
+                        mutableMapOf(Pair("", "")),
+                        mutableMapOf(Pair("", ""))
                     ),
                     CustomRefyLink(
                         "id1",
@@ -37,10 +37,10 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         "https://github.com/N7ghtm4r3",
                         listOf(),
                         listOf(),
-                        false,
-                        CustomRefyLink.ExpiredTime.NO_EXPIRATION,
-                        java.util.HashMap(),
-                        java.util.HashMap()
+                        true,
+                        CustomRefyLink.ExpiredTime.ONE_DAY,
+                        mutableMapOf(Pair("", "")),
+                        mutableMapOf(Pair("", ""))
                     )
                 )
                 user.customLinks = _links.value

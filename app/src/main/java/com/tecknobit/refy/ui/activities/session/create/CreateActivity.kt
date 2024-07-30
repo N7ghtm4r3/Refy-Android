@@ -79,7 +79,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     invalidMessage = invalidMessage
 ) {
 
-    private lateinit var editItemName: MutableState<Boolean>
+    protected lateinit var editItemName: MutableState<Boolean>
 
     protected lateinit var viewModel: V
 
@@ -163,7 +163,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                         bottom = paddingValues.calculateBottomPadding() + 16.dp
                     )
                     .then(
-                        if(scrollable) {
+                        if (scrollable) {
                             Modifier
                                 .verticalScroll(rememberScrollState())
                         } else
@@ -308,17 +308,8 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         header: Int,
         content: LazyListScope.() -> Unit
     ) {
-        Text(
-            modifier = Modifier
-                .padding(
-                    top = 16.dp,
-                    start = 16.dp
-                ),
-            text = stringResource(header),
-            fontFamily = displayFontFamily,
-            style = AppTypography.titleLarge,
-            fontSize = 25.sp,
-            color = MaterialTheme.colorScheme.primary
+        HeaderText(
+            header = header
         )
         LazyColumn (
             modifier = if(scrollable) {
@@ -336,6 +327,25 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
 
     @Composable
     @NonRestartableComposable
+    protected fun HeaderText(
+        header: Int
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(
+                    top = 16.dp,
+                    start = 16.dp
+                ),
+            text = stringResource(header),
+            fontFamily = displayFontFamily,
+            style = AppTypography.titleLarge,
+            fontSize = 25.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
     protected fun ItemCheckbox(
         checked: MutableState<Boolean>,
         keyboardController: SoftwareKeyboardController?,
@@ -348,9 +358,9 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                 keyboardController?.hide()
                 editItemName.value = false
                 if(checked.value)
-                    viewModel.idsList.add(itemId)
+                    viewModel.itemDedicatedList.add(itemId)
                 else
-                    viewModel.idsList.remove(itemId)
+                    viewModel.itemDedicatedList.remove(itemId)
             }
         )
     }
@@ -362,7 +372,7 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
             return false
         return viewModel.itemName.value.isNotEmpty() &&
                 viewModel.itemDescription.value.isNotEmpty() &&
-                viewModel.idsList.isNotEmpty()
+                viewModel.itemDedicatedList.isNotEmpty()
     }
 
 }
