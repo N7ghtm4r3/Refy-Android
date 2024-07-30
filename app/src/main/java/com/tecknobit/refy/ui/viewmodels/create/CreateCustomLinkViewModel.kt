@@ -3,7 +3,6 @@ package com.tecknobit.refy.ui.viewmodels.create
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import com.tecknobit.refycore.records.links.CustomRefyLink.EXPIRED_TIME_KEY
@@ -17,18 +16,23 @@ class CreateCustomLinkViewModel(
     snackbarHostState = snackbarHostState
 ) {
 
-    val NEW_RESOURCE = Pair(mutableStateOf(""), mutableStateOf(""))
+    private val newResource = Pair("", "")
 
     lateinit var expiredTime: MutableState<ExpiredTime>
 
-    lateinit var resourcesSupportList: SnapshotStateList<MutableState<Pair<MutableState<String>, MutableState<String>>>>
+    private var resources: Map<String, String> = mutableMapOf()
 
-    lateinit var resources: MutableMap<String, String>
+    lateinit var resourcesSupportList: SnapshotStateList<Pair<String, String>>
+
+    private var fields: Map<String, String> = mutableMapOf()
+
+    lateinit var fieldsSupportList: SnapshotStateList<Pair<String, String>>
 
     override fun initExistingItem(
         item: CustomRefyLink?
     ) {
         resourcesSupportList = mutableStateListOf()
+        fieldsSupportList = mutableStateListOf()
         if(item != null) {
             existingItem = item
             if(existingItem!!.hasUniqueAccess())
@@ -36,28 +40,62 @@ class CreateCustomLinkViewModel(
             if(existingItem!!.expiredTime != NO_EXPIRATION)
                 itemDedicatedList.add(EXPIRED_TIME_KEY)
             resources = existingItem!!.resources
-        } else
-            resources = mutableMapOf(
-                Pair(NEW_RESOURCE.first.value, NEW_RESOURCE.second.value)
-            )
-        resources.entries.forEach { resource ->
-            resourcesSupportList.add(
-                mutableStateOf(Pair(
-                    mutableStateOf(resource.key),
-                    mutableStateOf(resource.value)
-                ))
+            fields = existingItem!!.fields
+        }
+        loadSupportList(
+            map = resources,
+            supportList = resourcesSupportList
+        )
+        loadSupportList(
+            map = fields,
+            supportList = fieldsSupportList
+        )
+    }
+
+    private fun loadSupportList(
+        map: Map<String, String>,
+        supportList: SnapshotStateList<Pair<String, String>>
+    ) {
+        map.entries.forEach { value ->
+            supportList.add(
+                Pair(
+                    value.key,
+                    value.value
+                )
             )
         }
     }
 
-    fun addNewResource() {
-        resourcesSupportList.add(mutableStateOf(NEW_RESOURCE))
+    fun addNewItem(
+        supportList: SnapshotStateList<Pair<String, String>>
+    ) {
+        supportList.add(newResource)
     }
 
-    fun removeResource(
+    fun addItem(
+        supportList: SnapshotStateList<Pair<String, String>>,
+        index: Int,
+        key: String,
+        value: String
+    ) {
+        removeItem(
+            supportList = supportList,
+            index = index
+        )
+        supportList.add(
+            index = index,
+            element = Pair(
+                key,
+                value
+            )
+        )
+    }
+
+    fun removeItem(
+        supportList: SnapshotStateList<Pair<String, String>>,
         index: Int
     ) {
-        resourcesSupportList.removeAt(index)
+        supportList.removeAt(index)
     }
 
     override fun createItem(

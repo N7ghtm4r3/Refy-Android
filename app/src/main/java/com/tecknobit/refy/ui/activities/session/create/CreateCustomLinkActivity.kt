@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,8 +86,15 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
             customContent = {
                 Column {
                     Options()
-                    Resources(
-                        modifier = Modifier
+                    Payload(
+                        header = R.string.resources,
+                        supportList = viewModel.resourcesSupportList,
+                        itemName = R.string.key
+                    )
+                    Payload(
+                        header = R.string.fields,
+                        supportList = viewModel.fieldsSupportList,
+                        itemName = R.string.field
                     )
                 }
             }
@@ -243,18 +252,22 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
 
     @Composable
     @NonRestartableComposable
-    private fun Resources(
-        modifier: Modifier
+    private fun Payload(
+        header: Int,
+        supportList: SnapshotStateList<Pair<String, String>>,
+        itemName: Int
     ) {
         HeaderText(
-            header = R.string.resources
+            header = header
         )
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
                 .padding(
                     all = 16.dp
                 )
-                .height(500.dp)
+                .heightIn(
+                    max = 300.dp
+                )
         ) {
             stickyHeader {
                 FloatingActionButton(
@@ -263,7 +276,9 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
                     shape = CircleShape,
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                     onClick = {
-                        viewModel.addNewResource()
+                        viewModel.addNewItem(
+                            supportList = supportList
+                        )
                     }
                 ) {
                     Icon(
@@ -277,27 +292,55 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
                 )
             }
             itemsIndexed(
-                items = viewModel.resourcesSupportList
-            ) { index , resource ->
-                val v = resource.value
+                items = supportList
+            ) { index , item ->
                 Row (
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    val nameError = remember { mutableStateOf(false) }
+                    val valueError = remember { mutableStateOf(false) }
                     EquinoxOutlinedTextField(
                         modifier = Modifier
                             .weight(1f),
-                        value = v.first,
-                        label = "Key"
+                        value = mutableStateOf(item.first),
+                        onValueChange = {
+                            nameError.value = it.isEmpty()
+                            viewModel.addItem(
+                                supportList = supportList,
+                                index = index,
+                                key = it,
+                                value = item.second
+                            )
+                        },
+                        isError = nameError,
+                        errorText = stringResource(R.string.not_valid),
+                        label = stringResource(itemName)
                     )
                     EquinoxOutlinedTextField(
                         modifier = Modifier
                             .weight(1f),
-                        value = v.second,
-                        label = "Value"
+                        value = mutableStateOf(item.second),
+                        onValueChange = {
+                            valueError.value = it.isEmpty()
+                            viewModel.addItem(
+                                supportList = supportList,
+                                index = index,
+                                key = item.first,
+                                value = it
+                            )
+                        },
+                        isError = valueError,
+                        errorText = stringResource(R.string.value_not_valid),
+                        label = stringResource(R.string.value)
                     )
                     IconButton(
-                        onClick = { viewModel.removeResource(index) }
+                        onClick = {
+                            viewModel.removeItem(
+                                supportList = supportList,
+                                index = index
+                            )
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
@@ -315,8 +358,14 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
             return false
         if(viewModel.itemDescriptionError.value)
             return false
-        return viewModel.itemName.value.isNotEmpty() &&
-                viewModel.itemDescription.value.isNotEmpty()
+        if(viewModel.itemName.value.isEmpty() || viewModel.itemDescription.value.isEmpty() ||
+            viewModel.resourcesSupportList.isEmpty())
+            return false
+        viewModel.resourcesSupportList.forEach { resource ->
+            if(resource.first.isEmpty() || resource.second.isEmpty())
+                return false
+        }
+        return true
     }
 
 }

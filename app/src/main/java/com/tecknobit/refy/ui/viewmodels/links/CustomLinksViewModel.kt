@@ -27,7 +27,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         false,
                         CustomRefyLink.ExpiredTime.NO_EXPIRATION,
                         mutableMapOf(Pair("", "")),
-                        mutableMapOf(Pair("", ""))
+                        mutableMapOf()
                     ),
                     CustomRefyLink(
                         "id1",
@@ -39,7 +39,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         listOf(),
                         true,
                         CustomRefyLink.ExpiredTime.ONE_DAY,
-                        mutableMapOf(Pair("", "")),
+                        mutableMapOf(Pair("gg", "gg")),
                         mutableMapOf(Pair("", ""))
                     )
                 )
