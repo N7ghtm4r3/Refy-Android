@@ -20,7 +20,7 @@ class CreateCustomLinkViewModel(
 
     lateinit var expiredTime: MutableState<ExpiredTime>
 
-    private var resources: Map<String, String> = mutableMapOf()
+    private var resources: MutableMap<String, String> = mutableMapOf()
 
     lateinit var resourcesSupportList: SnapshotStateList<Pair<String, String>>
 
@@ -41,7 +41,8 @@ class CreateCustomLinkViewModel(
                 itemDedicatedList.add(EXPIRED_TIME_KEY)
             resources = existingItem!!.resources
             fields = existingItem!!.fields
-        }
+        } else
+            resources[""] = ""
         loadSupportList(
             map = resources,
             supportList = resourcesSupportList

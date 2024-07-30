@@ -11,6 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Refy">
         <activity
@@ -55,7 +56,6 @@
             android:name=".ui.activities.session.singleitem.TeamActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
             tools:ignore="DiscouragedApi,LockedOrientationActivity"
             android:theme="@style/Theme.Refy" />
         <activity
@@ -65,6 +65,12 @@
             android:theme="@style/Theme.Refy"
             android:windowSoftInputMode="adjustPan"
             tools:ignore="DiscouragedApi,LockedOrientationActivity" />
+        <activity
+            android:name=".ui.activities.session.singleitem.CustomLinkActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity"
+            android:theme="@style/Theme.Refy" />
     </application>
 
 </manifest>

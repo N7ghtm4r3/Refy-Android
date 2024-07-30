@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.platform.LocalContext
 import com.tecknobit.refy.ui.activities.session.create.CreateCustomLinkActivity
+import com.tecknobit.refy.ui.activities.session.singleitem.CustomLinkActivity
 import com.tecknobit.refy.ui.viewmodels.links.CustomLinksViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 
@@ -39,7 +40,10 @@ class CustomLinksScreen : LinksScreen<CustomRefyLink>(
         RefyLinkCard(
             link = link,
             onClick = {
-                // TODO: NAV TO DETAILS SCREEN 
+                navToDedicatedItemActivity(
+                    itemId = link.id,
+                    destination = CustomLinkActivity::class.java
+                )
             }
         )
     }

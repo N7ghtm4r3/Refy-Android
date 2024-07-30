@@ -1,6 +1,5 @@
 package com.tecknobit.refy.ui.activities.session.singleitem
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -80,7 +79,6 @@ class TeamActivity : SingleItemActivity<Team>(
 
     private var isUserAdmin: Boolean = false
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

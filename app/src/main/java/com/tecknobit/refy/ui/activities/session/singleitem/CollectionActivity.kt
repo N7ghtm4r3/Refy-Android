@@ -1,6 +1,5 @@
 package com.tecknobit.refy.ui.activities.session.singleitem
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -41,7 +40,6 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
 
     private lateinit var viewModel: CollectionActivityViewModel
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

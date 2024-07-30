@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -46,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
@@ -257,6 +259,9 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         supportList: SnapshotStateList<Pair<String, String>>,
         itemName: Int
     ) {
+        val keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+        )
         HeaderText(
             header = header
         )
@@ -315,7 +320,8 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
                         },
                         isError = nameError,
                         errorText = stringResource(R.string.not_valid),
-                        label = stringResource(itemName)
+                        label = stringResource(itemName),
+                        keyboardOptions = keyboardOptions
                     )
                     EquinoxOutlinedTextField(
                         modifier = Modifier
@@ -332,7 +338,13 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
                         },
                         isError = valueError,
                         errorText = stringResource(R.string.value_not_valid),
-                        label = stringResource(R.string.value)
+                        label = stringResource(R.string.value),
+                        keyboardOptions = if(index == supportList.lastIndex) {
+                            KeyboardOptions(
+                                imeAction = ImeAction.Done
+                            )
+                        } else
+                            keyboardOptions
                     )
                     IconButton(
                         onClick = {
