@@ -3,12 +3,18 @@ package com.tecknobit.refy.ui.activities.session.singleitem
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Preview
+import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -24,17 +30,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.utilities.DeleteItemButton
+import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refy.ui.viewmodels.links.CustomLinkActivityViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
+import org.json.JSONObject
 
 class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
     items = user.customLinks,
-    invalidMessage = R.string.invalid_custom_link
+    invalidMessage = R.string.invalid_custom_link,
 ){
 
     private lateinit var viewModel: CustomLinkActivityViewModel
@@ -72,7 +81,9 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { /*TODO*/ }
+                            onClick = {
+                                // TODO: VIEW THE LINK AS PREVIEW, CHECK HOW TO IMPLEMENT
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Preview,
@@ -84,10 +95,31 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
                         Column (
                             modifier = Modifier
                                 .padding(
-                                    top = paddingValues.calculateTopPadding()
+                                    top = paddingValues.calculateTopPadding(),
+                                    bottom = 16.dp
                                 )
+                                .verticalScroll(rememberScrollState())
                         ) {
+                            ItemDescription(
+                                modifier = Modifier
+                                    .padding(
+                                        all = 16.dp
+                                    ),
+                                description = item!!.description
+                            )
+                            HorizontalDivider()
                             DetailsSection()
+                            PayloadSection(
+                                header = R.string.resources,
+                                map = item!!.resources
+                            )
+                            if(item!!.fields.isNotEmpty()) {
+                                HorizontalDivider()
+                                PayloadSection(
+                                    header = R.string.fields,
+                                    map = item!!.fields
+                                )
+                            }
                         }
                     }
                 )
@@ -121,24 +153,83 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
                         top = 10.dp,
                         start = 16.dp,
                         end = 16.dp,
-                        bottom = 10.dp
+                        bottom = 16.dp
                     ),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 if(hasUniqueAccess) {
-                    Text(
-                        text = stringResource(R.string.unique_access_text),
-                        textAlign = TextAlign.Justify
+                    DetailInfo(
+                        info = stringResource(R.string.unique_access_text)
                     )
-                    HorizontalDivider()
                 }
                 if(expires) {
-                    Text(
-                        text = stringResource(R.string.the_link_will_expire_on, item!!.expirationDate),
-                        textAlign = TextAlign.Justify
+                    DetailInfo(
+                        info = stringResource(R.string.the_link_will_expire_on, item!!.expirationDate)
                     )
-                    HorizontalDivider()
                 }
+            }
+            HorizontalDivider()
+        }
+    }
+
+    @Composable
+    @NonRestartableComposable
+    private fun DetailInfo(
+        info: String
+    ) {
+        Card (
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        all = 10.dp
+                    ),
+                text = info,
+                textAlign = TextAlign.Justify
+            )
+        }
+    }
+
+    @Composable
+    @NonRestartableComposable
+    private fun PayloadSection(
+        header: Int,
+        map: Map<String, String>
+    ) {
+        HeaderText(
+            header = header
+        )
+        Column (
+            modifier = Modifier
+                .padding(
+                    top = 10.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 16.dp
+                ),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            val payload = JSONObject(map)
+            Card (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(
+                        max = 300.dp
+                    )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(
+                            all = 10.dp
+                        )
+                        .verticalScroll(rememberScrollState())
+                        .horizontalScroll(rememberScrollState()),
+                    text = payload.toString(4),
+                    textAlign = TextAlign.Justify,
+                    fontSize = 16.sp
+                )
             }
         }
     }
