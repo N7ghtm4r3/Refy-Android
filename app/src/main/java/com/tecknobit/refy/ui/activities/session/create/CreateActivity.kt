@@ -61,9 +61,7 @@ import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EquinoxTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
-import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
-import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.MAX_TITLE_LENGTH
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
@@ -322,25 +320,6 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
                 bottom = 5.dp
             ),
             content = content
-        )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    protected fun HeaderText(
-        header: Int
-    ) {
-        Text(
-            modifier = Modifier
-                .padding(
-                    top = 16.dp,
-                    start = 16.dp
-                ),
-            text = stringResource(header),
-            fontFamily = displayFontFamily,
-            style = AppTypography.titleLarge,
-            fontSize = 25.sp,
-            color = MaterialTheme.colorScheme.primary
         )
     }
 

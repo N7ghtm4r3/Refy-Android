@@ -6,7 +6,6 @@ import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.links.CustomRefyLink
-import com.tecknobit.refycore.records.links.RefyLink
 
 class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
 
@@ -24,6 +23,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         "https://github.com/N7ghtm4r3",
                         listOf(),
                         listOf(),
+                        System.currentTimeMillis(),
                         false,
                         CustomRefyLink.ExpiredTime.NO_EXPIRATION,
                         mutableMapOf(Pair("", "")),
@@ -37,8 +37,9 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         "https://github.com/N7ghtm4r3",
                         listOf(),
                         listOf(),
+                        System.currentTimeMillis(),
                         true,
-                        CustomRefyLink.ExpiredTime.ONE_DAY,
+                        CustomRefyLink.ExpiredTime.ONE_WEEK,
                         mutableMapOf(Pair("gg", "gg")),
                         mutableMapOf(Pair("", ""))
                     )
@@ -65,7 +66,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
     }
 
     override fun editLink(
-        link: RefyLink,
+        link: CustomRefyLink,
         onSuccess: () -> Unit
     ) {
         if(!isLinkResourceValid(linkReference.value)) {
@@ -81,7 +82,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
     }
 
     override fun addLinkToTeam(
-        link: RefyLink,
+        link: CustomRefyLink,
         teams: List<String>,
         onSuccess: () -> Unit
     ) {
@@ -90,7 +91,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
     }
 
     override fun addLinkToCollection(
-        link: RefyLink,
+        link: CustomRefyLink,
         collections: List<String>,
         onSuccess: () -> Unit
     ) {
@@ -99,7 +100,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
     }
 
     override fun deleteLink(
-        link: RefyLink,
+        link: CustomRefyLink,
         onSuccess: () -> Unit
     ) {
         // TODO: MAKE THE REQUEST THEN

@@ -44,7 +44,8 @@ class CustomLinksScreen : LinksScreen<CustomRefyLink>(
                     itemId = link.id,
                     destination = CustomLinkActivity::class.java
                 )
-            }
+            },
+            showCompleteOptionsBar = false
         )
     }
 

@@ -2,14 +2,13 @@ package com.tecknobit.refy.ui.viewmodels.links
 
 import androidx.compose.runtime.MutableState
 import com.tecknobit.apimanager.annotations.Structure
-import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refycore.records.links.RefyLink
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Structure
-abstract class LinksViewModel <T : RefyLink>: EquinoxViewModel(
+abstract class LinksViewModel <T : RefyLink>: LinksViewModelHelper<T>(
     snackbarHostState = snackbarHostState
 ) {
 
@@ -29,7 +28,7 @@ abstract class LinksViewModel <T : RefyLink>: EquinoxViewModel(
     abstract fun getLinks()
 
     fun manageLink(
-        link: RefyLink? = null,
+        link: T? = null,
         onSuccess: () -> Unit
     ) {
         if(link == null) {
@@ -49,24 +48,19 @@ abstract class LinksViewModel <T : RefyLink>: EquinoxViewModel(
     )
 
     protected abstract fun editLink(
-        link: RefyLink,
+        link: T,
         onSuccess: () -> Unit
     )
 
     abstract fun addLinkToTeam(
-        link: RefyLink,
+        link: T,
         teams: List<String>,
         onSuccess: () -> Unit
     )
 
     abstract fun addLinkToCollection(
-        link: RefyLink,
+        link: T,
         collections: List<String>,
-        onSuccess: () -> Unit
-    )
-
-    abstract fun deleteLink(
-        link: RefyLink,
         onSuccess: () -> Unit
     )
 
