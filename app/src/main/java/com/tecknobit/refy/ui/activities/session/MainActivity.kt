@@ -1,16 +1,19 @@
 package com.tecknobit.refy.ui.activities.session
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -21,15 +24,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.refy.helpers.NavigationHelper
 import com.tecknobit.refy.helpers.NavigationHelper.Companion.activeTab
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
+import com.tecknobit.refy.ui.utilities.Logo
 
 
 class MainActivity : ComponentActivity() {
@@ -44,11 +50,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        // TODO: TO REMOVE
-        val policy = ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
-
         setContent {
             RefyTheme {
                 Scaffold (
@@ -75,17 +76,41 @@ class MainActivity : ComponentActivity() {
                                 bottom = paddingValues.calculateBottomPadding()
                             ),
                     ) {
-                        Text(
+                        Row (
                             modifier = Modifier
                                 .padding(
-                                    start = 16.dp
+                                    start = 16.dp,
+                                    end = 16.dp
                                 ),
-                            text = stringResource(activeTab.value.name),
-                            fontFamily = displayFontFamily,
-                            style = AppTypography.titleLarge,
-                            fontSize = 30.sp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(activeTab.value.name),
+                                fontFamily = displayFontFamily,
+                                style = AppTypography.titleLarge,
+                                fontSize = 30.sp,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Column (
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.End
+                            ) {
+                                Logo(
+                                    modifier = Modifier
+                                        .border(
+                                            width = 1.dp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            shape = CircleShape
+                                        ),
+                                    picUrl = user.profilePic,
+                                    onClick = {
+                                        startActivity(Intent(this@MainActivity,
+                                            ProfileActivity::class.java))
+                                    }
+                                )
+                            }
+                        }
                         HorizontalDivider(
                             modifier = Modifier
                                 .padding(

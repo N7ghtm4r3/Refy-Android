@@ -438,6 +438,7 @@ fun Logo(
     modifier: Modifier = Modifier,
     picSize: Dp = 50.dp,
     addShadow: Boolean = false,
+    onClick: (() -> Unit)? = null,
     shape: Shape = CircleShape,
     picUrl: String
 ) {
@@ -445,6 +446,10 @@ fun Logo(
         modifier = modifier
             .clip(shape)
             .size(picSize)
+            .clickable(
+                enabled = onClick != null,
+                onClick = onClick!!
+            )
             .then(
                 if (addShadow) {
                     Modifier.shadow(

@@ -54,20 +54,40 @@
     <string name="details">Details</string>
     <string name="unique_access_text">This link has the unique access, at the first view will be automatically deleted</string>
     <string name="the_link_will_expire_on">The link will expire on %1$s</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="change">Change</string>
+    <string name="storage_data">Storage data</string>
+    <string name="logout">Logout</string>
+    <string name="delete">Delete</string>
+    <string name="logout_message">If you confirm you will be disconnected from this device</string>
+    <string name="delete_message">If you confirm your account will be permanently deleted and your data will not be more recoverable</string>
+    <string name="change_email">Change email</string>
+    <string name="new_email">New email</string>
+    <string name="new_password">New password</string>
+    <string name="change_password">Change password</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="execute">Execute</string>
+    <string name="email_not_valid">Email not valid</string>
+    <string name="password_not_valid">Password not valid</string>
     <plurals name="expirations_minute">
-        <item quantity="one" formatted="false">%1$d minute</item>
-        <item quantity="other" formatted="false">%1$d minutes</item>
+        <item formatted="false" quantity="one">%1$d minute</item>
+        <item formatted="false" quantity="other">%1$d minutes</item>
     </plurals>
     <plurals name="expirations_hour">
-        <item quantity="one" formatted="false">%1$d hour</item>
-        <item quantity="other" formatted="false">%1$d hours</item>
+        <item formatted="false" quantity="one">%1$d hour</item>
+        <item formatted="false" quantity="other">%1$d hours</item>
     </plurals>
     <plurals name="expirations_day">
-        <item quantity="one" formatted="false">%1$d day</item>
-        <item quantity="other" formatted="false">%1$d days</item>
+        <item formatted="false" quantity="one">%1$d day</item>
+        <item formatted="false" quantity="other">%1$d days</item>
     </plurals>
     <plurals name="expirations_week">
-        <item quantity="one" formatted="false">%1$d week</item>
-        <item quantity="other" formatted="false">%1$d weeks</item>
+        <item formatted="false" quantity="one">%1$d week</item>
+        <item formatted="false" quantity="other">%1$d weeks</item>
     </plurals>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="account_deletion">Account deletion</string>
 </resources>
