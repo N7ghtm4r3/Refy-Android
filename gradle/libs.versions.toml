@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.1"
 apimanager = "2.2.3"
+appUpdateKtx = "2.1.0"
 coilCompose = "2.7.0"
 colorpickerCompose = "1.1.2"
 equinox = "1.0.2"
@@ -14,13 +15,18 @@ activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 materialIconsExtended = "1.6.8"
 refycore = "1.0.0"
+review = "2.0.1"
+reviewKtx = "2.0.1"
 richeditorCompose = "1.0.0-rc05-k2"
 uiTextGoogleFonts = "1.6.8"
+appcompat = "1.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 apimanager = { module = "com.github.N7ghtm4r3:APIManager", version.ref = "apimanager" }
+app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdateKtx" }
+app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdateKtx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 colorpicker-compose = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpickerCompose" }
 equinox = { module = "com.github.N7ghtm4r3:Equinox", version.ref = "equinox" }
@@ -39,7 +45,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 refycore = { module = "com.tecknobit.refycore:refycore", version.ref = "refycore" }
+review = { module = "com.google.android.play:review", version.ref = "review" }
+review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "reviewKtx" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

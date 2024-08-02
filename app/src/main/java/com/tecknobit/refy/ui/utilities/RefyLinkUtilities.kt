@@ -244,8 +244,18 @@ interface RefyLinkUtilities<T : RefyLink> {
         context: Context,
         link: T
     ) {
+        openLink(
+            context = context,
+            link = link.referenceLink
+        )
+    }
+
+    fun openLink(
+        context: Context,
+        link: String
+    ) {
         val intent = Intent()
-        intent.data = link.referenceLink.toUri()
+        intent.data = link.toUri()
         intent.action = Intent.ACTION_VIEW
         context.startActivity(intent)
     }

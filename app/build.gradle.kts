@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -75,6 +76,10 @@ dependencies {
     implementation(libs.equinox)
     implementation(libs.colorpicker.compose)
     implementation(libs.apimanager)
+    implementation(libs.review)
+    implementation(libs.review.ktx)
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
     implementation("com.github.N7ghtm4r3:Equinox-Compose:1.0.0") {
         exclude("com.github.N7ghtm4r3.Equinox-Compose", "library-jvm")
     }

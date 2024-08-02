@@ -1,6 +1,7 @@
 package com.tecknobit.refy.ui.activities.session
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -44,11 +45,15 @@ class MainActivity : ComponentActivity() {
 
         val snackbarHostState = SnackbarHostState()
 
+        @SuppressLint("StaticFieldLeak")
+        lateinit var containerActivity: Activity
+
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        containerActivity = this
         enableEdgeToEdge()
         setContent {
             RefyTheme {

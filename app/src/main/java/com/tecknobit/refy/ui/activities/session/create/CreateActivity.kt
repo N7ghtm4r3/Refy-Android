@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.sp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EquinoxTextField
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.ReviewHelper
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
@@ -81,9 +82,14 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
 
     protected lateinit var viewModel: V
 
+    private lateinit var reviewHelper: ReviewHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setActiveContext(this::class.java)
+        reviewHelper = ReviewHelper(
+            activity = this
+        )
         enableEdgeToEdge()
         setContent {
             initItemFromIntent()
@@ -251,7 +257,9 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
             FloatingActionButton(
                 onClick = {
                     viewModel.manageItem {
-                        finish()
+                        reviewHelper.reviewInApp {
+                            finish()
+                        }
                     }
                 },
                 containerColor = color

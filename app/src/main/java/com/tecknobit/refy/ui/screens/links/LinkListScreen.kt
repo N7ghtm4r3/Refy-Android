@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.ReviewHelper
+import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.containerActivity
 import com.tecknobit.refy.ui.viewmodels.links.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
@@ -26,6 +28,10 @@ class LinkListScreen : LinksScreen<RefyLink>(
 ) {
 
     private lateinit var addLink: MutableState<Boolean>
+
+    private val reviewHelper = ReviewHelper(
+        activity = containerActivity
+    )
 
     init {
         viewModel.setActiveContext(this::class.java)
@@ -158,7 +164,9 @@ class LinkListScreen : LinksScreen<RefyLink>(
                 viewModel.manageLink(
                     link = link,
                     onSuccess = {
-                        resetLayout.invoke()
+                        reviewHelper.reviewInApp {
+                            resetLayout.invoke()
+                        }
                     }
                 )
             }

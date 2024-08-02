@@ -448,8 +448,9 @@ fun Logo(
             .size(picSize)
             .clickable(
                 enabled = onClick != null,
-                onClick = onClick!!
-            )
+            ) {
+                onClick?.invoke()
+            }
             .then(
                 if (addShadow) {
                     Modifier.shadow(
