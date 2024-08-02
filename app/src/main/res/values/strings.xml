@@ -27,13 +27,11 @@
     <string name="collection_name">Collection name</string>
     <string name="collection_color">Collection color</string>
     <string name="invalid_collection">Invalid collection</string>
-    <string name="title_activity_collection">CollectionActivity</string>
     <string name="add_links_to_collection">Add links to collection</string>
     <string name="you_re_not_on_any_team">You\'re not on any team</string>
     <string name="delete_team">Delete team</string>
     <string name="delete_team_message">By confirming, the team and related data will no longer be available, the personal links for each member will be kept</string>
     <string name="add_links_to_team">Add links to team</string>
-    <string name="title_activity_create_team">CreateTeamActivity</string>
     <string name="invalid_team">Invalid team</string>
     <string name="team_name">Team name</string>
     <string name="members">Members</string>
@@ -60,7 +58,6 @@
     <string name="language">Language</string>
     <string name="theme">Theme</string>
     <string name="change">Change</string>
-    <string name="storage_data">Storage data</string>
     <string name="logout">Logout</string>
     <string name="delete">Delete</string>
     <string name="logout_message">If you confirm you will be disconnected from this device</string>

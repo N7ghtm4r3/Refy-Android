@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name">Refy</string>
+    <string name="app_version">1.0.0</string>
+    <string name="links">Liens</string>
+    <string name="collections">Collections</string>
+    <string name="teams">Les équipes</string>
+    <string name="custom">Sur mesure</string>
+    <string name="no_links_yet">Pas encore de liens</string>
+    <string name="add_link_to_team">Ajouter un lien vers l\'équipe</string>
+    <string name="dismiss">Rejeter</string>
+    <string name="add">Ajouter</string>
+    <string name="add_link_to_collection">Ajouter un lien à la collection</string>
+    <string name="delete_link">Supprimer le lien</string>
+    <string name="delete_link_message">En confirmant, le lien et les données associées ne seront plus disponibles, même dans les équipes ou les collections.</string>
+    <string name="confirm">Confirmer</string>
+    <string name="add_new_link">Ajouter un nouveau lien</string>
+    <string name="link_reference">Référence du lien</string>
+    <string name="link_reference_not_valid">La référence du lien n\'est pas valide</string>
+    <string name="description">Description</string>
+    <string name="description_not_valid">Description non valide</string>
+    <string name="edit_link">Editer le lien</string>
+    <string name="edit">Editer</string>
+    <string name="no_collections_yet">Pas encore de collections</string>
+    <string name="delete_collection">Supprimer la collection</string>
+    <string name="delete_collection_message">En confirmant, la collection et les liens associés ne seront plus disponibles. Si la collection est partagée avec des équipes, les liens personnels de chaque membre seront conservés, à l\'exception de celui qui a supprimé la collection.</string>
+    <string name="add_collection_to_team">Ajouter une collection à l\'équipe</string>
+    <string name="collection_name">Nom de la collection</string>
+    <string name="collection_color">Couleur de la collection</string>
+    <string name="invalid_collection">Collection non valide</string>
+    <string name="add_links_to_collection">Ajouter des liens à la collection</string>
+    <string name="you_re_not_on_any_team">Vous ne faites partie d\'aucune équipe</string>
+    <string name="delete_team">Supprimer l\'équipe</string>
+    <string name="delete_team_message">En confirmant, l\'équipe et les données associées ne seront plus disponibles, les liens personnels de chaque membre seront conservés.</string>
+    <string name="add_links_to_team">Ajouter des liens à l\'équipe</string>
+    <string name="invalid_team">Équipe non valide</string>
+    <string name="team_name">Nom de l\'équipe</string>
+    <string name="members">Les membres</string>
+    <string name="leave_team">Quitter l\'équipe</string>
+    <string name="leave_team_message">En confirmant, l\'équipe et les données qui s\'y rapportent ne seront plus disponibles pour vous.</string>
+    <string name="invalid_custom_link">Lien personnalisé non valide</string>
+    <string name="custom_link_title">Titre du lien</string>
+    <string name="options">Options</string>
+    <string name="unique_access">Unique access</string>
+    <string name="expires">Expiration</string>
+    <string name="expires_in">en</string>
+    <string name="resources">Ressources</string>
+    <string name="fields">Domaines</string>
+    <string name="key">Clé</string>
+    <string name="value">Valeur</string>
+    <string name="field">Champ d\'application</string>
+    <string name="value_not_valid">Valeur non valide</string>
+    <string name="not_valid">Non valide</string>
+    <string name="details">Détails</string>
+    <string name="unique_access_text">Ce lien a un accès unique, il sera automatiquement supprimé lors de la première visualisation.</string>
+    <string name="the_link_will_expire_on">Le lien expirera le %1$s</string>
+    <string name="email">Courriel</string>
+    <string name="password">Mot de passe</string>
+    <string name="language">Langue</string>
+    <string name="theme">Thème</string>
+    <string name="change">Changer</string>
+    <string name="logout">Déconnexion</string>
+    <string name="delete">Supprimer</string>
+    <string name="logout_message">Si vous confirmez, vous serez déconnecté de ce dispositif.</string>
+    <string name="delete_message">Si vous confirmez, votre compte sera définitivement supprimé et vos données ne seront plus récupérables.</string>
+    <string name="change_email">Modifier l\'adresse électronique</string>
+    <string name="new_email">Nouveau courriel</string>
+    <string name="new_password">Nouveau mot de passe</string>
+    <string name="change_password">Modifier le mot de passe</string>
+    <string name="disconnect">Déconnexion</string>
+    <string name="execute">Exécuter</string>
+    <string name="hello">Bonjour</string>
+    <string name="name">Nom</string>
+    <string name="surname">Nom de famille</string>
+    <string name="sign_in">S\'inscrire !</string>
+    <string name="sign_in_btn">S\'inscrire</string>
+    <string name="are_you_new_to_neutron">Vous êtes nouveau sur Refy \?</string>
+    <string name="have_an_account">Vous avez un compte \?</string>
+    <string name="sign_up">Inscrivez-vous !</string>
+    <string name="sign_up_btn">S\'inscrire</string>
+    <string name="welcome_back">Bienvenue à nouveau</string>
+    <string name="host_address_not_valid">L\'adresse de l\'hôte n\'est pas valide</string>
+    <string name="server_secret_not_valid">Le secret du serveur n\'est pas valide</string>
+    <string name="email_not_valid">L\'email n\'est pas valide</string>
+    <string name="password_not_valid">Le mot de passe n\'est pas valide</string>
+    <string name="name_not_valid">Nom non valide</string>
+    <string name="surname_not_valid">Nom de famille non valide</string>
+    <string name="host_address">Adresse de l\'hôte</string>
+    <string name="server_secret">Secret du serveur</string>
+    <string name="tag_name">Nom du jour</string>
+    <string name="tag_name_not_valid">Le nom de l\'étiquette n\'est pas valide</string>
+    <plurals name="expirations_minute">
+        <item formatted="false" quantity="one">%1$d minute</item>
+        <item formatted="false" quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="expirations_hour">
+        <item formatted="false" quantity="one">%1$d heure</item>
+        <item formatted="false" quantity="other">%1$d heures</item>
+    </plurals>
+    <plurals name="expirations_day">
+        <item formatted="false" quantity="one">%1$d jour</item>
+        <item formatted="false" quantity="other">%1$d jours</item>
+    </plurals>
+    <plurals name="expirations_week">
+        <item formatted="false" quantity="one">%1$d semaine</item>
+        <item formatted="false" quantity="other">%1$d semaines</item>
+    </plurals>
+    <string name="account_deletion">Suppression du compte</string>
+</resources>
