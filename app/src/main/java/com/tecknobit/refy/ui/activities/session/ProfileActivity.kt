@@ -163,7 +163,7 @@ class ProfileActivity : ComponentActivity() {
             Logo(
                 modifier = Modifier
                     .fillMaxSize(),
-                picUrl = user.profilePic,
+                picUrl = profilePic.value,
                 shape = RectangleShape,
                 onClick = { photoPickerLauncher.launch(PickVisualMediaRequest(ImageOnly)) }
             )

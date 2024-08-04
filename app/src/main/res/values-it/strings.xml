@@ -57,11 +57,11 @@
     <string name="password">Password</string>
     <string name="language">Lingua</string>
     <string name="theme">Tema</string>
-    <string name="change">Cambiamento</string>
+    <string name="change">Cambia</string>
     <string name="logout">Disconnettimi</string>
     <string name="delete">Cancella</string>
     <string name="logout_message">Confermando, verrai disconness da questo dispositivo.</string>
-    <string name="delete_message">Confermando, l'account sarà definitivamente cancellato ed i dati non saranno più recuperabili.</string>
+    <string name="delete_message">Confermando, l\'account sarà definitivamente cancellato ed i dati non saranno più recuperabili.</string>
     <string name="change_email">Modifica e-mail</string>
     <string name="new_email">Nuova e-mail</string>
     <string name="new_password">Nuova password</string>
