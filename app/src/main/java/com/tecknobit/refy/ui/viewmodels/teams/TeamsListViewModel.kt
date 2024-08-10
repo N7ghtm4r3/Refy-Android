@@ -4,11 +4,11 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screens.TeamsListScreen
 import com.tecknobit.refycore.records.LinksCollection
-import com.tecknobit.refycore.records.links.RefyLink
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.RefyTeamMember
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole
+import com.tecknobit.refycore.records.links.RefyLink
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -31,7 +31,15 @@ class TeamsListViewModel: TeamViewModelHelper(
                     Team("id12", "Ciaogwegw2", RefyUser("h"),
                         "https://cdn.mos.cms.futurecdn.net/9UmWCbyxpKaEGXjwFG7dXo-1200-80.jpg",
                         "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
-                        listOf(),
+                        listOf(RefyTeamMember(
+                            "h1",
+                            "User",
+                            "One",
+                            "p@gmail.com",
+                            "https://images.photowall.com/products/56987/outer-space-4.jpg?h=699&q=85",
+                            "@h",
+                            TeamRole.VIEWER
+                        )),
                         listOf(
                             RefyLink(
                                 "id",
@@ -210,14 +218,6 @@ class TeamsListViewModel: TeamViewModelHelper(
             },
             repeatRoutine = false // TODO: TO REMOVE
         )
-    }
-
-    fun createJoinLink(
-        onSuccess: (RefyLink) -> Unit,
-    ) {
-        // TODO: TO MAKE REQUEST THEN (get from the response)
-        val refyLink = RefyLink()
-        onSuccess.invoke(refyLink)
     }
 
 }

@@ -20,10 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GroupOff
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
@@ -250,23 +247,6 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                             team = team,
                             tint = iconsColor
                         )
-                        IconButton(
-                            onClick = {
-                                viewModel.createJoinLink(
-                                    onSuccess = { joinLink ->
-                                        shareLink(
-                                            context = context,
-                                            link = joinLink
-                                        )
-                                    }
-                                )
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Share,
-                                contentDescription = null
-                            )
-                        }
                     }
                 }
                 Column(

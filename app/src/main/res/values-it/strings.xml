@@ -29,7 +29,7 @@
     <string name="invalid_collection">Collezione non valida</string>
     <string name="add_links_to_collection">Aggiungi link alla collezione</string>
     <string name="you_re_not_on_any_team">Non sei in nessun team</string>
-    <string name="delete_team">Cancella la squadra</string>
+    <string name="delete_team">Cancella il team</string>
     <string name="delete_team_message">Confermando, il team e i relativi dati non saranno più disponibili, mentre i link personali di ciascun membro saranno mantenuti.</string>
     <string name="add_links_to_team">Aggiungi link al team</string>
     <string name="invalid_team">Team non valido</string>
