@@ -78,6 +78,7 @@ import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.getFilePath
 import com.tecknobit.refy.ui.theme.RefyTheme
@@ -144,7 +145,7 @@ class ProfileActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .height(225.dp),
         ) {
-            val profilePic = remember { mutableStateOf(user.profilePic) }
+            val profilePic = remember { mutableStateOf(localUser.profilePic) }
             val photoPickerLauncher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.PickVisualMedia(),
                 onResult = { imageUri ->

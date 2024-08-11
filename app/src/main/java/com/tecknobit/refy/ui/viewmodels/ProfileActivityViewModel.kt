@@ -3,7 +3,11 @@ package com.tecknobit.refy.ui.viewmodels
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
 import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme
+import com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
+import java.io.File
 
 class ProfileActivityViewModel(
     snackbarHostState: SnackbarHostState
@@ -41,7 +45,7 @@ class ProfileActivityViewModel(
         imagePath: String,
         profilePic: MutableState<String>
     ) {
-        /*requester.sendRequest(
+        requester.sendRequest(
             request = {
                 requester.changeProfilePic(
                     profilePic = File(imagePath)
@@ -51,8 +55,8 @@ class ProfileActivityViewModel(
                 profilePic.value = imagePath
                 localUser.profilePic = it.getString(PROFILE_PIC_KEY)
             },
-            onFailure = { showSnack(it) }
-        )*/
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     /**
@@ -74,7 +78,7 @@ class ProfileActivityViewModel(
                     localUser.email = newEmail.value
                     onSuccess.invoke()
                 },
-                onFailure = { showSnack(it) }
+                onFailure = { showSnackbarMessage(it) }
             )
         } else
             newEmailError.value = true*/
@@ -97,7 +101,7 @@ class ProfileActivityViewModel(
                     )
                 },
                 onSuccess = { onSuccess.invoke() },
-                onFailure = { showSnack(it) }
+                onFailure = { showSnackbarMessage(it) }
             )
         } else
             newPasswordError.value = true*/
@@ -124,7 +128,7 @@ class ProfileActivityViewModel(
                 localUser.language = newLanguage
                 onSuccess.invoke()
             },
-            onFailure = { showSnack(it) }
+            onFailure = { showSnackbarMessage(it) }
         )*/
         onSuccess.invoke()
     }
@@ -158,7 +162,7 @@ class ProfileActivityViewModel(
                     onClear = onDelete
                 )
             },
-            onFailure = { showSnack(it) }
+            onFailure = { showSnackbarMessage(it) }
         )*/
     }
 

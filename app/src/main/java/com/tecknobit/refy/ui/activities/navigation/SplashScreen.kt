@@ -36,11 +36,13 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAILABLE
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.AndroidRefyLocalUser
 import com.tecknobit.refy.ui.activities.session.ConnectActivity
 import com.tecknobit.refy.ui.activities.session.MainActivity
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
+import com.tecknobit.refycore.helpers.RefyRequester
 import com.tecknobit.refycore.records.RefyUser
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
@@ -51,7 +53,6 @@ import javax.net.ssl.SSLSession
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-// TODO: SET IT CORRECTLY ALSO IN MANIFEST AND ITS THEME
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : ComponentActivity(), ImageLoaderFactory {
 
@@ -59,6 +60,10 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
 
         // TODO: TO INIT CORRECTLY CHECK TO REPLACE WITH LOCALUSER INSTEAD
         val user = RefyUser("h1")
+
+        lateinit var localUser: AndroidRefyLocalUser
+
+        lateinit var requester: RefyRequester
 
     }
 
@@ -83,6 +88,7 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         Coil.imageLoader(applicationContext)
         Coil.setImageLoader(newImageLoader())
+        localUser = AndroidRefyLocalUser(this)
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(user.language))
         setContent {
             RefyTheme {
@@ -207,15 +213,15 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
      * No-any params required
      */
     private fun getFirstScreen() : Class<*> {
-        val firstScreen = if (false)
+        val firstScreen = if (localUser.isAuthenticated)
             MainActivity::class.java
         else
             ConnectActivity::class.java
-        /*requester = AndroidNeutronRequester(
+        requester = RefyRequester(
             host = localUser.hostAddress,
             userId = localUser.userId,
             userToken = localUser.userToken
-        )*/
+        )
         return firstScreen
     }
 

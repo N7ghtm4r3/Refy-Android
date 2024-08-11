@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.refy.helpers.NavigationHelper
 import com.tecknobit.refy.helpers.NavigationHelper.Companion.activeTab
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
                                             color = MaterialTheme.colorScheme.primary,
                                             shape = CircleShape
                                         ),
-                                    picUrl = user.profilePic,
+                                    picUrl = localUser.profilePic,
                                     onClick = {
                                         startActivity(Intent(this@MainActivity,
                                             ProfileActivity::class.java))
