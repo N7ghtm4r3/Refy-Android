@@ -1,11 +1,14 @@
 package com.tecknobit.refy.ui.viewmodels.links
 
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import androidx.compose.runtime.toMutableStateList
+import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refy.ui.screens.links.LinkListScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
-import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.links.RefyLink
+import com.tecknobit.refycore.records.links.RefyLink.returnLinks
 
 class LinkListViewModel : LinksViewModel<RefyLink>() {
 
@@ -13,85 +16,116 @@ class LinkListViewModel : LinksViewModel<RefyLink>() {
         execRefreshingRoutine(
             currentContext = LinkListScreen::class.java,
             routine = {
-                // TODO: MAKE REQUEST THEN
-                _links.value = listOf(
-                    RefyLink(
-                        "id",
-                        "tille",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
-                        "https://github.com/N7ghtm4r3",
-                    ),
-                    RefyLink(
-                        "id1",
-                        RefyUser("h"),
-                        "tille",
-                        "*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.*Lorem* ipsum dolor sit amet, consectetur adipiscing elit. Duis non turpis quis leo pharetra ullamcorper.vavavav avavavava",
-                        "https://github.com/N7ghtm4r3",
-                        listOf(),
-                        listOf()
-                    )
+                requester.sendRequest(
+                    request = {
+                        requester.getLinks()
+                    },
+                    onSuccess = { response ->
+                        _links.value = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                            .toMutableStateList()
+                        localUser.links = _links.value
+                    },
+                    onFailure = { showSnackbarMessage(it) }
                 )
-                user.links = _links.value
-            },
-            repeatRoutine = false // TODO: TO REMOVE
+            }
         )
     }
 
     override fun addNewLink(
         onSuccess: () -> Unit
     ) {
-        if(!isLinkResourceValid(linkReference.value)) {
-            linkReferenceError.value = true
-            return
-        }
-        if(!isDescriptionValid(linkDescription.value)) {
-            linkDescriptionError.value = true
-            return
-        }
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        requester.sendRequest(
+            request = {
+                requester.createLink(
+                    referenceLink = linkReference.value,
+                    description = linkDescription.value
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     override fun editLink(
         link: RefyLink,
         onSuccess: () -> Unit
     ) {
+        requester.sendRequest(
+            request = {
+                requester.editLink(
+                    link = link,
+                    referenceLink = linkReference.value,
+                    description = linkDescription.value
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
+    }
+
+    override fun linkDetailsValidated(): Boolean {
         if(!isLinkResourceValid(linkReference.value)) {
             linkReferenceError.value = true
-            return
+            return false
         }
         if(!isDescriptionValid(linkDescription.value)) {
             linkDescriptionError.value = true
-            return
+            return false
         }
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        return true
     }
 
-    override fun addLinkToTeam(
-        link: RefyLink,
-        teams: List<String>,
-        onSuccess: () -> Unit
-    ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
-    }
-
-    override fun addLinkToCollection(
+    override fun addLinkToCollections(
         link: RefyLink,
         collections: List<String>,
         onSuccess: () -> Unit
     ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        val linkCollections = link.collectionsIds.toMutableList()
+        linkCollections.addAll(collections)
+        requester.sendRequest(
+            request = {
+                requester.manageLinkCollections(
+                    link = link,
+                    collections = linkCollections
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
+    }
+
+    override fun addLinkToTeams(
+        link: RefyLink,
+        teams: List<String>,
+        onSuccess: () -> Unit
+    ) {
+        val linkTeams = link.teamIds.toMutableList()
+        linkTeams.addAll(teams)
+        requester.sendRequest(
+            request = {
+                requester.manageLinkTeams(
+                    link = link,
+                    teams = linkTeams
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     override fun deleteLink(
         link: RefyLink,
         onSuccess: () -> Unit
     ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        requester.sendRequest(
+            request = {
+                requester.deleteLink(
+                    link = link
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
 }

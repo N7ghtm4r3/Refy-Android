@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screens.Screen
 import com.tecknobit.refy.ui.utilities.AddItemToContainer
@@ -147,7 +147,7 @@ abstract class LinksScreen <T : RefyLink> (
         val addToCollection = remember { mutableStateOf(false) }
         OptionsBar(
             options = {
-                val userCanUpdate = link.canBeUpdatedByUser(user.id)
+                val userCanUpdate = link.canBeUpdatedByUser(localUser.userId)
                 AnimatedVisibility(
                     visible = userCanUpdate,
                     enter = fadeIn(),
@@ -155,7 +155,7 @@ abstract class LinksScreen <T : RefyLink> (
                 ) {
                     Row {
                         val collections = getItemRelations(
-                            userList = user.collections,
+                            userList = localUser.collections,
                             linkList = link.collections
                         )
                         OptionButton(
@@ -163,7 +163,7 @@ abstract class LinksScreen <T : RefyLink> (
                             show = addToCollection,
                             visible = { collections.isNotEmpty() },
                             optionAction = {
-                                AddLinkToCollection(
+                                AddLinkToCollections(
                                     show = addToCollection,
                                     availableCollection = collections,
                                     link = link
@@ -171,7 +171,7 @@ abstract class LinksScreen <T : RefyLink> (
                             }
                         )
                         val teams = getItemRelations(
-                            userList = user.teams,
+                            userList = localUser.teams,
                             linkList = link.teams
                         )
                         OptionButton(
@@ -232,6 +232,29 @@ abstract class LinksScreen <T : RefyLink> (
 
     @Composable
     @NonRestartableComposable
+    private fun AddLinkToCollections(
+        show: MutableState<Boolean>,
+        availableCollection: List<RefyItem>,
+        link: T
+    ) {
+        AddItemToContainer(
+            show = show,
+            viewModel = viewModel,
+            icon = Icons.Default.FolderCopy,
+            availableItems = availableCollection,
+            title = R.string.add_link_to_collection,
+            confirmAction = { ids ->
+                viewModel.addLinkToCollections(
+                    link = link,
+                    collections = ids,
+                    onSuccess = { show.value = false },
+                )
+            }
+        )
+    }
+
+    @Composable
+    @NonRestartableComposable
     private fun AddLinkToTeam(
         show: MutableState<Boolean>,
         availableTeams: List<RefyItem>,
@@ -244,32 +267,9 @@ abstract class LinksScreen <T : RefyLink> (
             availableItems = availableTeams,
             title = R.string.add_link_to_team,
             confirmAction = { ids ->
-                viewModel.addLinkToTeam(
+                viewModel.addLinkToTeams(
                     link = link,
                     teams = ids,
-                    onSuccess = { show.value = false },
-                )
-            }
-        )
-    }
-
-    @Composable
-    @NonRestartableComposable
-    private fun AddLinkToCollection(
-        show: MutableState<Boolean>,
-        availableCollection: List<RefyItem>,
-        link: T
-    ) {
-        AddItemToContainer(
-            show = show,
-            viewModel = viewModel,
-            icon = Icons.Default.FolderCopy,
-            availableItems = availableCollection,
-            title = R.string.add_link_to_collection,
-            confirmAction = { ids ->
-                viewModel.addLinkToCollection(
-                    link = link,
-                    collections = ids,
                     onSuccess = { show.value = false },
                 )
             }

@@ -66,6 +66,7 @@ import com.mohamedrejeb.richeditor.ui.material.RichText
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
@@ -390,7 +391,7 @@ private fun DefaultPlaque(
         leadingContent = {
             Logo(
                 picSize = profilePicSize,
-                picUrl = profilePic
+                picUrl = "${localUser.hostAddress}/$profilePic"
             )
         },
         headlineContent = {

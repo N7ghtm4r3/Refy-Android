@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.times
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
@@ -55,6 +56,10 @@ abstract class Screen {
     abstract fun SetFabAction()
 
     abstract fun executeFabAction()
+
+    fun suspendRefreshing() {
+        screenViewModel.suspendRefresher()
+    }
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
@@ -110,7 +115,7 @@ abstract class Screen {
                     Text(
                         text = title,
                         fontFamily = displayFontFamily,
-                        fontSize = 25.sp,
+                        fontSize = 22.sp,
                         fontStyle = AppTypography.titleMedium.fontStyle
                     )
                     ItemDescription(
@@ -187,7 +192,7 @@ abstract class Screen {
                         .clip(CircleShape)
                         .size(pictureSize),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(picture)
+                        .data("${localUser.hostAddress}/$picture")
                         .crossfade(enable = true)
                         .crossfade(500)
                         //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY

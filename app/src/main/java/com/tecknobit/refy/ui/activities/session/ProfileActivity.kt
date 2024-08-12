@@ -1,5 +1,6 @@
 package com.tecknobit.refy.ui.activities.session
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +10,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,9 +77,9 @@ import com.tecknobit.equinox.inputs.InputValidator.isPasswordValid
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.NavigationHelper.Companion.resetActiveTab
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.getFilePath
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -88,36 +88,23 @@ import com.tecknobit.refy.ui.viewmodels.ProfileActivityViewModel
 
 class ProfileActivity : ComponentActivity() {
 
-    /**
-     * *theme* -> the current user's theme
-     */
-    private lateinit var theme: MutableState<ApplicationTheme>
-
     private val snackbarHostState = SnackbarHostState()
 
     private val viewModel = ProfileActivityViewModel(
         snackbarHostState = snackbarHostState
     )
 
-    init {
-        viewModel.setActiveContext(this::class.java)
-    }
-
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.setActiveContext(this::class.java)
         setContent {
-            theme = remember { mutableStateOf(user.theme) }
             RefyTheme(
-                colorStatusBar = true,
-                darkTheme = when(theme.value) {
-                    Light -> false
-                    Dark -> true
-                    else -> isSystemInDarkTheme()
-                }
+                colorStatusBar = true
             ) {
                 Scaffold(
                     snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-                ) { paddingValues ->
+                ) {
                     Column {
                         CustomTopBar()
                         Column (
@@ -185,11 +172,11 @@ class ProfileActivity : ComponentActivity() {
                     .align(Alignment.BottomStart)
             ) {
                 Text(
-                    text = user.tagName,
+                    text = localUser.tagName,
                     fontSize = 14.sp
                 )
                 Text(
-                    text = user.completeName,
+                    text = localUser.completeName,
                     fontSize = 20.sp
                 )
             }
@@ -200,7 +187,7 @@ class ProfileActivity : ComponentActivity() {
     @NonRestartableComposable
     private fun EmailSection() {
         val showChangeEmailAlert = remember { mutableStateOf(false) }
-        var userEmail by remember { mutableStateOf(user.email) }
+        var userEmail by remember { mutableStateOf(localUser.email) }
         viewModel.newEmail = remember { mutableStateOf("") }
         viewModel.newEmailError = remember { mutableStateOf(false) }
         val resetEmailLayout = {
@@ -308,7 +295,7 @@ class ProfileActivity : ComponentActivity() {
         val changeLanguage = remember { mutableStateOf(false) }
         UserInfo(
             header = R.string.language,
-            info = LANGUAGES_SUPPORTED[user.language]!!,
+            info = LANGUAGES_SUPPORTED[localUser.language]!!,
             onClick = { changeLanguage.value = true }
         )
         ChangeLanguage(
@@ -322,7 +309,7 @@ class ProfileActivity : ComponentActivity() {
         val changeTheme = remember { mutableStateOf(false) }
         UserInfo(
             header = R.string.theme,
-            info = user.theme.name,
+            info = localUser.theme.name,
             buttonText = R.string.change,
             onClick = { changeTheme.value = true }
         )
@@ -484,7 +471,7 @@ class ProfileActivity : ComponentActivity() {
                     Icon(
                         imageVector = Icons.Default.Flag,
                         contentDescription = null,
-                        tint = if (user.language == language)
+                        tint = if (localUser.language == language)
                             MaterialTheme.colorScheme.primary
                         else
                             LocalContentColor.current
@@ -521,7 +508,7 @@ class ProfileActivity : ComponentActivity() {
                                 newTheme = theme,
                                 onChange = {
                                     changeTheme.value = false
-                                    this@ProfileActivity.theme.value = theme
+                                    navToSplash()
                                 }
                             )
                         }
@@ -538,7 +525,7 @@ class ProfileActivity : ComponentActivity() {
                             else -> Icons.Default.AutoMode
                         },
                         contentDescription = null,
-                        tint = if (user.theme == theme)
+                        tint = if (localUser.theme == theme)
                             MaterialTheme.colorScheme.primary
                         else
                             LocalContentColor.current
@@ -588,6 +575,7 @@ class ProfileActivity : ComponentActivity() {
      * No-any params required
      */
     private fun navToSplash() {
+        resetActiveTab()
         startActivity(Intent(this@ProfileActivity, SplashScreen::class.java))
     }
     

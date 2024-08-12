@@ -14,12 +14,9 @@ class CustomLinksScreen : LinksScreen<CustomRefyLink>(
     viewModel = CustomLinksViewModel()
 ) {
 
-    init {
-        viewModel.setActiveContext(this::class.java)
-    }
-
     @Composable
     override fun ShowContent() {
+        viewModel.setActiveContext(this::class.java)
         LinksList()
     }
 

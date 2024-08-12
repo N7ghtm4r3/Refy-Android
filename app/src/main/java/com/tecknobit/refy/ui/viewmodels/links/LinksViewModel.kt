@@ -1,6 +1,8 @@
 package com.tecknobit.refy.ui.viewmodels.links
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refycore.records.links.RefyLink
@@ -12,8 +14,8 @@ abstract class LinksViewModel <T : RefyLink>: LinksViewModelHelper<T>(
     snackbarHostState = snackbarHostState
 ) {
 
-    protected val _links = MutableStateFlow<List<T>>(
-        value = emptyList()
+    protected val _links = MutableStateFlow<SnapshotStateList<T>>(
+        value = mutableStateListOf()
     )
     val links: StateFlow<List<T>> = _links
 
@@ -31,6 +33,8 @@ abstract class LinksViewModel <T : RefyLink>: LinksViewModelHelper<T>(
         link: T? = null,
         onSuccess: () -> Unit
     ) {
+        if(!linkDetailsValidated())
+            return
         if(link == null) {
             addNewLink {
                 onSuccess.invoke()
@@ -52,15 +56,17 @@ abstract class LinksViewModel <T : RefyLink>: LinksViewModelHelper<T>(
         onSuccess: () -> Unit
     )
 
-    abstract fun addLinkToTeam(
+    protected abstract fun linkDetailsValidated(): Boolean
+
+    abstract fun addLinkToCollections(
         link: T,
-        teams: List<String>,
+        collections: List<String>,
         onSuccess: () -> Unit
     )
 
-    abstract fun addLinkToCollection(
+    abstract fun addLinkToTeams(
         link: T,
-        collections: List<String>,
+        teams: List<String>,
         onSuccess: () -> Unit
     )
 

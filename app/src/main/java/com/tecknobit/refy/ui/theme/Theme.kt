@@ -14,6 +14,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme.Dark
+import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme.Light
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -257,7 +260,11 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun RefyTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = when (localUser.theme) {
+        Light -> false
+        Dark -> true
+        else -> isSystemInDarkTheme()
+    },
     dynamicColor: Boolean = true,
     colorStatusBar: Boolean = false,
     content: @Composable () -> Unit

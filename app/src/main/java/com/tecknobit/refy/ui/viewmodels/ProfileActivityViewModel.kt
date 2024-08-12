@@ -4,6 +4,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
 import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme
 import com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY
+import com.tecknobit.equinox.inputs.InputValidator.isEmailValid
+import com.tecknobit.equinox.inputs.InputValidator.isPasswordValid
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
@@ -67,7 +69,7 @@ class ProfileActivityViewModel(
     fun changeEmail(
         onSuccess: () -> Unit
     ) {
-        /*if (isEmailValid(newEmail.value)) {
+        if (isEmailValid(newEmail.value)) {
             requester.sendRequest(
                 request = {
                     requester.changeEmail(
@@ -81,8 +83,7 @@ class ProfileActivityViewModel(
                 onFailure = { showSnackbarMessage(it) }
             )
         } else
-            newEmailError.value = true*/
-        onSuccess.invoke()
+            newEmailError.value = true
     }
 
     /**
@@ -93,7 +94,7 @@ class ProfileActivityViewModel(
     fun changePassword(
         onSuccess: () -> Unit
     ) {
-        /*if (isPasswordValid(newPassword.value)) {
+        if (isPasswordValid(newPassword.value)) {
             requester.sendRequest(
                 request = {
                     requester.changePassword(
@@ -104,8 +105,7 @@ class ProfileActivityViewModel(
                 onFailure = { showSnackbarMessage(it) }
             )
         } else
-            newPasswordError.value = true*/
-        onSuccess.invoke()
+            newPasswordError.value = true
     }
 
     /**
@@ -118,7 +118,7 @@ class ProfileActivityViewModel(
         newLanguage: String,
         onSuccess: () -> Unit
     ) {
-        /*requester.sendRequest(
+        requester.sendRequest(
             request = {
                 requester.changeLanguage(
                     newLanguage = newLanguage
@@ -129,8 +129,7 @@ class ProfileActivityViewModel(
                 onSuccess.invoke()
             },
             onFailure = { showSnackbarMessage(it) }
-        )*/
-        onSuccess.invoke()
+        )
     }
 
     /**
@@ -143,7 +142,7 @@ class ProfileActivityViewModel(
         newTheme: ApplicationTheme,
         onChange: () -> Unit
     ) {
-        //localUser.theme = newTheme
+        localUser.theme = newTheme
         onChange.invoke()
     }
 
@@ -152,10 +151,11 @@ class ProfileActivityViewModel(
      *
      * @param onDelete: the action to execute when the account has been deleted
      */
+    // TODO: TO TEST AT THE END OF THE REQUESTS LINK
     fun deleteAccount(
         onDelete: () -> Unit
     ) {
-        /*requester.sendRequest(
+        requester.sendRequest(
             request = { requester.deleteAccount() },
             onSuccess = {
                 clearSession(
@@ -163,7 +163,7 @@ class ProfileActivityViewModel(
                 )
             },
             onFailure = { showSnackbarMessage(it) }
-        )*/
+        )
     }
 
     /**
@@ -174,7 +174,7 @@ class ProfileActivityViewModel(
     fun clearSession(
         onClear: () -> Unit
     ) {
-        //localUser.clear()
+        localUser.clear()
         onClear.invoke()
     }
 

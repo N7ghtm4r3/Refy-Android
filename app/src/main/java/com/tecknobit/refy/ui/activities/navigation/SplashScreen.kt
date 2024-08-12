@@ -47,6 +47,7 @@ import com.tecknobit.refycore.records.RefyUser
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
@@ -81,6 +82,8 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        localUser = AndroidRefyLocalUser(this)
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localUser.language))
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val policy = ThreadPolicy.Builder().permitAll().build()
@@ -88,8 +91,6 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
         Coil.imageLoader(applicationContext)
         Coil.setImageLoader(newImageLoader())
-        localUser = AndroidRefyLocalUser(this)
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(user.language))
         setContent {
             RefyTheme {
                 Column (
@@ -213,9 +214,10 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
      * No-any params required
      */
     private fun getFirstScreen() : Class<*> {
-        val firstScreen = if (localUser.isAuthenticated)
+        val firstScreen = if (localUser.isAuthenticated) {
+            setLocale()
             MainActivity::class.java
-        else
+        } else
             ConnectActivity::class.java
         requester = RefyRequester(
             host = localUser.hostAddress,
@@ -223,6 +225,24 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
             userToken = localUser.userToken
         )
         return firstScreen
+    }
+
+    /**
+     * Function to set locale language for the application
+     *
+     * No-any params required
+     */
+    private fun setLocale() {
+        val userLanguage = user.language
+        val locale = if(userLanguage != null)
+            Locale.forLanguageTag(userLanguage)
+        else
+            Locale.getDefault()
+        Locale.setDefault(locale)
+        val resources = resources
+        val configuration = resources.configuration
+        configuration.locale = locale
+        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
     /**

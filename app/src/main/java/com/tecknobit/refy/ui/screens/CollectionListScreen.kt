@@ -42,12 +42,9 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
 
     private lateinit var collections: List<LinksCollection>
 
-    init {
-        viewModel.setActiveContext(this::class.java)
-    }
-
     @Composable
     override fun ShowContent() {
+        viewModel.setActiveContext(this::class.java)
         screenViewModel = viewModel
         viewModel.getCollections()
         collections = viewModel.collections.collectAsState().value

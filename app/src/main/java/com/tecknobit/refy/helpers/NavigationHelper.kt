@@ -55,6 +55,10 @@ class NavigationHelper private constructor() {
 
         var activeTab: MutableState<NavigationTab> = mutableStateOf(navigationTabs[0])
 
+        fun resetActiveTab() {
+            activeTab.value = navigationTabs[0]
+        }
+
         fun getInstance() : NavigationHelper {
             return NavigationHelper()
         }
@@ -70,7 +74,7 @@ class NavigationHelper private constructor() {
         },
         val content: @Composable ColumnScope.(Screen) -> Unit = {
             screen.ShowContent()
-        },
+        }
     )
 
     @Composable
@@ -92,6 +96,7 @@ class NavigationHelper private constructor() {
                     },
                     selected = selected,
                     onClick = {
+                        activeTab.value.screen.suspendRefreshing()
                         activeTab.value = navTab
                         selectedItem = index
                     }

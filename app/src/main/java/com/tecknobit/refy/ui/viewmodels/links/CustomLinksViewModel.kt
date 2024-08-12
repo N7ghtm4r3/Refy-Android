@@ -1,5 +1,6 @@
 package com.tecknobit.refy.ui.viewmodels.links
 
+import androidx.compose.runtime.mutableStateListOf
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
 import com.tecknobit.refy.ui.screens.links.CustomLinksScreen
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
@@ -14,7 +15,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
             currentContext = CustomLinksScreen::class.java,
             routine = {
                 // TODO: MAKE REQUEST THEN
-                _links.value = listOf(
+                _links.value = mutableStateListOf(
                     CustomRefyLink(
                         "id",
                         RefyUser("h"),
@@ -71,14 +72,6 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
     override fun addNewLink(
         onSuccess: () -> Unit
     ) {
-        if(!isLinkResourceValid(linkReference.value)) {
-            linkReferenceError.value = true
-            return
-        }
-        if(!isDescriptionValid(linkDescription.value)) {
-            linkDescriptionError.value = true
-            return
-        }
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()
     }
@@ -87,30 +80,34 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
         link: CustomRefyLink,
         onSuccess: () -> Unit
     ) {
-        if(!isLinkResourceValid(linkReference.value)) {
-            linkReferenceError.value = true
-            return
-        }
-        if(!isDescriptionValid(linkDescription.value)) {
-            linkDescriptionError.value = true
-            return
-        }
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()
     }
 
-    override fun addLinkToTeam(
+    override fun linkDetailsValidated(): Boolean {
+        if(!isLinkResourceValid(linkReference.value)) {
+            linkReferenceError.value = true
+            return false
+        }
+        if(!isDescriptionValid(linkDescription.value)) {
+            linkDescriptionError.value = true
+            return false
+        }
+        return true
+    }
+
+    override fun addLinkToCollections(
         link: CustomRefyLink,
-        teams: List<String>,
+        collections: List<String>,
         onSuccess: () -> Unit
     ) {
         // TODO: MAKE THE REQUEST THEN
         onSuccess.invoke()
     }
 
-    override fun addLinkToCollection(
+    override fun addLinkToTeams(
         link: CustomRefyLink,
-        collections: List<String>,
+        teams: List<String>,
         onSuccess: () -> Unit
     ) {
         // TODO: MAKE THE REQUEST THEN

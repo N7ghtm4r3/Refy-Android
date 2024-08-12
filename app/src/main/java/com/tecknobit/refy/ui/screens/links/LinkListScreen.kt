@@ -33,12 +33,11 @@ class LinkListScreen : LinksScreen<RefyLink>(
         activity = containerActivity
     )
 
-    init {
-        viewModel.setActiveContext(this::class.java)
-    }
-
     @Composable
     override fun ShowContent() {
+        viewModel.setActiveContext(this::class.java)
+        viewModel.setCurrentUserOwnedCollections()
+        viewModel.setCurrentUserOwnedTeams()
         LinksList()
     }
 
