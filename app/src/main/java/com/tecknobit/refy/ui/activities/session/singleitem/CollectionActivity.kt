@@ -23,7 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
 import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
@@ -34,7 +34,7 @@ import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.links.RefyLink
 
 class CollectionActivity : SingleItemActivity<LinksCollection>(
-    items = user.collections,
+    items = localUser.collections,
     invalidMessage = R.string.invalid_collection
 ), RefyLinkUtilities<RefyLink>, LinksCollectionUtilities {
 
@@ -48,13 +48,13 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                 topBarColor = null,
                 actions = {
                     AnimatedVisibility(
-                        visible = item!!.canBeUpdatedByUser(user.id),
+                        visible = item!!.canBeUpdatedByUser(localUser.userId),
                         enter = fadeIn(),
                         exit = fadeOut()
                     ) {
                         Row {
                             val links = getItemRelations(
-                                userList = user.links,
+                                userList = localUser.links,
                                 linkList = item!!.links
                             )
                             val addLinks = remember { mutableStateOf(false) }
@@ -66,7 +66,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                                 tint = iconsColor
                             )
                             val teams = getItemRelations(
-                                userList = user.teams,
+                                userList = localUser.teams,
                                 linkList = item!!.teams
                             )
                             val addTeams = remember { mutableStateOf(false) }
@@ -112,7 +112,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                     }
                 },
                 content = { paddingValues ->
-                    val userCanUpdate = item!!.canBeUpdatedByUser(user.id)
+                    val userCanUpdate = item!!.canBeUpdatedByUser(localUser.userId)
                     LazyColumn (
                         modifier = Modifier
                             .padding(

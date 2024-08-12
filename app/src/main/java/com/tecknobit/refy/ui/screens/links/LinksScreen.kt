@@ -50,6 +50,7 @@ abstract class LinksScreen <T : RefyLink> (
     private lateinit var links: List<T>
 
     @Composable
+    @NonRestartableComposable
     protected fun LinksList() {
         screenViewModel = viewModel
         viewModel.getLinks()

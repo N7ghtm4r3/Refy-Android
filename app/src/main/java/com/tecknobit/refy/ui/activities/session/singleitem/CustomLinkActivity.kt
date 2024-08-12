@@ -239,11 +239,15 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
     private fun DeleteLink(
         show: MutableState<Boolean>
     ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
+        if(show.value)
+            viewModel.suspendRefresher()
+        val resetLayout = {
+            show.value = false
+            viewModel.restartRefresher()
+        }
         EquinoxAlertDialog(
             show = show,
+            onDismissAction = resetLayout,
             icon = Icons.Default.Delete,
             title = stringResource(R.string.delete_link),
             text = stringResource(R.string.delete_link_message),

@@ -34,8 +34,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.theme.AppTypography
@@ -176,7 +176,8 @@ abstract class SingleItemActivity <T : RefyItem> (
                     Text(
                         text = link.title,
                         fontFamily = displayFontFamily,
-                        fontSize = 25.sp,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
                         fontStyle = AppTypography.titleMedium.fontStyle
                     )
                     ItemDescription(

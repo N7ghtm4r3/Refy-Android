@@ -55,7 +55,7 @@ class NavigationHelper private constructor() {
 
         var activeTab: MutableState<NavigationTab> = mutableStateOf(navigationTabs[0])
 
-        fun resetActiveTab() {
+        fun resetFirstTab() {
             activeTab.value = navigationTabs[0]
         }
 

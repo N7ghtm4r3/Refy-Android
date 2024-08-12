@@ -58,7 +58,7 @@ interface LinksCollectionUtilities {
             availableItems = availableTeams,
             title = R.string.add_collection_to_team,
             confirmAction = { ids ->
-                viewModel.addCollectionToTeam(
+                viewModel.addTeamsToCollection(
                     collection = collection,
                     teams = ids,
                     onSuccess = { show.value = false },
@@ -98,11 +98,15 @@ interface LinksCollectionUtilities {
         show: MutableState<Boolean>,
         collection: LinksCollection
     ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
+        if(show.value)
+            viewModel.suspendRefresher()
+        val resetLayout = {
+            show.value = false
+            viewModel.restartRefresher()
+        }
         EquinoxAlertDialog(
             show = show,
+            onDismissAction = resetLayout,
             icon = Icons.Default.Delete,
             title = stringResource(R.string.delete_collection),
             text = stringResource(R.string.delete_collection_message),

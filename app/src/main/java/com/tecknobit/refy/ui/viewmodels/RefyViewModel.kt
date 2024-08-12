@@ -8,6 +8,7 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localU
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refycore.records.LinksCollection.returnCollections
 import com.tecknobit.refycore.records.Team.returnTeams
+import com.tecknobit.refycore.records.links.RefyLink.returnLinks
 
 @Structure
 abstract class RefyViewModel(
@@ -15,6 +16,24 @@ abstract class RefyViewModel(
 ) : EquinoxViewModel (
     snackbarHostState = snackbarHostState
 ) {
+
+    fun setCurrentUserOwnedLinks(
+        forceRefresh: Boolean = false
+    ) {
+        if(localUser.links.isEmpty() || forceRefresh) {
+            requester.sendRequest(
+                request = {
+                    requester.getLinks(
+                        ownedOnly = true
+                    )
+                },
+                onSuccess = { response ->
+                    localUser.links = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                },
+                onFailure = { showSnackbarMessage(it) }
+            )
+        }
+    }
 
     fun setCurrentUserOwnedCollections(
         forceRefresh: Boolean = false

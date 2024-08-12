@@ -3,6 +3,8 @@ package com.tecknobit.refy.ui.viewmodels.create
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.Color
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
+import com.tecknobit.refy.ui.toHex
 import com.tecknobit.refycore.records.LinksCollection
 
 class CreateCollectionViewModel(
@@ -27,16 +29,36 @@ class CreateCollectionViewModel(
     override fun createItem(
         onSuccess: () -> Unit
     ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        requester.sendRequest(
+            request = {
+                requester.createCollection(
+                    color = collectionColor.value.toHex(),
+                    title = itemName.value,
+                    description = itemDescription.value,
+                    links = itemDedicatedList
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     override fun editItem(
         onSuccess: () -> Unit
     ) {
-        // TODO: MAKE THE REQUEST THEN
-        existingItem!!.id
-        onSuccess.invoke()
+        requester.sendRequest(
+            request = {
+                requester.editCollection(
+                    collectionId = existingItem!!.id,
+                    color = collectionColor.value.toHex(),
+                    title = itemName.value,
+                    description = itemDescription.value,
+                    links = itemDedicatedList
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
 }

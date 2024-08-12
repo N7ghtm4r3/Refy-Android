@@ -1,8 +1,11 @@
 package com.tecknobit.refy.ui.viewmodels.collections
 
 import androidx.compose.material3.SnackbarHostState
+import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.LinksCollection.getInstance
 import com.tecknobit.refycore.records.links.RefyLink
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +26,17 @@ class CollectionActivityViewModel(
         execRefreshingRoutine(
             currentContext = CollectionActivity::class.java,
             routine = {
-                // TODO: MAKE REQUEST THEN
-                // _collection.value = response
+                requester.sendRequest(
+                    request = {
+                        requester.getCollection(
+                            collection = _collection.value
+                        )
+                    },
+                    onSuccess = { response ->
+                        _collection.value = getInstance(response.getJSONObject(RESPONSE_MESSAGE_KEY))
+                    },
+                    onFailure = { showSnackbarMessage(it) }
+                )
             }
         )
     }

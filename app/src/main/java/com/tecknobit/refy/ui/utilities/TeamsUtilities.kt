@@ -99,11 +99,15 @@ interface TeamsUtilities {
         show: MutableState<Boolean>,
         team: Team
     ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
+        if(show.value)
+            viewModel.suspendRefresher()
+        val resetLayout = {
+            show.value = false
+            viewModel.restartRefresher()
+        }
         EquinoxAlertDialog(
             show = show,
+            onDismissAction = resetLayout,
             icon = Icons.Default.Delete,
             title = stringResource(R.string.delete_team),
             text = stringResource(R.string.delete_team_message),
@@ -153,11 +157,15 @@ interface TeamsUtilities {
         show: MutableState<Boolean>,
         team: Team
     ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
+        if(show.value)
+            viewModel.suspendRefresher()
+        val resetLayout = {
+            show.value = false
+            viewModel.restartRefresher()
+        }
         EquinoxAlertDialog(
             show = show,
+            onDismissAction = resetLayout,
             icon = Icons.AutoMirrored.Filled.ExitToApp,
             title = stringResource(R.string.leave_team),
             text = stringResource(R.string.leave_team_message),

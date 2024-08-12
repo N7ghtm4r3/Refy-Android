@@ -121,11 +121,11 @@ class LinkListScreen : LinksScreen<RefyLink>(
             )
         }
         viewModel.linkDescriptionError = remember { mutableStateOf(false) }
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
+        if(show.value)
+            viewModel.suspendRefresher()
         val resetLayout = {
             show.value = false
+            viewModel.restartRefresher()
             viewModel.linkReference.value = ""
             viewModel.linkReferenceError.value = false
             viewModel.linkDescription.value = ""

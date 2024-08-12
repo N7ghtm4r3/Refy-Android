@@ -177,12 +177,16 @@ fun AddItemToContainer(
     title: Int,
     confirmAction: (List<String>) -> Unit
 ) {
-    viewModel.SuspendUntilElementOnScreen(
-        elementVisible = show
-    )
+    if(show.value)
+        viewModel.suspendRefresher()
+    val resetLayout = {
+        show.value = false
+        viewModel.restartRefresher()
+    }
     val ids = mutableListOf<String>()
     EquinoxAlertDialog(
         show = show,
+        onDismissAction = resetLayout,
         icon = icon,
         title = stringResource(title),
         text = {
@@ -219,7 +223,10 @@ fun AddItemToContainer(
             }
         },
         dismissText = stringResource(R.string.dismiss),
-        confirmAction = { confirmAction.invoke(ids) },
+        confirmAction = {
+            confirmAction.invoke(ids)
+            resetLayout.invoke()
+        },
         confirmText = stringResource(R.string.add),
     )
 }
@@ -274,12 +281,14 @@ fun ExpandTeamMembers(
     show: MutableState<Boolean>,
     teams: List<Team>
 ) {
-    viewModel.SuspendUntilElementOnScreen(
-        elementVisible = show
-    )
+    val resetLayout = {
+        show.value = false
+        viewModel.restartRefresher()
+    }
     if(show.value) {
+        viewModel.suspendRefresher()
         ModalBottomSheet(
-            onDismissRequest = { show.value = false }
+            onDismissRequest = resetLayout
         ) {
             LazyColumn(
                 modifier = Modifier
@@ -432,12 +441,15 @@ private fun RolesMenu(
             else
                 Color.Unspecified
         )
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = changeRole
-        )
+        if(changeRole.value)
+            viewModel.suspendRefresher()
+        val resetLayout = {
+            changeRole.value = false
+            viewModel.restartRefresher()
+        }
         DropdownMenu(
             expanded = changeRole.value,
-            onDismissRequest = { changeRole.value = false }
+            onDismissRequest = resetLayout
         ) {
             TeamRole.entries.forEach { role ->
                 DropdownMenuItem(

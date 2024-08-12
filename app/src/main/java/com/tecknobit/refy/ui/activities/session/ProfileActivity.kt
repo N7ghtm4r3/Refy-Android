@@ -77,7 +77,7 @@ import com.tecknobit.equinox.inputs.InputValidator.isPasswordValid
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
-import com.tecknobit.refy.helpers.NavigationHelper.Companion.resetActiveTab
+import com.tecknobit.refy.helpers.NavigationHelper.Companion.resetFirstTab
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.getFilePath
@@ -575,7 +575,7 @@ class ProfileActivity : ComponentActivity() {
      * No-any params required
      */
     private fun navToSplash() {
-        resetActiveTab()
+        resetFirstTab()
         startActivity(Intent(this@ProfileActivity, SplashScreen::class.java))
     }
     

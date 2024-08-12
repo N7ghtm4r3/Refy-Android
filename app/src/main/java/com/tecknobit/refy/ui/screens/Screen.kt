@@ -26,9 +26,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -115,7 +115,8 @@ abstract class Screen {
                     Text(
                         text = title,
                         fontFamily = displayFontFamily,
-                        fontSize = 22.sp,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
                         fontStyle = AppTypography.titleMedium.fontStyle
                     )
                     ItemDescription(

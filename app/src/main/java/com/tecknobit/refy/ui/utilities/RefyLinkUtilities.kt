@@ -218,11 +218,15 @@ interface RefyLinkUtilities<T : RefyLink> {
         show: MutableState<Boolean>,
         link: T
     ) {
-        viewModel.SuspendUntilElementOnScreen(
-            elementVisible = show
-        )
+        if(show.value)
+            viewModel.suspendRefresher()
+        val resetLayout = {
+            show.value = false
+            viewModel.restartRefresher()
+        }
         EquinoxAlertDialog(
             show = show,
+            onDismissAction = resetLayout,
             icon = Icons.Default.Delete,
             title = stringResource(R.string.delete_link),
             text = stringResource(R.string.delete_link_message),

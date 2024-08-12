@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.session.create.CreateCollectionActivity
 import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refy.ui.toColor
@@ -45,6 +45,8 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
     @Composable
     override fun ShowContent() {
         viewModel.setActiveContext(this::class.java)
+        viewModel.setCurrentUserOwnedLinks()
+        viewModel.setCurrentUserOwnedTeams()
         screenViewModel = viewModel
         viewModel.getCollections()
         collections = viewModel.collections.collectAsState().value
@@ -102,7 +104,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
             teams = collection.teams,
             optionsBar = {
                 AnimatedVisibility(
-                    visible = collection.canBeUpdatedByUser(user.id),
+                    visible = collection.canBeUpdatedByUser(localUser.userId),
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -124,7 +126,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
         OptionsBar(
             options = {
                 val links = getItemRelations(
-                    userList = user.links,
+                    userList = localUser.links,
                     linkList = collection.links
                 )
                 AddLinksButton(
@@ -135,7 +137,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
                     tint = LocalContentColor.current
                 )
                 val teams = getItemRelations(
-                    userList = user.teams,
+                    userList = localUser.teams,
                     linkList = collection.teams
                 )
                 AddTeamsButton(
