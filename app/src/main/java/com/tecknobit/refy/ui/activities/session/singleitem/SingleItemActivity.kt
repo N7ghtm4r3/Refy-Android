@@ -64,6 +64,23 @@ abstract class SingleItemActivity <T : RefyItem> (
 
     protected var activityColorTheme: Color = Color.Red
 
+    protected open fun prepareView() {
+        initItemFromIntent()
+    }
+
+    @Composable
+    @NonRestartableComposable
+    protected fun ContentView(
+        validItemUi: @Composable () -> Unit
+    ) {
+        RefyTheme {
+            if(!itemExists)
+                InvalidItemUi()
+            else
+                validItemUi.invoke()
+        }
+    }
+
     @Composable
     protected abstract fun InitViewModel()
 
@@ -110,7 +127,7 @@ abstract class SingleItemActivity <T : RefyItem> (
 
     @Composable
     @NonRestartableComposable
-    private fun NavButton() {
+    protected fun NavButton() {
         iconsColor = LocalContentColor.current
         IconButton(
             onClick = { finish() }

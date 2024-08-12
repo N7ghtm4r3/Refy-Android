@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class CollectionActivityViewModel(
     snackbarHostState: SnackbarHostState,
-    initialCollection: LinksCollection
+    val initialCollection: LinksCollection
 ) : LinksCollectionViewModelHelper(
     snackbarHostState = snackbarHostState
 ) {
@@ -28,7 +28,7 @@ class CollectionActivityViewModel(
                 requester.sendRequest(
                     request = {
                         requester.getCollection(
-                            collection = _collection.value
+                            collectionId = initialCollection.id
                         )
                     },
                     onSuccess = { response ->
