@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Groups
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -144,7 +143,6 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
     }
 
     @Composable
-    @NonRestartableComposable
     override fun InitViewModel() {
         viewModel = CollectionActivityViewModel(
             snackbarHostState = snackbarHostState,

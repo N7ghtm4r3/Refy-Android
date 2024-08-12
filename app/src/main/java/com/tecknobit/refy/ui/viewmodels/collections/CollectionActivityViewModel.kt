@@ -5,7 +5,6 @@ import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refycore.records.LinksCollection
-import com.tecknobit.refycore.records.LinksCollection.getInstance
 import com.tecknobit.refycore.records.links.RefyLink
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +32,9 @@ class CollectionActivityViewModel(
                         )
                     },
                     onSuccess = { response ->
-                        _collection.value = getInstance(response.getJSONObject(RESPONSE_MESSAGE_KEY))
+                        _collection.value = LinksCollection.getInstance(
+                            response.getJSONObject(RESPONSE_MESSAGE_KEY)
+                        )
                     },
                     onFailure = { showSnackbarMessage(it) }
                 )
@@ -44,7 +45,18 @@ class CollectionActivityViewModel(
     fun removeLinkFromCollection(
         link: RefyLink
     ) {
-        // TODO: MAKE REQUEST
+        val collectionsLinks = _collection.value.links
+        collectionsLinks.remove(link)
+        requester.sendRequest(
+            request = {
+                requester.manageCollectionLinks(
+                    collection = _collection.value,
+                    links = collectionsLinks.map { link.id }
+                )
+            },
+            onSuccess = {},
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
 }

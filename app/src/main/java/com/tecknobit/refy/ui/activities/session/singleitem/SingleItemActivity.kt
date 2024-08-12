@@ -68,7 +68,6 @@ abstract class SingleItemActivity <T : RefyItem> (
     protected abstract fun InitViewModel()
 
     @Composable
-    @NonRestartableComposable
     protected fun DisplayItem(
         topBarColor: Color? = MaterialTheme.colorScheme.primaryContainer,
         title: @Composable () -> Unit = {
