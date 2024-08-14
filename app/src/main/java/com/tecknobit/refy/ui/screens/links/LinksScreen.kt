@@ -157,7 +157,7 @@ abstract class LinksScreen <T : RefyLink> (
                     Row {
                         val collections = getItemRelations(
                             userList = localUser.collections,
-                            linkList = link.collections
+                            currentAttachments = link.collections
                         )
                         OptionButton(
                             icon = Icons.Default.CreateNewFolder,
@@ -173,7 +173,7 @@ abstract class LinksScreen <T : RefyLink> (
                         )
                         val teams = getItemRelations(
                             userList = localUser.teams,
-                            linkList = link.teams
+                            currentAttachments = link.teams
                         )
                         OptionButton(
                             icon = Icons.Default.GroupAdd,

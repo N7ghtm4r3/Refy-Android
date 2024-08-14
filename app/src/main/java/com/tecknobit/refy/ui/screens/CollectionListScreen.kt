@@ -127,7 +127,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
             options = {
                 val links = getItemRelations(
                     userList = localUser.links,
-                    linkList = collection.links
+                    currentAttachments = collection.links
                 )
                 AddLinksButton(
                     viewModel = viewModel,
@@ -138,7 +138,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
                 )
                 val teams = getItemRelations(
                     userList = localUser.teams,
-                    linkList = collection.teams
+                    currentAttachments = collection.teams
                 )
                 AddTeamsButton(
                     viewModel = viewModel,

@@ -115,7 +115,7 @@ interface LinksCollectionUtilities {
                 viewModel.deleteCollection(
                     collection = collection,
                     onSuccess = {
-                        show.value = false
+                        resetLayout.invoke()
                         activity?.finish()
                     }
                 )

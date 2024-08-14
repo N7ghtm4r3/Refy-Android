@@ -132,9 +132,12 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
                 },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(
-                    getCompleteMediaItemUrl(
-                        relativeMediaUrl = viewModel.logoPic.value
-                    )
+                    if(itemExists && viewModel.logoPic.value.contains(item!!.id)) {
+                        getCompleteMediaItemUrl(
+                            relativeMediaUrl = viewModel.logoPic.value
+                        )
+                    } else
+                        viewModel.logoPic.value
                 )
                 .crossfade(enable = true)
                 .crossfade(500)

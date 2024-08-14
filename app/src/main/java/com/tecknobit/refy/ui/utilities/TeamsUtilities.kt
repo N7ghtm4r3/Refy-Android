@@ -116,7 +116,7 @@ interface TeamsUtilities {
                 viewModel.deleteTeam(
                     team = team,
                     onSuccess = {
-                        show.value = false
+                        resetLayout.invoke()
                         activity?.finish()
                     }
                 )
@@ -174,7 +174,7 @@ interface TeamsUtilities {
                 viewModel.leaveTeam(
                     team = team,
                     onSuccess = {
-                        show.value = false
+                        resetLayout.invoke()
                         activity?.finish()
                     }
                 )

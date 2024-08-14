@@ -142,12 +142,16 @@ fun ItemDescription(
 
 fun <T: RefyItem> getItemRelations(
     userList: List<T>,
-    linkList: List<T>
+    currentAttachments: List<T>
 ): List<T> {
-    val containers = mutableListOf<T>()
-    containers.addAll(userList)
-    containers.removeAll(linkList)
-    return containers
+    val attachments = mutableListOf<T>()
+    attachments.addAll(userList)
+    attachments.removeAll { attachment ->
+        currentAttachments.any { currentAttachment ->
+            attachment.id == currentAttachment.id
+        }
+    }
+    return attachments
 }
 
 fun Modifier.drawOneSideBorder(

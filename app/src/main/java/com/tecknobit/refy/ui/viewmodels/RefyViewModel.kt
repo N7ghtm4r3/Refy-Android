@@ -17,10 +17,16 @@ abstract class RefyViewModel(
     snackbarHostState = snackbarHostState
 ) {
 
+    private var linksLoaded: Boolean = false
+
+    private var collectionsLoaded: Boolean = false
+
+    private var teamsLoaded: Boolean = false
+
     fun setCurrentUserOwnedLinks(
         forceRefresh: Boolean = false
     ) {
-        if(localUser.links.isEmpty() || forceRefresh) {
+        if(!linksLoaded || forceRefresh) {
             requester.sendRequest(
                 request = {
                     requester.getLinks(
@@ -29,6 +35,7 @@ abstract class RefyViewModel(
                 },
                 onSuccess = { response ->
                     localUser.links = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    linksLoaded = true
                 },
                 onFailure = { showSnackbarMessage(it) }
             )
@@ -38,7 +45,7 @@ abstract class RefyViewModel(
     fun setCurrentUserOwnedCollections(
         forceRefresh: Boolean = false
     ) {
-        if(localUser.collections.isEmpty() || forceRefresh) {
+        if(!collectionsLoaded || forceRefresh) {
             requester.sendRequest(
                 request = {
                     requester.getCollections(
@@ -47,6 +54,7 @@ abstract class RefyViewModel(
                 },
                 onSuccess = { response ->
                     localUser.collections = returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    collectionsLoaded = true
                 },
                 onFailure = { showSnackbarMessage(it) }
             )
@@ -56,7 +64,7 @@ abstract class RefyViewModel(
     fun setCurrentUserOwnedTeams(
         forceRefresh: Boolean = false
     ) {
-        if(localUser.teams.isEmpty() || forceRefresh) {
+        if(!teamsLoaded || forceRefresh) {
             requester.sendRequest(
                 request = {
                     requester.getTeams(
@@ -65,6 +73,7 @@ abstract class RefyViewModel(
                 },
                 onSuccess = { response ->
                     localUser.teams = returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    teamsLoaded = true
                 },
                 onFailure = { showSnackbarMessage(it) }
             )

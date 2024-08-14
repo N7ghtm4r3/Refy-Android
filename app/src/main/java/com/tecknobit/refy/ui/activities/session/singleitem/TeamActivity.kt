@@ -140,7 +140,7 @@ class TeamActivity : SingleItemActivity<Team>(
                                     Row {
                                         val links = getItemRelations(
                                             userList = localUser.links,
-                                            linkList = item!!.links
+                                            currentAttachments = item!!.links
                                         )
                                         val addLinks = remember { mutableStateOf(false) }
                                         AddLinksButton(
@@ -153,7 +153,7 @@ class TeamActivity : SingleItemActivity<Team>(
                                         val addCollections = remember { mutableStateOf(false) }
                                         val collections = getItemRelations(
                                             userList = localUser.collections,
-                                            linkList = item!!.collections
+                                            currentAttachments = item!!.collections
                                         )
                                         AddCollectionsButton(
                                             viewModel = viewModel,

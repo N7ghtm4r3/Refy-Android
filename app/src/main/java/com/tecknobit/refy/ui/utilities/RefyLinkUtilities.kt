@@ -235,7 +235,7 @@ interface RefyLinkUtilities<T : RefyLink> {
                 viewModel.deleteLink(
                     link = link,
                     onSuccess = {
-                        show.value = false
+                        resetLayout.invoke()
                         activity?.finish()
                     }
                 )

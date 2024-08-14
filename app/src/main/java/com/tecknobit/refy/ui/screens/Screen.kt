@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.times
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
