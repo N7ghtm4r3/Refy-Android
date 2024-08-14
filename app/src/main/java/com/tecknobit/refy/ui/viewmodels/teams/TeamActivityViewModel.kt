@@ -1,6 +1,8 @@
 package com.tecknobit.refy.ui.viewmodels.teams
 
 import androidx.compose.material3.SnackbarHostState
+import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.Team
@@ -26,8 +28,17 @@ class TeamActivityViewModel(
         execRefreshingRoutine(
             currentContext = TeamActivity::class.java,
             routine = {
-                // TODO: MAKE THE REQUEST THEN
-
+                requester.sendRequest(
+                    request = {
+                        requester.getTeam(
+                            team = _team.value
+                        )
+                    },
+                    onSuccess = { hResponse ->
+                        _team.value = Team(hResponse.getJSONObject(RESPONSE_MESSAGE_KEY))
+                    },
+                    onFailure = { showSnackbarMessage(it) }
+                )
             }
         )
     }
@@ -35,13 +46,35 @@ class TeamActivityViewModel(
     fun removeLinkFromTeam(
         link: RefyLink
     ) {
-        // TODO: MAKE THE REQUEST THEN
+        val teamLinks = _team.value.links
+        teamLinks.remove(link)
+        requester.sendRequest(
+            request = {
+                requester.manageTeamLinks(
+                    team = _team.value,
+                    links = teamLinks.map { link.id }
+                )
+            },
+            onSuccess = {},
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     fun removeCollectionFromTeam(
         collection: LinksCollection
     ) {
-        // TODO: MAKE THE REQUEST THEN
+        val teamCollections = _team.value.collections
+        teamCollections.remove(collection)
+        requester.sendRequest(
+            request = {
+                requester.manageTeamCollections(
+                    team = _team.value,
+                    collections = teamCollections.map { collection.id }
+                )
+            },
+            onSuccess = {},
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     fun changeMemberRole(
@@ -49,14 +82,32 @@ class TeamActivityViewModel(
         role: TeamRole,
         onSuccess: () -> Unit
     ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        requester.sendRequest(
+            request = {
+                requester.changeMemberRole(
+                    team = _team.value,
+                    member = member,
+                    role = role
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
     fun removeMember(
         member: RefyTeamMember
     ) {
-        // TODO: MAKE THE REQUEST THEN
+        requester.sendRequest(
+            request = {
+                requester.removeMember(
+                    team = _team.value,
+                    member = member
+                )
+            },
+            onSuccess = { },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
 }

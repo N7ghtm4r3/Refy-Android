@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.tecknobit.refy.ui.activities.session.singleitem
 
 import android.content.Intent
@@ -32,9 +34,13 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
@@ -47,9 +53,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
-import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.ui.utilities.ItemDescription
@@ -67,7 +73,7 @@ import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.links.RefyLink
 
 class TeamActivity : SingleItemActivity<Team>(
-    items = user.teams,
+    items = localUser.teams,
     invalidMessage = R.string.invalid_team
 ), RefyLinkUtilities<RefyLink>, TeamsUtilities {
 
@@ -82,88 +88,103 @@ class TeamActivity : SingleItemActivity<Team>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        prepareView()
         setContent {
-            RefyTheme {
-                activityColorTheme = MaterialTheme.colorScheme.primary
+            ContentView {
+                item = viewModel.team.collectAsState().value
+                activityColorTheme = MaterialTheme.colorScheme.primaryContainer
+                isUserAdmin = item!!.isAdmin(localUser.userId)
+                linksExpanded = remember { mutableStateOf(item!!.links.isNotEmpty()) }
                 membersExpanded = remember { mutableStateOf(false) }
-                DisplayItem(
-                    topBarColor = MaterialTheme.colorScheme.primaryContainer,
-                    title = {
-                        Box {
-                            Logo(
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart),
-                                picSize = 65.dp,
-                                picUrl = item!!.logoPic
-                            )
-                            Column (
-                                modifier = Modifier
-                                    .fillMaxHeight(),
-                                verticalArrangement = Arrangement.Bottom
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .align(Alignment.End)
-                                        .padding(
-                                            start = 35.dp
-                                        ),
-                                    text = item!!.title,
-                                    fontSize = 24.sp
-                                )
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                    topBar = {
+                        LargeTopAppBar(
+                            navigationIcon = { NavButton() },
+                            title = {
+                                Box {
+                                    Logo(
+                                        modifier = Modifier
+                                            .align(Alignment.BottomStart),
+                                        picSize = 65.dp,
+                                        picUrl = getCompleteMediaItemUrl(
+                                            relativeMediaUrl = item!!.logoPic
+                                        )
+                                    )
+                                    Column (
+                                        modifier = Modifier
+                                            .fillMaxHeight(),
+                                        verticalArrangement = Arrangement.Bottom
+                                    ) {
+                                        Text(
+                                            modifier = Modifier
+                                                .align(Alignment.End)
+                                                .padding(
+                                                    start = 35.dp
+                                                ),
+                                            text = item!!.title,
+                                            fontSize = 24.sp
+                                        )
+                                    }
+                                }
+                            },
+                            colors = TopAppBarDefaults.largeTopAppBarColors(
+                                containerColor = activityColorTheme
+                            ),
+                            actions = {
+                                AnimatedVisibility(
+                                    visible = isUserAdmin,
+                                    enter = fadeIn(),
+                                    exit = fadeOut()
+                                ) {
+                                    Row {
+                                        val links = getItemRelations(
+                                            userList = localUser.links,
+                                            linkList = item!!.links
+                                        )
+                                        val addLinks = remember { mutableStateOf(false) }
+                                        AddLinksButton(
+                                            viewModel = viewModel,
+                                            show = addLinks,
+                                            links = links,
+                                            team = item!!,
+                                            tint = iconsColor
+                                        )
+                                        val addCollections = remember { mutableStateOf(false) }
+                                        val collections = getItemRelations(
+                                            userList = localUser.collections,
+                                            linkList = item!!.collections
+                                        )
+                                        AddCollectionsButton(
+                                            viewModel = viewModel,
+                                            show = addCollections,
+                                            collections = collections,
+                                            team = item!!,
+                                            tint = iconsColor
+                                        )
+                                    }
+                                }
+                                if(item!!.isTheAuthor(localUser.userId)) {
+                                    val deleteTeam = remember { mutableStateOf(false) }
+                                    DeleteTeamButton(
+                                        activity = this@TeamActivity,
+                                        viewModel = viewModel,
+                                        deleteTeam = deleteTeam,
+                                        team = item!!,
+                                        tint = iconsColor
+                                    )
+                                } else {
+                                    val leaveTeam = remember { mutableStateOf(false) }
+                                    LeaveTeamButton(
+                                        activity = this@TeamActivity,
+                                        viewModel = viewModel,
+                                        leaveTeam = leaveTeam,
+                                        team = item!!,
+                                        tint = iconsColor
+                                    )
+                                }
                             }
-                        }
-                    },
-                    actions = {
-                        AnimatedVisibility(
-                            visible = isUserAdmin,
-                            enter = fadeIn(),
-                            exit = fadeOut()
-                        ) {
-                            Row {
-                                val links = getItemRelations(
-                                    userList = user.links,
-                                    linkList = item!!.links
-                                )
-                                val addLinks = remember { mutableStateOf(false) }
-                                AddLinksButton(
-                                    viewModel = viewModel,
-                                    show = addLinks,
-                                    links = links,
-                                    team = item!!,
-                                    tint = iconsColor
-                                )
-                                val addCollections = remember { mutableStateOf(false) }
-                                val collections = getItemRelations(
-                                    userList = user.collections,
-                                    linkList = item!!.collections
-                                )
-                                AddCollectionsButton(
-                                    viewModel = viewModel,
-                                    show = addCollections,
-                                    collections = collections,
-                                    team = item!!,
-                                    tint = iconsColor
-                                )
-                            }
-                        }
-                        val leaveTeam = remember { mutableStateOf(false) }
-                        LeaveTeamButton(
-                            activity = this@TeamActivity,
-                            viewModel = viewModel,
-                            leaveTeam = leaveTeam,
-                            team = item!!,
-                            tint = iconsColor
                         )
-                        if(item!!.isTheAuthor(user.id)) {
-                            val deleteTeam = remember { mutableStateOf(false) }
-                            DeleteTeamButton(
-                                activity = this@TeamActivity,
-                                viewModel = viewModel,
-                                deleteTeam = deleteTeam,
-                                team = item!!,
-                                tint = iconsColor
-                            )
-                        }
                     },
                     floatingActionButton = {
                         AnimatedVisibility(
@@ -181,29 +202,32 @@ class TeamActivity : SingleItemActivity<Team>(
                                 )
                             }
                         }
-                    },
-                    content = { paddingValues ->
-                        TeamContent(
-                            paddingValues = paddingValues
-                        )
                     }
-                )
-                linksExpanded = remember { mutableStateOf(item!!.links.isNotEmpty()) }
+                ) { paddingValues ->
+                    TeamContent(
+                        paddingValues = paddingValues
+                    )
+                }
             }
+        }
+    }
+
+    override fun prepareView() {
+        super.prepareView()
+        if(itemExists) {
+            viewModel = TeamActivityViewModel(
+                snackbarHostState = snackbarHostState,
+                initialTeam = item!!
+            )
+            viewModel.setActiveContext(this::class.java)
+            viewModel.refreshTeam()
         }
     }
 
     @Composable
     @NonRestartableComposable
     override fun InitViewModel() {
-        viewModel = TeamActivityViewModel(
-            snackbarHostState = snackbarHostState,
-            initialTeam = item!!
-        )
-        viewModel.setActiveContext(this::class.java)
-        viewModel.refreshTeam()
-        item = viewModel.team.collectAsState().value
-        isUserAdmin = item!!.isAdmin(user.id)
+
     }
 
     @Composable
@@ -350,7 +374,7 @@ class TeamActivity : SingleItemActivity<Team>(
                 size = 8.dp
             ),
             onClick = {
-                user.collections = item!!.collections
+                localUser.collections = item!!.collections
                 val intent = Intent(this, CollectionActivity::class.java)
                 intent.putExtra(IDENTIFIER_KEY, collection.id)
                 startActivity(intent)

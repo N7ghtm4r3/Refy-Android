@@ -43,14 +43,16 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.getFilePath
-import com.tecknobit.refy.ui.utilities.UserPlaque
+import com.tecknobit.refy.ui.utilities.DefaultPlaque
 import com.tecknobit.refy.ui.viewmodels.create.CreateTeamViewModel
+import com.tecknobit.refycore.records.RefyUser.DEFAULT_PROFILE_PIC
 import com.tecknobit.refycore.records.Team
 
 class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
-    items = user.teams,
+    items = localUser.teams,
     invalidMessage = R.string.invalid_team,
     scrollable = true
 ) {
@@ -82,7 +84,7 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
                 if(itemExists)
                     item!!.logoPic
                 else
-                    "" // TODO: SET THE DEFAULT PATH INSTEAD
+                    DEFAULT_PROFILE_PIC
             )
         }
         ScaffoldContent(
@@ -129,7 +131,11 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
                     photoPicker.launch(PickVisualMediaRequest(ImageOnly))
                 },
             model = ImageRequest.Builder(LocalContext.current)
-                .data(viewModel.logoPic.value)
+                .data(
+                    getCompleteMediaItemUrl(
+                        relativeMediaUrl = viewModel.logoPic.value
+                    )
+                )
                 .crossfade(enable = true)
                 .crossfade(500)
                 //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
@@ -189,7 +195,7 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
     private fun MembersSection() {
         val keyboardController = LocalSoftwareKeyboardController.current
         viewModel.fetchCurrentUsers()
-        val currentUsers = viewModel.currentUsers.collectAsState().value
+        val currentUsers = viewModel.potentialMembers.collectAsState().value
         CustomSection(
             header = R.string.members
         ) {
@@ -198,8 +204,10 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
                 key = { member -> member.id }
             ) { member ->
                 val checked = remember { mutableStateOf(viewModel.itemDedicatedList.contains(member.id)) }
-                UserPlaque(
-                    user = member,
+                DefaultPlaque(
+                    profilePic = member.profilePic,
+                    completeName = member.completeName,
+                    tagName = member.tagName,
                     trailingContent = {
                         ItemCheckbox(
                             checked = checked,

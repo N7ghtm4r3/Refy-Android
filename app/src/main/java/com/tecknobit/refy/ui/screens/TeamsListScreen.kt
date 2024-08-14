@@ -40,9 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.session.create.CreateTeamActivity
 import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
+import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ItemDescription
@@ -103,7 +104,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
     private fun TeamCard(
         team: Team
     ) {
-        val isAdmin = team.isAdmin(user.id)
+        val isAdmin = team.isAdmin(localUser.userId)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,7 +168,9 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                         size = 10.dp
                     ),
                     addShadow = true,
-                    picUrl = team.logoPic,
+                    picUrl = getCompleteMediaItemUrl(
+                        relativeMediaUrl = team.logoPic
+                    )
                 )
             },
             overlineContent = {
@@ -212,7 +215,6 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
         val addCollections = remember { mutableStateOf(false) }
         val leaveTeam = remember { mutableStateOf(false) }
         val deleteTeam = remember { mutableStateOf(false) }
-        val context = LocalContext.current
         OptionsBar(
             options = {
                 AnimatedVisibility(
@@ -223,7 +225,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                     Row {
                         val iconsColor = LocalContentColor.current
                         val links = getItemRelations(
-                            userList = user.links,
+                            userList = localUser.links,
                             linkList = team.links
                         )
                         AddLinksButton(
@@ -234,7 +236,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                             tint = iconsColor
                         )
                         val collections = getItemRelations(
-                            userList = user.collections,
+                            userList = localUser.collections,
                             linkList = team.collections
                         )
                         AddCollectionsButton(
@@ -252,20 +254,21 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                     horizontalAlignment = Alignment.End
                 ) {
                     Row {
-                        LeaveTeamButton(
-                            activity = null,
-                            viewModel = viewModel,
-                            leaveTeam = leaveTeam,
-                            team = team,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        if(team.isTheAuthor(user.id)) {
+                        if(team.isTheAuthor(localUser.userId)) {
                             DeleteTeamButton(
                                 activity = null,
                                 viewModel = viewModel,
                                 deleteTeam = deleteTeam,
                                 team = team,
                                 tint = MaterialTheme.colorScheme.error
+                            )
+                        } else {
+                            LeaveTeamButton(
+                                activity = null,
+                                viewModel = viewModel,
+                                leaveTeam = leaveTeam,
+                                team = team,
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }

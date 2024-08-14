@@ -59,7 +59,7 @@ interface TeamsUtilities {
             availableItems = availableCollections,
             title = R.string.add_collection_to_team,
             confirmAction = { ids ->
-                viewModel.addCollectionsToTeam(
+                viewModel.manageTeamCollections(
                     team = team,
                     collections = ids,
                     onSuccess = { show.value = false },

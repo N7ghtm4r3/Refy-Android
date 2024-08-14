@@ -121,7 +121,7 @@ interface RefyLinkUtilities<T : RefyLink> {
             availableItems = availableLinks,
             title = R.string.add_link_to_team,
             confirmAction = { ids ->
-                viewModel.addLinksToTeam(
+                viewModel.manageTeamLinks(
                     team = team,
                     links = ids,
                     onSuccess = { show.value = false },

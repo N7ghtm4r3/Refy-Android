@@ -67,7 +67,7 @@ import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -330,12 +330,12 @@ fun TeamMemberPlaque(
     member: RefyTeamMember,
     viewModel: TeamActivityViewModel
 ) {
-    val isAuthorizedUser = team.isAdmin(user.id) && member.id != user.id
+    val isAuthorizedUser = team.isAdmin(localUser.userId) && member.id != localUser.userId
     val enableOption = isAuthorizedUser && !team.isTheAuthor(member.id)
     DefaultPlaque(
         profilePic = member.profilePic,
         completeName = member.completeName,
-        tagName = member.completeName,
+        tagName = member.tagName,
         supportingContent = {
             RolesMenu(
                 enableOption = enableOption,
@@ -386,7 +386,7 @@ fun UserPlaque(
 
 @Composable
 @NonRestartableComposable
-private fun DefaultPlaque(
+fun DefaultPlaque(
     colors: ListItemColors = ListItemDefaults.colors(),
     profilePicSize: Dp = 50.dp,
     profilePic: String,
@@ -400,7 +400,9 @@ private fun DefaultPlaque(
         leadingContent = {
             Logo(
                 picSize = profilePicSize,
-                picUrl = "${localUser.hostAddress}/$profilePic"
+                picUrl = getCompleteMediaItemUrl(
+                    relativeMediaUrl = profilePic
+                )
             )
         },
         headlineContent = {
@@ -455,7 +457,11 @@ private fun RolesMenu(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = role.name
+                            text = role.name,
+                            color = if(role == ADMIN)
+                                MaterialTheme.colorScheme.error
+                            else
+                                Color.Unspecified
                         )
                     },
                     onClick = {

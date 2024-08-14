@@ -34,6 +34,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
@@ -193,7 +194,11 @@ abstract class Screen {
                         .clip(CircleShape)
                         .size(pictureSize),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data("${localUser.hostAddress}/$picture")
+                        .data(
+                            getCompleteMediaItemUrl(
+                                relativeMediaUrl = picture
+                            )
+                        )
                         .crossfade(enable = true)
                         .crossfade(500)
                         //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
