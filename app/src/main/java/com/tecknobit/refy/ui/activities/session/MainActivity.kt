@@ -140,4 +140,14 @@ class MainActivity : ComponentActivity() {
         })
     }
 
+    override fun onPause() {
+        super.onPause()
+        activeTab.value.screen.suspendScreenRefreshing()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activeTab.value.screen.restartScreenRefreshing()
+    }
+
 }

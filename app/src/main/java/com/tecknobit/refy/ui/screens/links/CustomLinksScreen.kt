@@ -2,7 +2,6 @@ package com.tecknobit.refy.ui.screens.links
 
 import android.content.Intent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.platform.LocalContext
 import com.tecknobit.refy.ui.activities.session.create.CreateCustomLinkActivity
@@ -16,7 +15,9 @@ class CustomLinksScreen : LinksScreen<CustomRefyLink>(
 
     @Composable
     override fun ShowContent() {
-        viewModel.setActiveContext(this::class.java)
+        val context = this::class.java
+        currentScreenContext = context
+        viewModel.setActiveContext(context)
         LinksList()
     }
 
@@ -42,18 +43,13 @@ class CustomLinksScreen : LinksScreen<CustomRefyLink>(
                     destination = CustomLinkActivity::class.java
                 )
             },
+            onLongClick = {
+                navToDedicatedItemActivity(
+                    itemId = link.id,
+                    destination = CreateCustomLinkActivity::class.java
+                )
+            },
             showCompleteOptionsBar = false
-        )
-    }
-
-    @Composable
-    override fun EditLink(
-        editLink: MutableState<Boolean>,
-        link: CustomRefyLink
-    ) {
-        navToDedicatedItemActivity(
-            itemId = link.id,
-            destination = CreateCustomLinkActivity::class.java
         )
     }
 

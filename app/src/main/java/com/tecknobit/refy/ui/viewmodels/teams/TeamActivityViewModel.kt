@@ -46,13 +46,13 @@ class TeamActivityViewModel(
     fun removeLinkFromTeam(
         link: RefyLink
     ) {
-        val teamLinks = _team.value.links
-        teamLinks.remove(link)
+        val teamLinks = _team.value.linkIds
+        teamLinks.remove(link.id)
         requester.sendRequest(
             request = {
                 requester.manageTeamLinks(
                     team = _team.value,
-                    links = teamLinks.map { link.id }
+                    links = teamLinks
                 )
             },
             onSuccess = {},
@@ -63,13 +63,13 @@ class TeamActivityViewModel(
     fun removeCollectionFromTeam(
         collection: LinksCollection
     ) {
-        val teamCollections = _team.value.collections
-        teamCollections.remove(collection)
+        val teamCollections = _team.value.collectionsIds
+        teamCollections.remove(collection.id)
         requester.sendRequest(
             request = {
                 requester.manageTeamCollections(
                     team = _team.value,
-                    collections = teamCollections.map { collection.id }
+                    collections = teamCollections
                 )
             },
             onSuccess = {},

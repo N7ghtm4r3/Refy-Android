@@ -45,13 +45,13 @@ class CollectionActivityViewModel(
     fun removeLinkFromCollection(
         link: RefyLink
     ) {
-        val collectionsLinks = _collection.value.links
-        collectionsLinks.remove(link)
+        val collectionsLinks = _collection.value.linkIds
+        collectionsLinks.remove(link.id)
         requester.sendRequest(
             request = {
                 requester.manageCollectionLinks(
                     collection = _collection.value,
-                    links = collectionsLinks.map { link.id }
+                    links = collectionsLinks
                 )
             },
             onSuccess = {},

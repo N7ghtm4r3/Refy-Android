@@ -64,7 +64,9 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
 
     @Composable
     override fun ShowContent() {
-        viewModel.setActiveContext(this::class.java)
+        val context = this::class.java
+        currentScreenContext = context
+        viewModel.setActiveContext(context)
         screenViewModel = viewModel
         viewModel.getTeams()
         teams = viewModel.teams.collectAsState().value

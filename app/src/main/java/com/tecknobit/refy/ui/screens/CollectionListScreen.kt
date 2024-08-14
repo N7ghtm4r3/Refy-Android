@@ -44,7 +44,9 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
 
     @Composable
     override fun ShowContent() {
-        viewModel.setActiveContext(this::class.java)
+        val context = this::class.java
+        currentScreenContext = context
+        viewModel.setActiveContext(context)
         viewModel.setCurrentUserOwnedLinks()
         viewModel.setCurrentUserOwnedTeams()
         screenViewModel = viewModel

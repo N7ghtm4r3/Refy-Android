@@ -85,25 +85,12 @@ abstract class LinksScreen <T : RefyLink> (
 
     @Composable
     @NonRestartableComposable
-    protected abstract fun EditLink(
-        editLink: MutableState<Boolean>,
-        link: T
-    )
-
-    @Composable
-    @NonRestartableComposable
     fun RefyLinkCard(
         link: T,
         onClick: () -> Unit,
+        onLongClick: () -> Unit,
         showCompleteOptionsBar: Boolean = true
     ) {
-        val editLink = remember { mutableStateOf(false) }
-        if(editLink.value) {
-            EditLink(
-                editLink = editLink,
-                link = link
-            )
-        }
         ItemCard(
             onClick = onClick,
             onDoubleClick = {
@@ -112,7 +99,7 @@ abstract class LinksScreen <T : RefyLink> (
                     link = link
                 )
             },
-            onLongClick = { editLink.value = true },
+            onLongClick = onLongClick,
             title = link.title,
             description = link.description,
             teams = link.teams,

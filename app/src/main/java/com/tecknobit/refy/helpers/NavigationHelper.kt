@@ -96,7 +96,7 @@ class NavigationHelper private constructor() {
                     },
                     selected = selected,
                     onClick = {
-                        activeTab.value.screen.suspendRefreshing()
+                        activeTab.value.screen.suspendScreenRefreshing()
                         activeTab.value = navTab
                         selectedItem = index
                     }

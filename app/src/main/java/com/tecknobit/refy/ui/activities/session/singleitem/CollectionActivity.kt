@@ -178,4 +178,9 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.suspendRefresher()
+    }
+
 }

@@ -458,4 +458,17 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.suspendRefresher()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(::viewModel.isInitialized) {
+            viewModel.setActiveContext(this::class.java)
+            viewModel.restartRefresher()
+        }
+    }
+
 }

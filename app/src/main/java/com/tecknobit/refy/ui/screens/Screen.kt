@@ -47,6 +47,8 @@ abstract class Screen {
 
     protected lateinit var screenViewModel: EquinoxViewModel
 
+    protected lateinit var currentScreenContext: Class<*>
+
     protected lateinit var context: Context
 
     @Composable
@@ -57,7 +59,14 @@ abstract class Screen {
 
     abstract fun executeFabAction()
 
-    fun suspendRefreshing() {
+    fun restartScreenRefreshing() {
+        if(::screenViewModel.isInitialized) {
+            screenViewModel.setActiveContext(currentScreenContext)
+            screenViewModel.restartRefresher()
+        }
+    }
+
+    fun suspendScreenRefreshing() {
         screenViewModel.suspendRefresher()
     }
 

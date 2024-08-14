@@ -35,7 +35,9 @@ class LinkListScreen : LinksScreen<RefyLink>(
 
     @Composable
     override fun ShowContent() {
-        viewModel.setActiveContext(this::class.java)
+        val context = this::class.java
+        currentScreenContext = context
+        viewModel.setActiveContext(context)
         viewModel.setCurrentUserOwnedCollections()
         viewModel.setCurrentUserOwnedTeams()
         LinksList()
@@ -46,7 +48,14 @@ class LinkListScreen : LinksScreen<RefyLink>(
     override fun LinkCard(
         link: RefyLink,
     ) {
+        val editLink = remember { mutableStateOf(false) }
         val context = LocalContext.current
+        if(editLink.value) {
+            EditLink(
+                editLink = editLink,
+                link = link
+            )
+        }
         RefyLinkCard(
             link = link,
             onClick = {
@@ -54,7 +63,8 @@ class LinkListScreen : LinksScreen<RefyLink>(
                     context = context,
                     link = link
                 )
-            }
+            },
+            onLongClick = { editLink.value = true }
         )
     }
 
@@ -81,7 +91,7 @@ class LinkListScreen : LinksScreen<RefyLink>(
     }
 
     @Composable
-    override fun EditLink(
+    private fun EditLink(
         editLink: MutableState<Boolean>,
         link: RefyLink
     ) {
