@@ -147,7 +147,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                     )
                 }
                 OptionsBar(
-                    isMaintainer = isAdmin,
+                    isAdmin = isAdmin,
                     team = team
                 )
             }
@@ -210,7 +210,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
     @Composable
     @NonRestartableComposable
     private fun OptionsBar(
-        isMaintainer: Boolean,
+        isAdmin: Boolean,
         team: Team
     ) {
         val addLinks = remember { mutableStateOf(false) }
@@ -220,7 +220,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
         OptionsBar(
             options = {
                 AnimatedVisibility(
-                    visible = isMaintainer,
+                    visible = isAdmin,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {

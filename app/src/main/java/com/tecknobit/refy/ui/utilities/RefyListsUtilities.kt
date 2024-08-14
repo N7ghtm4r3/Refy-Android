@@ -140,6 +140,12 @@ fun ItemDescription(
     }
 }
 
+fun <T : RefyItem> isItemOwner(
+    item: T
+): Boolean {
+    return item.owner.id == localUser.userId
+}
+
 fun <T: RefyItem> getItemRelations(
     userList: List<T>,
     currentAttachments: List<T>

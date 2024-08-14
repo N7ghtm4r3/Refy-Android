@@ -92,6 +92,7 @@ abstract class LinksScreen <T : RefyLink> (
         showCompleteOptionsBar: Boolean = true
     ) {
         ItemCard(
+            item = link,
             onClick = onClick,
             onDoubleClick = {
                 showLinkReference(

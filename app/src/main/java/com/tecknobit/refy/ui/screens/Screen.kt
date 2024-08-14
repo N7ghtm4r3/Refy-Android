@@ -39,6 +39,8 @@ import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
 import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refy.ui.utilities.drawOneSideBorder
+import com.tecknobit.refy.ui.utilities.isItemOwner
+import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
@@ -74,6 +76,7 @@ abstract class Screen {
     @Composable
     @NonRestartableComposable
     protected fun ItemCard(
+        item: RefyItem,
         borderColor: Color? = null,
         onClick: () -> Unit,
         onDoubleClick: (() -> Unit)? = null,
@@ -89,7 +92,10 @@ abstract class Screen {
             .combinedClickable(
                 onClick = onClick,
                 onDoubleClick = onDoubleClick,
-                onLongClick = onLongClick
+                onLongClick = if(isItemOwner(item))
+                    onLongClick
+                else
+                    null
             )
         Card(
             modifier = if(borderColor != null)

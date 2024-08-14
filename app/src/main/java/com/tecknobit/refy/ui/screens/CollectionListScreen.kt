@@ -88,6 +88,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
         collection: LinksCollection
     ) {
         ItemCard(
+            item = collection,
             borderColor = collection.color.toColor(),
             onClick = {
                 navToDedicatedItemActivity(
