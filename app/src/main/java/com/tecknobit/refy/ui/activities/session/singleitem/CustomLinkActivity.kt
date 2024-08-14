@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.tecknobit.refy.ui.activities.session.singleitem
 
 import android.os.Bundle
@@ -15,11 +17,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
@@ -33,8 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
-import com.tecknobit.refy.ui.theme.RefyTheme
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.utilities.DeleteItemButton
 import com.tecknobit.refy.ui.utilities.ItemDescription
 import com.tecknobit.refy.ui.viewmodels.links.CustomLinkActivityViewModel
@@ -42,7 +48,7 @@ import com.tecknobit.refycore.records.links.CustomRefyLink
 import org.json.JSONObject
 
 class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
-    items = user.customLinks,
+    items = localUser.customLinks,
     invalidMessage = R.string.invalid_custom_link,
 ){
 
@@ -51,32 +57,47 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        prepareView()
         setContent {
-            RefyTheme {
-                activityColorTheme = MaterialTheme.colorScheme.primary
-                DisplayItem(
-                    topBarColor = MaterialTheme.colorScheme.primaryContainer,
-                    actions = {
-                        ShareButton(
-                            context = this@CustomLinkActivity,
-                            link = item!!,
-                            tint = iconsColor
-                        )
-                        val deleteLink = remember { mutableStateOf(false) }
-                        DeleteItemButton(
-                            show = deleteLink,
-                            deleteAction = {
+            ContentView {
+                item = viewModel.customLink.collectAsState().value
+                activityColorTheme = MaterialTheme.colorScheme.primaryContainer
+                Scaffold(
+                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                    topBar = {
+                        LargeTopAppBar(
+                            navigationIcon = { NavButton() },
+                            title = {
+                                Text(
+                                    text = item!!.title
+                                )
+                            },
+                            colors = TopAppBarDefaults.largeTopAppBarColors(
+                                containerColor = activityColorTheme
+                            ),
+                            actions = {
+                                ShareButton(
+                                    context = this@CustomLinkActivity,
+                                    link = item!!,
+                                    tint = iconsColor
+                                )
+                                val deleteLink = remember { mutableStateOf(false) }
                                 DeleteItemButton(
                                     show = deleteLink,
                                     deleteAction = {
-                                        DeleteLink(
-                                            show = deleteLink
+                                        DeleteItemButton(
+                                            show = deleteLink,
+                                            deleteAction = {
+                                                DeleteLink(
+                                                    show = deleteLink
+                                                )
+                                            },
+                                            tint = iconsColor
                                         )
                                     },
                                     tint = iconsColor
                                 )
-                            },
-                            tint = iconsColor
+                            }
                         )
                     },
                     floatingActionButton = {
@@ -90,52 +111,40 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
                                 contentDescription = null
                             )
                         }
-                    },
-                    content = { paddingValues ->
-                        Column (
+                    }
+                ) { paddingValues ->
+                    Column (
+                        modifier = Modifier
+                            .padding(
+                                top = paddingValues.calculateTopPadding(),
+                                bottom = 16.dp
+                            )
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        ItemDescription(
                             modifier = Modifier
                                 .padding(
-                                    top = paddingValues.calculateTopPadding(),
-                                    bottom = 16.dp
-                                )
-                                .verticalScroll(rememberScrollState())
-                        ) {
-                            ItemDescription(
-                                modifier = Modifier
-                                    .padding(
-                                        all = 16.dp
-                                    ),
-                                description = item!!.description
-                            )
+                                    all = 16.dp
+                                ),
+                            description = item!!.description
+                        )
+                        HorizontalDivider()
+                        DetailsSection()
+                        PayloadSection(
+                            header = R.string.resources,
+                            map = item!!.resources
+                        )
+                        if(item!!.fields.isNotEmpty()) {
                             HorizontalDivider()
-                            DetailsSection()
                             PayloadSection(
-                                header = R.string.resources,
-                                map = item!!.resources
+                                header = R.string.fields,
+                                map = item!!.fields
                             )
-                            if(item!!.fields.isNotEmpty()) {
-                                HorizontalDivider()
-                                PayloadSection(
-                                    header = R.string.fields,
-                                    map = item!!.fields
-                                )
-                            }
                         }
                     }
-                )
+                }
             }
         }
-    }
-
-    @Composable
-    override fun InitViewModel() {
-        viewModel = CustomLinkActivityViewModel(
-            snackbarHostState = snackbarHostState,
-            initialCustomLink = item!!
-        )
-        viewModel.setActiveContext(this::class.java)
-        viewModel.refreshLink()
-        item = viewModel.customLink.collectAsState().value
     }
 
     @Composable
@@ -263,6 +272,18 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
             },
             confirmText = stringResource(R.string.confirm),
         )
+    }
+
+    override fun prepareView() {
+        super.prepareView()
+        if(itemExists) {
+            viewModel = CustomLinkActivityViewModel(
+                snackbarHostState = snackbarHostState,
+                initialCustomLink = item!!
+            )
+            viewModel.setActiveContext(this::class.java)
+            viewModel.refreshLink()
+        }
     }
 
 }

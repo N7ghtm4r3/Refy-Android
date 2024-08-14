@@ -51,7 +51,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.user
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.viewmodels.create.CreateCustomLinkViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import com.tecknobit.refycore.records.links.CustomRefyLink.EXPIRED_TIME_KEY
@@ -66,7 +66,7 @@ import com.tecknobit.refycore.records.links.CustomRefyLink.ExpiredTime.entries
 import com.tecknobit.refycore.records.links.CustomRefyLink.UNIQUE_ACCESS_KEY
 
 class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkViewModel>(
-    items = user.customLinks,
+    items = localUser.customLinks,
     invalidMessage = R.string.invalid_custom_link,
     scrollable = true
 ) {

@@ -151,7 +151,6 @@ class ProfileActivityViewModel(
      *
      * @param onDelete: the action to execute when the account has been deleted
      */
-    // TODO: TO TEST AT THE END OF THE REQUESTS LINK
     fun deleteAccount(
         onDelete: () -> Unit
     ) {

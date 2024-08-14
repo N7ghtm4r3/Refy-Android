@@ -42,6 +42,7 @@ public class AndroidRefyLocalUser extends RefyLocalUser {
      */
     @Override
     public void clear() {
+        super.clear();
         sharedPreferences.edit().clear().apply();
     }
 

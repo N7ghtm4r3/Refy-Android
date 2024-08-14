@@ -1,6 +1,8 @@
 package com.tecknobit.refy.ui.viewmodels.links
 
 import androidx.compose.material3.SnackbarHostState
+import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refy.ui.activities.session.singleitem.CustomLinkActivity
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +24,21 @@ class CustomLinkActivityViewModel(
         execRefreshingRoutine(
             currentContext = CustomLinkActivity::class.java,
             routine = {
-                // TODO: MAKE THE REQUEST THEN
-
+                requester.sendRequest(
+                    request = {
+                        requester.getCustomLink(
+                            link = _customLink.value
+                        )
+                    },
+                    onSuccess = { response ->
+                        _customLink.value = CustomRefyLink(
+                            response.getJSONObject(
+                                RESPONSE_MESSAGE_KEY
+                            )
+                        )
+                    },
+                    onFailure = { showSnackbarMessage(it) }
+                )
             }
         )
     }
@@ -32,8 +47,15 @@ class CustomLinkActivityViewModel(
         link: CustomRefyLink,
         onSuccess: () -> Unit
     ) {
-        // TODO: MAKE THE REQUEST THEN
-        onSuccess.invoke()
+        requester.sendRequest(
+            request = {
+                requester.deleteCustomLink(
+                    link = link
+                )
+            },
+            onSuccess = { onSuccess.invoke() },
+            onFailure = { showSnackbarMessage(it) }
+        )
     }
 
 }

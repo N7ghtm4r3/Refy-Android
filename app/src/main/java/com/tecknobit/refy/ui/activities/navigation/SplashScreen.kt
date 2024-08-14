@@ -43,7 +43,6 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refycore.helpers.RefyRequester
-import com.tecknobit.refycore.records.RefyUser
 import okhttp3.OkHttpClient
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -58,9 +57,6 @@ import javax.net.ssl.X509TrustManager
 class SplashScreen : ComponentActivity(), ImageLoaderFactory {
 
     companion object {
-
-        // TODO: TO INIT CORRECTLY CHECK TO REPLACE WITH LOCALUSER INSTEAD
-        val user = RefyUser("h1")
 
         lateinit var localUser: AndroidRefyLocalUser
 
@@ -233,7 +229,7 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
      * No-any params required
      */
     private fun setLocale() {
-        val userLanguage = user.language
+        val userLanguage = localUser.language
         val locale = if(userLanguage != null)
             Locale.forLanguageTag(userLanguage)
         else

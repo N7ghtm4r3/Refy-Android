@@ -5,9 +5,7 @@ package com.tecknobit.refy.ui.activities.session.singleitem
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,14 +18,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
@@ -78,50 +72,6 @@ abstract class SingleItemActivity <T : RefyItem> (
                 InvalidItemUi()
             else
                 validItemUi.invoke()
-        }
-    }
-
-    @Composable
-    protected abstract fun InitViewModel()
-
-    @Composable
-    protected fun DisplayItem(
-        topBarColor: Color? = MaterialTheme.colorScheme.primaryContainer,
-        title: @Composable () -> Unit = {
-            Text(
-                text = item!!.title
-            )
-        },
-        actions: @Composable RowScope.() -> Unit,
-        floatingActionButton: @Composable () -> Unit,
-        content: @Composable (PaddingValues) -> Unit
-    ) {
-        initItemFromIntent()
-        RefyTheme {
-            if(invalidItem)
-                InvalidItemUi()
-            else {
-                InitViewModel()
-                Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-                    topBar = {
-                        LargeTopAppBar(
-                            navigationIcon = { NavButton() },
-                            title = title,
-                            colors = TopAppBarDefaults.largeTopAppBarColors(
-                                containerColor = if(topBarColor != null)
-                                    topBarColor
-                                else
-                                    activityColorTheme
-                            ),
-                            actions = actions
-                        )
-                    },
-                    floatingActionButton = floatingActionButton
-                ) { paddingValues ->
-                    content.invoke(paddingValues)
-                }
-            }
         }
     }
 

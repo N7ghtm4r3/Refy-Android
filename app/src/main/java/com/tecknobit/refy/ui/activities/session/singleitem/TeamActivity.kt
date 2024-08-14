@@ -226,12 +226,6 @@ class TeamActivity : SingleItemActivity<Team>(
 
     @Composable
     @NonRestartableComposable
-    override fun InitViewModel() {
-
-    }
-
-    @Composable
-    @NonRestartableComposable
     private fun TeamContent(
         paddingValues: PaddingValues
     ) {
