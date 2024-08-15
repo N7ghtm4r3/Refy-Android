@@ -129,7 +129,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
         OptionsBar(
             options = {
                 val links = getItemRelations(
-                    userList = localUser.links,
+                    userList = localUser.getLinks(true),
                     currentAttachments = collection.links
                 )
                 AddLinksButton(
@@ -140,7 +140,7 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
                     tint = LocalContentColor.current
                 )
                 val teams = getItemRelations(
-                    userList = localUser.teams,
+                    userList = localUser.getTeams(true),
                     currentAttachments = collection.teams
                 )
                 AddTeamsButton(

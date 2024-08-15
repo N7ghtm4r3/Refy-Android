@@ -38,7 +38,7 @@ import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.links.RefyLink
 
 class CollectionActivity : SingleItemActivity<LinksCollection>(
-    items = localUser.collections,
+    items = localUser.getCollections(false),
     invalidMessage = R.string.invalid_collection
 ), RefyLinkUtilities<RefyLink>, LinksCollectionUtilities {
 
@@ -75,7 +75,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                                 ) {
                                     Row {
                                         val links = getItemRelations(
-                                            userList = localUser.links,
+                                            userList = localUser.getLinks(true),
                                             currentAttachments = item!!.links
                                         )
                                         val addLinks = remember { mutableStateOf(false) }
@@ -87,7 +87,7 @@ class CollectionActivity : SingleItemActivity<LinksCollection>(
                                             tint = iconsColor
                                         )
                                         val teams = getItemRelations(
-                                            userList = localUser.teams,
+                                            userList = localUser.getTeams(true),
                                             currentAttachments = item!!.teams
                                         )
                                         val addTeams = remember { mutableStateOf(false) }

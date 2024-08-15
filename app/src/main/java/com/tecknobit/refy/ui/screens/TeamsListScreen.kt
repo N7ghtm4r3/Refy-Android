@@ -227,7 +227,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                     Row {
                         val iconsColor = LocalContentColor.current
                         val links = getItemRelations(
-                            userList = localUser.links,
+                            userList = localUser.getLinks(true),
                             currentAttachments = team.links
                         )
                         AddLinksButton(
@@ -238,7 +238,7 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
                             tint = iconsColor
                         )
                         val collections = getItemRelations(
-                            userList = localUser.collections,
+                            userList = localUser.getCollections(true),
                             currentAttachments = team.collections
                         )
                         AddCollectionsButton(

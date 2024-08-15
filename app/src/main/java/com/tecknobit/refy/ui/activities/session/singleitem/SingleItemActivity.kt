@@ -191,7 +191,7 @@ abstract class SingleItemActivity <T : RefyItem> (
     @NonRestartableComposable
     protected fun TopBarDetails(
         item: RefyItem,
-        overlineColor: Color = activityColorTheme
+        overlineColor: Color = MaterialTheme.colorScheme.inversePrimary
     ) {
         UserPlaque(
             colors = ListItemDefaults.colors(

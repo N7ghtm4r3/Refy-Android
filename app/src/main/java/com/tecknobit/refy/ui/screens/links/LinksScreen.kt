@@ -144,7 +144,7 @@ abstract class LinksScreen <T : RefyLink> (
                 ) {
                     Row {
                         val collections = getItemRelations(
-                            userList = localUser.collections,
+                            userList = localUser.getCollections(true),
                             currentAttachments = link.collections
                         )
                         OptionButton(
@@ -160,7 +160,7 @@ abstract class LinksScreen <T : RefyLink> (
                             }
                         )
                         val teams = getItemRelations(
-                            userList = localUser.teams,
+                            userList = localUser.getTeams(true),
                             currentAttachments = link.teams
                         )
                         OptionButton(

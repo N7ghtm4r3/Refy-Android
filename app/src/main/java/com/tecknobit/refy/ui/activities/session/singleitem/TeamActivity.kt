@@ -73,7 +73,7 @@ import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.links.RefyLink
 
 class TeamActivity : SingleItemActivity<Team>(
-    items = localUser.teams,
+    items = localUser.getTeams(false),
     invalidMessage = R.string.invalid_team
 ), RefyLinkUtilities<RefyLink>, TeamsUtilities {
 
@@ -139,7 +139,7 @@ class TeamActivity : SingleItemActivity<Team>(
                                 ) {
                                     Row {
                                         val links = getItemRelations(
-                                            userList = localUser.links,
+                                            userList = localUser.getLinks(true),
                                             currentAttachments = item!!.links
                                         )
                                         val addLinks = remember { mutableStateOf(false) }
@@ -152,7 +152,7 @@ class TeamActivity : SingleItemActivity<Team>(
                                         )
                                         val addCollections = remember { mutableStateOf(false) }
                                         val collections = getItemRelations(
-                                            userList = localUser.collections,
+                                            userList = localUser.getCollections(true),
                                             currentAttachments = item!!.collections
                                         )
                                         AddCollectionsButton(
@@ -368,7 +368,7 @@ class TeamActivity : SingleItemActivity<Team>(
                 size = 8.dp
             ),
             onClick = {
-                localUser.collections = item!!.collections
+                localUser.setCollections(item!!.collections)
                 val intent = Intent(this, CollectionActivity::class.java)
                 intent.putExtra(IDENTIFIER_KEY, collection.id)
                 startActivity(intent)
