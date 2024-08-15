@@ -52,7 +52,7 @@ import com.tecknobit.refycore.records.RefyUser.DEFAULT_PROFILE_PIC
 import com.tecknobit.refycore.records.Team
 
 class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
-    items = localUser.teams,
+    items = localUser.getTeams(true),
     invalidMessage = R.string.invalid_team,
     scrollable = true
 ) {

@@ -48,7 +48,7 @@ import com.tecknobit.refycore.records.links.CustomRefyLink
 import org.json.JSONObject
 
 class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
-    items = localUser.customLinks,
+    items = localUser.getCustomLinks(true),
     invalidMessage = R.string.invalid_custom_link,
 ){
 

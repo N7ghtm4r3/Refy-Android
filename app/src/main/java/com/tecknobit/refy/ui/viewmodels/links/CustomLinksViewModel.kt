@@ -21,7 +21,7 @@ class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
                         _links.value = CustomRefyLink.returnCustomLinks(
                             response.getJSONArray(RESPONSE_MESSAGE_KEY)
                         ).toMutableStateList()
-                        localUser.customLinks = _links.value
+                        localUser.setCustomLinks(_links.value)
                     },
                     onFailure = { showSnackbarMessage(it) }
                 )

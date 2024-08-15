@@ -34,7 +34,7 @@ abstract class RefyViewModel(
                     )
                 },
                 onSuccess = { response ->
-                    localUser.links = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    localUser.setLinks(returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY)))
                     linksLoaded = true
                 },
                 onFailure = { showSnackbarMessage(it) }
@@ -53,7 +53,7 @@ abstract class RefyViewModel(
                     )
                 },
                 onSuccess = { response ->
-                    localUser.collections = returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    localUser.setCollections(returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY)))
                     collectionsLoaded = true
                 },
                 onFailure = { showSnackbarMessage(it) }
@@ -72,7 +72,7 @@ abstract class RefyViewModel(
                     )
                 },
                 onSuccess = { response ->
-                    localUser.teams = returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    localUser.setTeams(returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY)))
                     teamsLoaded = true
                 },
                 onFailure = { showSnackbarMessage(it) }

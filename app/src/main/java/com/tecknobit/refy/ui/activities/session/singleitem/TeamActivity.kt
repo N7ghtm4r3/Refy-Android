@@ -212,18 +212,6 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
-    override fun prepareView() {
-        super.prepareView()
-        if(itemExists) {
-            viewModel = TeamActivityViewModel(
-                snackbarHostState = snackbarHostState,
-                initialTeam = item!!
-            )
-            viewModel.setActiveContext(this::class.java)
-            viewModel.refreshTeam()
-        }
-    }
-
     @Composable
     @NonRestartableComposable
     private fun TeamContent(
@@ -455,6 +443,18 @@ class TeamActivity : SingleItemActivity<Team>(
                     }
                 }
             }
+        }
+    }
+
+    override fun prepareView() {
+        super.prepareView()
+        if(itemExists) {
+            viewModel = TeamActivityViewModel(
+                snackbarHostState = snackbarHostState,
+                initialTeam = item!!
+            )
+            viewModel.setActiveContext(this::class.java)
+            viewModel.refreshTeam()
         }
     }
 

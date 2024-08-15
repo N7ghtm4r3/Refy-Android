@@ -37,7 +37,7 @@ import com.google.android.play.core.install.model.UpdateAvailability.UPDATE_AVAI
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.tecknobit.refy.R
 import com.tecknobit.refy.helpers.AndroidRefyLocalUser
-import com.tecknobit.refy.ui.activities.session.ConnectActivity
+import com.tecknobit.refy.ui.activities.auth.ConnectActivity
 import com.tecknobit.refy.ui.activities.session.MainActivity
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme

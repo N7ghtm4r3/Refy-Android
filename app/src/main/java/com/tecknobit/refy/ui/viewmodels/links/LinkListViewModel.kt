@@ -23,7 +23,7 @@ class LinkListViewModel : LinksViewModel<RefyLink>() {
                     onSuccess = { response ->
                         _links.value = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
                             .toMutableStateList()
-                        localUser.links = _links.value
+                        localUser.setLinks(_links.value)
                     },
                     onFailure = { showSnackbarMessage(it) }
                 )

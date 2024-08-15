@@ -66,7 +66,7 @@ import com.tecknobit.refycore.records.links.CustomRefyLink.ExpiredTime.entries
 import com.tecknobit.refycore.records.links.CustomRefyLink.UNIQUE_ACCESS_KEY
 
 class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkViewModel>(
-    items = localUser.customLinks,
+    items = localUser.getCustomLinks(true),
     invalidMessage = R.string.invalid_custom_link,
     scrollable = true
 ) {

@@ -34,7 +34,7 @@ class TeamsListViewModel: TeamViewModelHelper(
                     onSuccess = { response ->
                         _teams.value = returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY))
                             .toMutableStateList()
-                        localUser.teams = _teams.value
+                        localUser.setTeams(_teams.value)
                     },
                     onFailure = { showSnackbarMessage(it) }
                 )

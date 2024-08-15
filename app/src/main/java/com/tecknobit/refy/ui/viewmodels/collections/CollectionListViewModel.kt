@@ -34,7 +34,7 @@ class CollectionListViewModel : LinksCollectionViewModelHelper(
                     onSuccess = { response ->
                         _collections.value = returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY))
                             .toMutableStateList()
-                        localUser.collections = _collections.value
+                        localUser.setCollections(_collections.value)
                     },
                     onFailure = { showSnackbarMessage(it) }
                 )

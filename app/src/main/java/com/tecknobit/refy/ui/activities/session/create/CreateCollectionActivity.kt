@@ -42,7 +42,7 @@ import com.tecknobit.refy.ui.viewmodels.create.CreateCollectionViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
 class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectionViewModel>(
-    items = localUser.collections,
+    items = localUser.getCollections(true),
     invalidMessage = R.string.invalid_collection
 ) {
 
@@ -121,7 +121,7 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
             header = R.string.links
         ) {
             items(
-                items = localUser.links,
+                items = localUser.getLinks(true),
                 key = { link -> link.id }
             ) { link ->
                 val checked = remember { mutableStateOf(viewModel.itemDedicatedList.contains(link.id)) }
