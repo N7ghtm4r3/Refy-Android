@@ -22,21 +22,16 @@ class CollectionActivityViewModel(
     val collection: StateFlow<LinksCollection> = _collection
 
     fun refreshCollection() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = CollectionActivity::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getCollection(
-                            collectionId = initialCollection.id
-                        )
-                    },
-                    onSuccess = { response ->
-                        _collection.value = LinksCollection.getInstance(
-                            response.getJSONObject(RESPONSE_MESSAGE_KEY)
-                        )
-                    },
-                    onFailure = { showSnackbarMessage(it) }
+            request = {
+                requester.getCollection(
+                    collectionId = initialCollection.id
+                )
+            },
+            onSuccess = { response ->
+                _collection.value = LinksCollection.getInstance(
+                    response.getJSONObject(RESPONSE_MESSAGE_KEY)
                 )
             }
         )

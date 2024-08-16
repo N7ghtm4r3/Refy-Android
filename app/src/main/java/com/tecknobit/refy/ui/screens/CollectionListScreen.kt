@@ -44,31 +44,35 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
 
     @Composable
     override fun ShowContent() {
-        val context = this::class.java
-        currentScreenContext = context
-        viewModel.setActiveContext(context)
-        viewModel.setCurrentUserOwnedLinks()
-        viewModel.setCurrentUserOwnedTeams()
-        screenViewModel = viewModel
-        viewModel.getCollections()
-        collections = viewModel.collections.collectAsState().value
-        SetFabAction()
-        if(collections.isEmpty()) {
-            EmptyListUI(
-                icon = Icons.Default.PlaylistRemove,
-                subText = stringResource(R.string.no_collections_yet)
-            )
-        } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(
-                    items = collections,
-                    key = { collection -> collection.id }
-                ) { collection ->
-                    CollectionCard(
-                        collection = collection
-                    )
+        ManagedContent (
+            context = LocalContext.current
+        ) {
+            val context = this::class.java
+            currentScreenContext = context
+            viewModel.setActiveContext(context)
+            viewModel.setCurrentUserOwnedLinks()
+            viewModel.setCurrentUserOwnedTeams()
+            screenViewModel = viewModel
+            viewModel.getCollections()
+            collections = viewModel.collections.collectAsState().value
+            SetFabAction()
+            if(collections.isEmpty()) {
+                EmptyListUI(
+                    icon = Icons.Default.PlaylistRemove,
+                    subText = stringResource(R.string.no_collections_yet)
+                )
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(
+                        items = collections,
+                        key = { collection -> collection.id }
+                    ) { collection ->
+                        CollectionCard(
+                            collection = collection
+                        )
+                    }
                 }
             }
         }

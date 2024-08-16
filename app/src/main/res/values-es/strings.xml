@@ -88,6 +88,7 @@
     <string name="server_secret">Secreto del servidor</string>
     <string name="tag_name">Nombre de la etiqueta</string>
     <string name="tag_name_not_valid">Nombre de etiqueta no válido</string>
+    <string name="server_currently_offline">Servidor desconectado</string>
     <plurals name="expirations_minute">
         <item formatted="false" quantity="one">%1$d minuto</item>
         <item formatted="false" quantity="other">%1$d minutos</item>

@@ -88,6 +88,7 @@
     <string name="server_secret">Server secret</string>
     <string name="tag_name">Tag name</string>
     <string name="tag_name_not_valid">Tag name not valid</string>
+    <string name="server_currently_offline">Server currently offline</string>
     <plurals name="expirations_minute">
         <item formatted="false" quantity="one">%1$d minute</item>
         <item formatted="false" quantity="other">%1$d minutes</item>

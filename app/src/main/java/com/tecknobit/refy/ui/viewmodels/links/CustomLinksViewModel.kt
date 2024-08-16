@@ -10,21 +10,16 @@ import com.tecknobit.refycore.records.links.CustomRefyLink
 class CustomLinksViewModel: LinksViewModel<CustomRefyLink>() {
 
     override fun getLinks() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = CustomLinksScreen::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getCustomLinks()
-                    },
-                    onSuccess = { response ->
-                        _links.value = CustomRefyLink.returnCustomLinks(
-                            response.getJSONArray(RESPONSE_MESSAGE_KEY)
-                        ).toMutableStateList()
-                        localUser.setCustomLinks(_links.value)
-                    },
-                    onFailure = { showSnackbarMessage(it) }
-                )
+            request = {
+                requester.getCustomLinks()
+            },
+            onSuccess = { response ->
+                _links.value = CustomRefyLink.returnCustomLinks(
+                    response.getJSONArray(RESPONSE_MESSAGE_KEY)
+                ).toMutableStateList()
+                localUser.setCustomLinks(_links.value)
             }
         )
     }

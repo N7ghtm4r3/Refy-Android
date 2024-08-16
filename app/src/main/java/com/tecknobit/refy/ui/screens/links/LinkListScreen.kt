@@ -40,7 +40,12 @@ class LinkListScreen : LinksScreen<RefyLink>(
         viewModel.setActiveContext(context)
         viewModel.setCurrentUserOwnedCollections()
         viewModel.setCurrentUserOwnedTeams()
-        LinksList()
+        ManagedContent (
+            context = LocalContext.current
+        ) {
+            SetFabAction()
+            LinksList()
+        }
     }
 
     @Composable

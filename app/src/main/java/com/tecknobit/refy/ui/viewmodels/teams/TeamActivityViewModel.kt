@@ -25,20 +25,15 @@ class TeamActivityViewModel(
     val team: StateFlow<Team> = _team
 
     fun refreshTeam() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = TeamActivity::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getTeam(
-                            team = _team.value
-                        )
-                    },
-                    onSuccess = { hResponse ->
-                        _team.value = Team(hResponse.getJSONObject(RESPONSE_MESSAGE_KEY))
-                    },
-                    onFailure = { showSnackbarMessage(it) }
+            request = {
+                requester.getTeam(
+                    team = _team.value
                 )
+            },
+            onSuccess = { hResponse ->
+                _team.value = Team(hResponse.getJSONObject(RESPONSE_MESSAGE_KEY))
             }
         )
     }

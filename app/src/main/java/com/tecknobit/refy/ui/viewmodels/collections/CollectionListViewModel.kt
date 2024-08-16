@@ -24,20 +24,15 @@ class CollectionListViewModel : LinksCollectionViewModelHelper(
     val collections: StateFlow<List<LinksCollection>> = _collections
 
     fun getCollections() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = CollectionListScreen::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getCollections()
-                    },
-                    onSuccess = { response ->
-                        _collections.value = returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY))
-                            .toMutableStateList()
-                        localUser.setCollections(_collections.value)
-                    },
-                    onFailure = { showSnackbarMessage(it) }
-                )
+            request = {
+                requester.getCollections()
+            },
+            onSuccess = { response ->
+                _collections.value = returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    .toMutableStateList()
+                localUser.setCollections(_collections.value)
             }
         )
     }

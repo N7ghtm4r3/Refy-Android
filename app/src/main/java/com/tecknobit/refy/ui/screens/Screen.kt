@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,14 +29,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.tecknobit.equinoxcompose.components.ErrorUI
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
+import com.tecknobit.refy.R
+import com.tecknobit.refy.ui.activities.auth.ConnectActivity
+import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.getCompleteMediaItemUrl
+import com.tecknobit.refy.ui.helpers.SessionManager
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
@@ -45,13 +54,21 @@ import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
 
-abstract class Screen {
+abstract class Screen : SessionManager {
 
     protected lateinit var screenViewModel: EquinoxViewModel
 
     protected lateinit var currentScreenContext: Class<*>
 
     protected lateinit var context: Context
+
+    companion object {
+
+        lateinit var isServerOffline: MutableState<Boolean>
+
+        lateinit var haveBeenDisconnected: MutableState<Boolean>
+
+    }
 
     @Composable
     abstract fun ShowContent()
@@ -222,6 +239,23 @@ abstract class Screen {
                 )
             }
         }
+    }
+
+    @Composable
+    @NonRestartableComposable
+    private fun ServerOfflineUi() {
+        ErrorUI(
+            errorIcon = Icons.Default.Warning,
+            errorMessage = stringResource(R.string.server_currently_offline),
+            retryText = ""
+        )
+    }
+
+    private fun haveBeenDisconnected(
+        context: Context
+    ) {
+        localUser.clear()
+        context.startActivity(Intent(context, ConnectActivity::class.java))
     }
 
     protected fun navToDedicatedItemActivity(

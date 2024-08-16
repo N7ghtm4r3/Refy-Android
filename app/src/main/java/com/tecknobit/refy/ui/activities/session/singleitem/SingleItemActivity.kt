@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
+import com.tecknobit.refy.ui.helpers.SessionManager
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -50,7 +51,7 @@ abstract class SingleItemActivity <T : RefyItem> (
 ): RefyItemBaseActivity<T> (
     items = items,
     invalidMessage = invalidMessage
-), RefyLinkUtilities<RefyLink> {
+), RefyLinkUtilities<RefyLink>, SessionManager {
 
     protected var iconsColor: Color = Color.Red
 
@@ -70,8 +71,13 @@ abstract class SingleItemActivity <T : RefyItem> (
         RefyTheme {
             if(!itemExists)
                 InvalidItemUi()
-            else
-                validItemUi.invoke()
+            else {
+                ManagedContent(
+                    context = this
+                ) {
+                    validItemUi.invoke()
+                }
+            }
         }
     }
 

@@ -64,29 +64,33 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
 
     @Composable
     override fun ShowContent() {
-        val context = this::class.java
-        currentScreenContext = context
-        viewModel.setActiveContext(context)
-        screenViewModel = viewModel
-        viewModel.getTeams()
-        teams = viewModel.teams.collectAsState().value
-        SetFabAction()
-        if(teams.isEmpty()) {
-            EmptyListUI(
-                icon = Icons.Default.GroupOff,
-                subText = stringResource(R.string.you_re_not_on_any_team)
-            )
-        } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(
-                    items = teams,
-                    key = { team -> team.id }
-                ) { team ->
-                    TeamCard(
-                        team = team
-                    )
+        ManagedContent (
+            context = LocalContext.current
+        ) {
+            val context = this::class.java
+            currentScreenContext = context
+            viewModel.setActiveContext(context)
+            screenViewModel = viewModel
+            viewModel.getTeams()
+            teams = viewModel.teams.collectAsState().value
+            SetFabAction()
+            if(teams.isEmpty()) {
+                EmptyListUI(
+                    icon = Icons.Default.GroupOff,
+                    subText = stringResource(R.string.you_re_not_on_any_team)
+                )
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(
+                        items = teams,
+                        key = { team -> team.id }
+                    ) { team ->
+                        TeamCard(
+                            team = team
+                        )
+                    }
                 }
             }
         }

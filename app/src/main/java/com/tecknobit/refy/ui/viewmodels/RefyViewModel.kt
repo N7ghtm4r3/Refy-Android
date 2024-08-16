@@ -2,13 +2,17 @@ package com.tecknobit.refy.ui.viewmodels
 
 import androidx.compose.material3.SnackbarHostState
 import com.tecknobit.apimanager.annotations.Structure
+import com.tecknobit.apimanager.formatters.JsonHelper
 import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
+import com.tecknobit.refy.ui.screens.Screen.Companion.haveBeenDisconnected
+import com.tecknobit.refy.ui.screens.Screen.Companion.isServerOffline
 import com.tecknobit.refycore.records.LinksCollection.returnCollections
 import com.tecknobit.refycore.records.Team.returnTeams
 import com.tecknobit.refycore.records.links.RefyLink.returnLinks
+import org.json.JSONObject
 
 @Structure
 abstract class RefyViewModel(
@@ -78,6 +82,31 @@ abstract class RefyViewModel(
                 onFailure = { showSnackbarMessage(it) }
             )
         }
+    }
+
+    protected fun sendFetchRequest(
+        currentContext: Class<*>,
+        request: () -> JSONObject,
+        onSuccess: (JsonHelper) -> Unit
+    ) {
+        execRefreshingRoutine(
+            currentContext = currentContext,
+            routine = {
+                requester.sendRequest(
+                    request = request,
+                    onSuccess = { response ->
+                        onSuccess.invoke(response)
+                        isServerOffline.value = false
+                    },
+                    onConnectionError = {
+                        isServerOffline.value = true
+                    },
+                    onFailure = {
+                        haveBeenDisconnected.value = true
+                    }
+                )
+            }
+        )
     }
 
 }

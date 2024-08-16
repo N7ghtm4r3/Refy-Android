@@ -13,20 +13,15 @@ import com.tecknobit.refycore.records.links.RefyLink.returnLinks
 class LinkListViewModel : LinksViewModel<RefyLink>() {
 
     override fun getLinks() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = LinkListScreen::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getLinks()
-                    },
-                    onSuccess = { response ->
-                        _links.value = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
-                            .toMutableStateList()
-                        localUser.setLinks(_links.value)
-                    },
-                    onFailure = { showSnackbarMessage(it) }
-                )
+            request = {
+                requester.getLinks()
+            },
+            onSuccess = { response ->
+                _links.value = returnLinks(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    .toMutableStateList()
+                localUser.setLinks(_links.value)
             }
         )
     }

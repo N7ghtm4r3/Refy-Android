@@ -21,23 +21,18 @@ class CustomLinkActivityViewModel(
     val customLink: StateFlow<CustomRefyLink> = _customLink
 
     fun refreshLink() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = CustomLinkActivity::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getCustomLink(
-                            link = _customLink.value
-                        )
-                    },
-                    onSuccess = { response ->
-                        _customLink.value = CustomRefyLink(
-                            response.getJSONObject(
-                                RESPONSE_MESSAGE_KEY
-                            )
-                        )
-                    },
-                    onFailure = { showSnackbarMessage(it) }
+            request = {
+                requester.getCustomLink(
+                    link = _customLink.value
+                )
+            },
+            onSuccess = { response ->
+                _customLink.value = CustomRefyLink(
+                    response.getJSONObject(
+                        RESPONSE_MESSAGE_KEY
+                    )
                 )
             }
         )

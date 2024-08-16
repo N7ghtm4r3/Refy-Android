@@ -24,20 +24,15 @@ class TeamsListViewModel: TeamViewModelHelper(
     val teams: StateFlow<List<Team>> = _teams
 
     fun getTeams() {
-        execRefreshingRoutine(
+        sendFetchRequest(
             currentContext = TeamsListScreen::class.java,
-            routine = {
-                requester.sendRequest(
-                    request = {
-                        requester.getTeams()
-                    },
-                    onSuccess = { response ->
-                        _teams.value = returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY))
-                            .toMutableStateList()
-                        localUser.setTeams(_teams.value)
-                    },
-                    onFailure = { showSnackbarMessage(it) }
-                )
+            request = {
+                requester.getTeams()
+            },
+            onSuccess = { response ->
+                _teams.value = returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                    .toMutableStateList()
+                localUser.setTeams(_teams.value)
             }
         )
     }
