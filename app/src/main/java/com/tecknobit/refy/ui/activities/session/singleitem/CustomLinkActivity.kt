@@ -103,7 +103,10 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
                     floatingActionButton = {
                         FloatingActionButton(
                             onClick = {
-                                // TODO: VIEW THE LINK AS PREVIEW, CHECK HOW TO IMPLEMENT
+                                openLink(
+                                    context = this@CustomLinkActivity,
+                                    link = item!!.getPreviewModeUrl(localUser.hostAddress)
+                                )
                             }
                         ) {
                             Icon(
