@@ -3,8 +3,10 @@
 package com.tecknobit.refy.ui.activities.session.singleitem
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.CallSuper
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,20 +42,45 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.utilities.DeleteItemButton
 import com.tecknobit.refy.utilities.ItemDescription
-import com.tecknobit.refy.ui.viewmodels.links.CustomLinkActivityViewModel
+import com.tecknobit.refy.viewmodels.links.CustomLinkActivityViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import org.json.JSONObject
 
+/**
+ * The **CustomLinkActivity** class is useful to display a [CustomLinkActivity]'s details and manage
+ * that team
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyItemBaseActivity
+ * @see SingleItemActivity
+ * @see SessionManager
+ */
 class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
     items = localUser.getCustomLinks(true),
     invalidMessage = R.string.invalid_custom_link,
-){
+) {
 
+    /**
+     * *viewModel* -> the support view model to manage the requests to the backend
+     */
     private lateinit var viewModel: CustomLinkActivityViewModel
 
+    /**
+     * On create method
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     * If your ComponentActivity is annotated with {@link ContentView}, this will
+     * call {@link #setContentView(int)} for you.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -150,6 +177,12 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
         }
     }
 
+    /**
+     * Function to display the details of the [CustomRefyLink] displayed such if it has the
+     * [CustomRefyLink.hasUniqueAccess] or [CustomRefyLink.expires]
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun DetailsSection() {
@@ -184,6 +217,11 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
         }
     }
 
+    /**
+     * Function to display the info details of the [CustomRefyLink]
+     *
+     * @param info: the info details
+     */
     @Composable
     @NonRestartableComposable
     private fun DetailInfo(
@@ -204,6 +242,13 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
         }
     }
 
+    /**
+     * Function to display the payload attached to the [CustomRefyLink] such the resources or the
+     * validation fields
+     *
+     * @param header: the resource identifier of the header text
+     * @param map: the map with the details to display
+     */
     @Composable
     @NonRestartableComposable
     private fun PayloadSection(
@@ -246,6 +291,12 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
         }
     }
 
+    /**
+     * Function to display the info details of the [CustomRefyLink]
+     *
+     * @param show: whether show the warn [EquinoxAlertDialog] to warn the user about the custom link
+     * deletion
+     */
     @Composable
     @NonRestartableComposable
     private fun DeleteLink(
@@ -277,6 +328,14 @@ class CustomLinkActivity: SingleItemActivity<CustomRefyLink>(
         )
     }
 
+    /**
+     * Function to prepare the view initializing the [item] by invoking the [initItemFromIntent]
+     * method, will be initialized the [viewModel] and started its refreshing routine to refresh the
+     * [item]
+     *
+     * No-any params required
+     */
+    @CallSuper
     override fun prepareView() {
         super.prepareView()
         if(itemExists) {

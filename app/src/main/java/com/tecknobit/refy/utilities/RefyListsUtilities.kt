@@ -71,7 +71,7 @@ import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.bodyFontFamily
 import com.tecknobit.refy.ui.theme.displayFontFamily
-import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
+import com.tecknobit.refy.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.RefyUser
 import com.tecknobit.refycore.records.Team

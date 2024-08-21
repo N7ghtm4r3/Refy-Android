@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -53,13 +54,27 @@ import javax.net.ssl.SSLSession
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
+/**
+ * The **Splashscreen** class is the entry point of the application
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see AppCompatActivity
+ * @see ImageLoaderFactory
+ */
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : ComponentActivity(), ImageLoaderFactory {
 
     companion object {
 
+        /**
+         * **localUser** the user of the current logged in session, used to make the requests to the
+         * backed
+         */
         lateinit var localUser: AndroidRefyLocalUser
 
+        /**
+         * **requester** -> the instance to manage the requests with the backend
+         */
         lateinit var requester: RefyRequester
 
     }
@@ -77,6 +92,16 @@ class SplashScreen : ComponentActivity(), ImageLoaderFactory {
             launchApp(MainActivity::class.java)
     }
 
+    /**
+     * On create method
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     * If your ComponentActivity is annotated with {@link ContentView}, this will
+     * call {@link #setContentView(int)} for you.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         localUser = AndroidRefyLocalUser(this)
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(localUser.language))

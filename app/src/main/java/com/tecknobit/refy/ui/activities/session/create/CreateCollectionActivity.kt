@@ -38,7 +38,7 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localU
 import com.tecknobit.refy.ui.generateRandomColor
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.utilities.ItemDescription
-import com.tecknobit.refy.ui.viewmodels.create.CreateCollectionViewModel
+import com.tecknobit.refy.viewmodels.create.CreateCollectionViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
 class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectionViewModel>(

@@ -1,15 +1,15 @@
-package com.tecknobit.refy.ui.viewmodels.collections
+package com.tecknobit.refy.viewmodels.collections
 
 import androidx.compose.material3.SnackbarHostState
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
-import com.tecknobit.refy.ui.viewmodels.RefyViewModel
+import com.tecknobit.refy.viewmodels.RefyViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
 @Structure
 abstract class LinksCollectionViewModelHelper (
     snackbarHostState: SnackbarHostState
-) : RefyViewModel (
+) : RefyViewModel(
     snackbarHostState = snackbarHostState
 ) {
 

@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.viewmodels.links
+package com.tecknobit.refy.viewmodels.links
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf

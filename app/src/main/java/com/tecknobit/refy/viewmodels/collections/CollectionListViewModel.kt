@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.viewmodels.teams
+package com.tecknobit.refy.viewmodels.collections
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -7,32 +7,32 @@ import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
-import com.tecknobit.refy.ui.screens.TeamsListScreen
-import com.tecknobit.refycore.records.Team
-import com.tecknobit.refycore.records.Team.returnTeams
+import com.tecknobit.refy.ui.screens.CollectionListScreen
+import com.tecknobit.refycore.records.LinksCollection
+import com.tecknobit.refycore.records.LinksCollection.returnCollections
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
-class TeamsListViewModel: TeamViewModelHelper(
+class CollectionListViewModel : LinksCollectionViewModelHelper(
     snackbarHostState = snackbarHostState
 ) {
 
-    private val _teams = MutableStateFlow<SnapshotStateList<Team>>(
+    private val _collections = MutableStateFlow<SnapshotStateList<LinksCollection>>(
         value = mutableStateListOf()
     )
-    val teams: StateFlow<List<Team>> = _teams
+    val collections: StateFlow<List<LinksCollection>> = _collections
 
-    fun getTeams() {
+    fun getCollections() {
         sendFetchRequest(
-            currentContext = TeamsListScreen::class.java,
+            currentContext = CollectionListScreen::class.java,
             request = {
-                requester.getTeams()
+                requester.getCollections()
             },
             onSuccess = { response ->
-                _teams.value = returnTeams(response.getJSONArray(RESPONSE_MESSAGE_KEY))
+                _collections.value = returnCollections(response.getJSONArray(RESPONSE_MESSAGE_KEY))
                     .toMutableStateList()
-                localUser.setTeams(_teams.value)
+                localUser.setCollections(_collections.value)
             }
         )
     }

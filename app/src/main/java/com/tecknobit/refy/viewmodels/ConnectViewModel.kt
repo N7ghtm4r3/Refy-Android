@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.viewmodels
+package com.tecknobit.refy.viewmodels
 
 import android.content.Context
 import android.content.Intent

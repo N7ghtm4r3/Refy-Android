@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.viewmodels.links
+package com.tecknobit.refy.viewmodels.links
 
 import androidx.compose.runtime.toMutableStateList
 import com.tecknobit.equinox.Requester.Companion.RESPONSE_MESSAGE_KEY

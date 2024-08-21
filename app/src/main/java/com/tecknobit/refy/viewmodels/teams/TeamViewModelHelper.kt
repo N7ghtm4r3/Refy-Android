@@ -1,9 +1,9 @@
-package com.tecknobit.refy.ui.viewmodels.teams
+package com.tecknobit.refy.viewmodels.teams
 
 import androidx.compose.material3.SnackbarHostState
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
-import com.tecknobit.refy.ui.viewmodels.RefyViewModel
+import com.tecknobit.refy.viewmodels.RefyViewModel
 import com.tecknobit.refycore.records.Team
 
 @Structure

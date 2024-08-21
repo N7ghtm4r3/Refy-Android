@@ -38,7 +38,7 @@ import com.tecknobit.refy.utilities.OptionButton
 import com.tecknobit.refy.utilities.OptionsBar
 import com.tecknobit.refy.utilities.RefyLinkUtilities
 import com.tecknobit.refy.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodels.links.LinksViewModel
+import com.tecknobit.refy.viewmodels.links.LinksViewModel
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.links.RefyLink
 

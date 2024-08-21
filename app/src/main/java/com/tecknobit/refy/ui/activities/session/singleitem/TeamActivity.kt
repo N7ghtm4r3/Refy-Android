@@ -4,8 +4,10 @@ package com.tecknobit.refy.ui.activities.session.singleitem
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.CallSuper
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -53,7 +55,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.NavigationHelper.Companion.activeTab
+import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
@@ -66,25 +71,59 @@ import com.tecknobit.refy.utilities.TeamMemberPlaque
 import com.tecknobit.refy.utilities.TeamsUtilities
 import com.tecknobit.refy.utilities.drawOneSideBorder
 import com.tecknobit.refy.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodels.teams.TeamActivityViewModel
+import com.tecknobit.refy.viewmodels.teams.TeamActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.links.RefyLink
 
+/**
+ * The **TeamActivity** class is useful to display a [Team]'s details and manage
+ * that team
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyItemBaseActivity
+ * @see SingleItemActivity
+ * @see RefyLinkUtilities
+ * @see TeamsUtilities
+ * @see SessionManager
+ */
 class TeamActivity : SingleItemActivity<Team>(
     items = localUser.getTeams(false),
     invalidMessage = R.string.invalid_team
 ), RefyLinkUtilities<RefyLink>, TeamsUtilities {
 
+    /**
+     * *viewModel* -> the support view model to manage the requests to the backend
+     */
     private lateinit var viewModel: TeamActivityViewModel
 
+    /**
+     * *linksExpanded* -> whether the links section is expanded
+     */
     private lateinit var linksExpanded: MutableState<Boolean>
 
+    /**
+     * *membersExpanded* -> whether the members section is expanded
+     */
     private lateinit var membersExpanded: MutableState<Boolean>
 
+    /**
+     * *isUserAdmin* -> whether the current [localUser] is an admin of the current team ([item])
+     */
     private var isUserAdmin: Boolean = false
 
+    /**
+     * On create method
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     * If your ComponentActivity is annotated with {@link ContentView}, this will
+     * call {@link #setContentView(int)} for you.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -212,6 +251,11 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Function to display the content of the team
+     *
+     * @param paddingValues: the padding to use to correctly display the content
+     */
     @Composable
     @NonRestartableComposable
     private fun TeamContent(
@@ -265,6 +309,14 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Function to display an items section such links or collections section shared with the team
+     *
+     * @param isSectionVisible: whether the section can be visible, so the [items] is not empty
+     * @param header: the resource identifier of the header text
+     * @param visible: whether the section is currently visible
+     * @param items: the items list to display
+     */
     @Composable
     @NonRestartableComposable
     private fun ItemsSection(
@@ -300,6 +352,12 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Function to create the control header to hide or unhidden an [ItemsSection]
+     *
+     * @param header: the resource identifier of the header text
+     * @param iconCheck: the icon for the button to hide or unhidden the section
+     */
     @Composable
     @NonRestartableComposable
     private fun ControlSectionHeader(
@@ -335,6 +393,12 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Function to create an [LinksCollection] card to display the details of that collection and
+     * to give the rapid actions such removing from the team
+     *
+     * @param collection: the collection to display
+     */
     @Composable
     @NonRestartableComposable
     private fun LinksCollectionTeamCard(
@@ -420,6 +484,12 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Function to display the members of the team displayed and, if authorized, removing or change
+     * the role members
+     *
+     * No-any params required
+     */
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     @NonRestartableComposable
@@ -446,6 +516,14 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Function to prepare the view initializing the [item] by invoking the [initItemFromIntent]
+     * method, will be initialized the [viewModel] and started its refreshing routine to refresh the
+     * [item]
+     *
+     * No-any params required
+     */
+    @CallSuper
     override fun prepareView() {
         super.prepareView()
         if(itemExists) {
@@ -458,11 +536,76 @@ class TeamActivity : SingleItemActivity<Team>(
         }
     }
 
+    /**
+     * Called as part of the activity lifecycle when the user no longer actively interacts with the
+     * activity, but it is still visible on screen. The counterpart to {@link #onResume}.
+     *
+     * <p>When activity B is launched in front of activity A, this callback will
+     * be invoked on A.  B will not be created until A's {@link #onPause} returns,
+     * so be sure to not do anything lengthy here.
+     *
+     * <p>This callback is mostly used for saving any persistent state the
+     * activity is editing, to present a "edit in place" model to the user and
+     * making sure nothing is lost if there are not enough resources to start
+     * the new activity without first killing this one.  This is also a good
+     * place to stop things that consume a noticeable amount of CPU in order to
+     * make the switch to the next activity as fast as possible.
+     *
+     * <p>On platform versions prior to {@link android.os.Build.VERSION_CODES#Q} this is also a good
+     * place to try to close exclusive-access devices or to release access to singleton resources.
+     * Starting with {@link android.os.Build.VERSION_CODES#Q} there can be multiple resumed
+     * activities in the system at the same time, so {@link #onTopResumedActivityChanged(boolean)}
+     * should be used for that purpose instead.
+     *
+     * <p>If an activity is launched on top, after receiving this call you will usually receive a
+     * following call to {@link #onStop} (after the next activity has been resumed and displayed
+     * above). However in some cases there will be a direct call back to {@link #onResume} without
+     * going through the stopped state. An activity can also rest in paused state in some cases when
+     * in multi-window mode, still visible to user.
+     *
+     * <p><em>Derived classes must call through to the super class's
+     * implementation of this method.  If they do not, an exception will be
+     * thrown.</em></p>
+     *
+     * Will be suspended the refresher of the current [activeTab]
+     *
+     * @see #onResume
+     * @see #onSaveInstanceState
+     * @see #onStop
+     */
     override fun onPause() {
         super.onPause()
         viewModel.suspendRefresher()
     }
 
+    /**
+     * Called after {@link #onRestoreInstanceState}, {@link #onRestart}, or {@link #onPause}. This
+     * is usually a hint for your activity to start interacting with the user, which is a good
+     * indicator that the activity became active and ready to receive input. This sometimes could
+     * also be a transit state toward another resting state. For instance, an activity may be
+     * relaunched to {@link #onPause} due to configuration changes and the activity was visible,
+     * but wasn’t the top-most activity of an activity task. {@link #onResume} is guaranteed to be
+     * called before {@link #onPause} in this case which honors the activity lifecycle policy and
+     * the activity eventually rests in {@link #onPause}.
+     *
+     * <p>On platform versions prior to {@link android.os.Build.VERSION_CODES#Q} this is also a good
+     * place to try to open exclusive-access devices or to get access to singleton resources.
+     * Starting  with {@link android.os.Build.VERSION_CODES#Q} there can be multiple resumed
+     * activities in the system simultaneously, so {@link #onTopResumedActivityChanged(boolean)}
+     * should be used for that purpose instead.
+     *
+     * <p><em>Derived classes must call through to the super class's
+     * implementation of this method.  If they do not, an exception will be
+     * thrown.</em></p>
+     *
+     * Will be restarted the refresher of the current [activeTab] suspended before
+     *
+     * @see #onRestoreInstanceState
+     * @see #onRestart
+     * @see #onPostResume
+     * @see #onPause
+     * @see #onTopResumedActivityChanged(boolean)
+     */
     override fun onResume() {
         super.onResume()
         if(::viewModel.isInitialized) {

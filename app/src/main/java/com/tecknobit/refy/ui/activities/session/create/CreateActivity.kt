@@ -63,7 +63,7 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.helpers.ReviewHelper
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.theme.RefyTheme
-import com.tecknobit.refy.ui.viewmodels.create.CreateItemViewModel
+import com.tecknobit.refy.viewmodels.create.CreateItemViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.MAX_TITLE_LENGTH
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.records.RefyItem

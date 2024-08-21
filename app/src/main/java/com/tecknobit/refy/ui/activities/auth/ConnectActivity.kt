@@ -56,11 +56,18 @@ import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
+import com.tecknobit.refy.viewmodels.ConnectViewModel
 import com.tecknobit.refy.utilities.RefyLinkUtilities
-import com.tecknobit.refy.ui.viewmodels.ConnectViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isTagNameValid
 import com.tecknobit.refycore.records.links.RefyLink
 
+/**
+ * The **ConnectActivity** class is useful to manage the authentication requests of the user
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyLinkUtilities
+ */
 class ConnectActivity : ComponentActivity(), RefyLinkUtilities<RefyLink> {
 
     /**
@@ -76,6 +83,16 @@ class ConnectActivity : ComponentActivity(), RefyLinkUtilities<RefyLink> {
         snackbarHostState = snackbarHostState
     )
 
+    /**
+     * On create method
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     * If your ComponentActivity is annotated with {@link ContentView}, this will
+     * call {@link #setContentView(int)} for you.
+     */
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

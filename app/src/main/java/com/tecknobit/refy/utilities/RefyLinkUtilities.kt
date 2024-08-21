@@ -20,9 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.net.toUri
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.viewmodels.collections.LinksCollectionViewModelHelper
-import com.tecknobit.refy.ui.viewmodels.links.LinksViewModelHelper
-import com.tecknobit.refy.ui.viewmodels.teams.TeamViewModelHelper
+import com.tecknobit.refy.viewmodels.collections.LinksCollectionViewModelHelper
+import com.tecknobit.refy.viewmodels.links.LinksViewModelHelper
+import com.tecknobit.refy.viewmodels.teams.TeamViewModelHelper
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.links.RefyLink

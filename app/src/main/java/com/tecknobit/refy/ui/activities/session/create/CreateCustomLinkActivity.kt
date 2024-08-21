@@ -52,7 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
-import com.tecknobit.refy.ui.viewmodels.create.CreateCustomLinkViewModel
+import com.tecknobit.refy.viewmodels.create.CreateCustomLinkViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import com.tecknobit.refycore.records.links.CustomRefyLink.EXPIRED_TIME_KEY
 import com.tecknobit.refycore.records.links.CustomRefyLink.ExpiredTime

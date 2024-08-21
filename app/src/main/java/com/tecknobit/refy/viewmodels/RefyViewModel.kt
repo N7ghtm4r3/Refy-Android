@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.viewmodels
+package com.tecknobit.refy.viewmodels
 
 import androidx.compose.material3.SnackbarHostState
 import com.tecknobit.apimanager.annotations.Structure

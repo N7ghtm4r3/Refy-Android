@@ -18,7 +18,7 @@ import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.helpers.ReviewHelper
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.containerActivity
-import com.tecknobit.refy.ui.viewmodels.links.LinkListViewModel
+import com.tecknobit.refy.viewmodels.links.LinkListViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.helpers.RefyInputValidator.isLinkResourceValid
 import com.tecknobit.refycore.records.links.RefyLink

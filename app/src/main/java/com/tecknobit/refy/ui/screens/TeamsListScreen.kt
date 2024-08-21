@@ -52,7 +52,7 @@ import com.tecknobit.refy.utilities.OptionsBar
 import com.tecknobit.refy.utilities.RefyLinkUtilities
 import com.tecknobit.refy.utilities.TeamsUtilities
 import com.tecknobit.refy.utilities.getItemRelations
-import com.tecknobit.refy.ui.viewmodels.teams.TeamsListViewModel
+import com.tecknobit.refy.viewmodels.teams.TeamsListViewModel
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.links.RefyLink
 

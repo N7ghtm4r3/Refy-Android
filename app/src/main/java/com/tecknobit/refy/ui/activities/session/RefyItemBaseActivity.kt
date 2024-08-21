@@ -19,22 +19,55 @@ import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refycore.records.RefyItem
 
+/**
+ * The **RefyItemBaseActivity** class is useful to give the base behavior of a [RefyItem]'s activity
+ * to manage that item and other utilities such find it in the corresponding items list
+ *
+ * @param items: the items list
+ * @param invalidMessage: the resource identifier of the invalid message to display when the item is
+ * not valid or not found in [items] list
+ *
+ * @param T: the [RefyItem] of the current activity displayed
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ */
 @Structure
 abstract class RefyItemBaseActivity <T : RefyItem> (
     val items: List<T>,
     val invalidMessage: Int
 ) : ComponentActivity() {
 
+    /**
+     * *snackbarHostState* -> the host to launch the snackbar messages
+     */
     protected val snackbarHostState = SnackbarHostState()
 
+    /**
+     * *itemId* -> the item identifier
+     */
     private var itemId: String? = null
 
+    /**
+     * *item* -> the item corresponding that identifier if exist or null otherwise
+     */
     protected var item: T? = null
 
+    /**
+     * *itemExists* -> whether that item has been found in the list
+     */
     protected var itemExists = false
 
+    /**
+     * *invalidItem* -> whether the item is valid and so [itemExists] will be *true*
+     */
     protected var invalidItem = false
 
+    /**
+     * Function to init the [item] searching it in the [items] list by its [itemId]
+     *
+     * No-any params required
+     */
     fun initItemFromIntent() {
         itemId = intent.getStringExtra(IDENTIFIER_KEY)
         if(itemId != null) {
@@ -48,6 +81,11 @@ abstract class RefyItemBaseActivity <T : RefyItem> (
         }
     }
 
+    /**
+     * Function to display the error view when the item is not valid or has not been found
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     fun InvalidItemUi() {
@@ -57,6 +95,11 @@ abstract class RefyItemBaseActivity <T : RefyItem> (
         )
     }
 
+    /**
+     * Function to create an header for an activity section
+     *
+     * @param header: the resource identifier of the header text
+     */
     @Composable
     @NonRestartableComposable
     protected fun HeaderText(

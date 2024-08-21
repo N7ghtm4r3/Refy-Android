@@ -84,16 +84,38 @@ import com.tecknobit.refy.ui.getFilePath
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.utilities.Logo
-import com.tecknobit.refy.ui.viewmodels.ProfileActivityViewModel
+import com.tecknobit.refy.viewmodels.ProfileActivityViewModel
 
+/**
+ * The **ProfileActivity** class is the activity where the user manage his/her profile account
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ */
 class ProfileActivity : ComponentActivity() {
 
+    /**
+     * *snackbarHostState* -> the host to launch the snackbar messages
+     */
     private val snackbarHostState = SnackbarHostState()
 
+    /**
+     * *viewModel* -> the support view model to manage the requests to the backend
+     */
     private val viewModel = ProfileActivityViewModel(
         snackbarHostState = snackbarHostState
     )
 
+    /**
+     * On create method
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     * If your ComponentActivity is annotated with {@link ContentView}, this will
+     * call {@link #setContentView(int)} for you.
+     */
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,6 +146,12 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Function to create a custom top bar to display in the [ProfileActivity] allowing also the user
+     * to change his/her profile picture
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun CustomTopBar() {
@@ -183,6 +211,11 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 
+    /**
+     * Function to display the section of the user's email and allowing the user to change it
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun EmailSection() {
@@ -228,6 +261,11 @@ class ProfileActivity : ComponentActivity() {
         )
     }
 
+    /**
+     * Function to display the section of the user's password and allowing the user to change it
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun PasswordSection() {
@@ -289,6 +327,11 @@ class ProfileActivity : ComponentActivity() {
         )
     }
 
+    /**
+     * Function to display the section of the user's language and allowing the user to change it
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun LanguageSection() {
@@ -303,6 +346,11 @@ class ProfileActivity : ComponentActivity() {
         )
     }
 
+    /**
+     * Function to display the section of the user's theme and allowing the user to change it
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun ThemeSection() {
@@ -318,6 +366,11 @@ class ProfileActivity : ComponentActivity() {
         )
     }
 
+    /**
+     * Function to display the section where the user can disconnect from the current session
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun LogoutSection() {
@@ -343,6 +396,12 @@ class ProfileActivity : ComponentActivity() {
         )
     }
 
+    /**
+     * Function to display the section where the user can delete the current account and disconnect
+     * from the current session
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun DeleteSection() {
