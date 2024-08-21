@@ -28,10 +28,10 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localU
 import com.tecknobit.refy.ui.activities.session.create.CreateCollectionActivity
 import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
 import com.tecknobit.refy.ui.toColor
-import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
-import com.tecknobit.refy.ui.utilities.OptionsBar
-import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
-import com.tecknobit.refy.ui.utilities.getItemRelations
+import com.tecknobit.refy.utilities.LinksCollectionUtilities
+import com.tecknobit.refy.utilities.OptionsBar
+import com.tecknobit.refy.utilities.RefyLinkUtilities
+import com.tecknobit.refy.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.links.RefyLink

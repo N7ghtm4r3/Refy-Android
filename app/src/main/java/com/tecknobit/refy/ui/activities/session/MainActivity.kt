@@ -36,7 +36,7 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localU
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
-import com.tecknobit.refy.ui.utilities.Logo
+import com.tecknobit.refy.utilities.Logo
 
 
 class MainActivity : ComponentActivity() {

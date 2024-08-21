@@ -29,10 +29,10 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.toColor
-import com.tecknobit.refy.ui.utilities.ExpandTeamMembers
-import com.tecknobit.refy.ui.utilities.LinksCollectionUtilities
-import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
-import com.tecknobit.refy.ui.utilities.getItemRelations
+import com.tecknobit.refy.utilities.ExpandTeamMembers
+import com.tecknobit.refy.utilities.LinksCollectionUtilities
+import com.tecknobit.refy.utilities.RefyLinkUtilities
+import com.tecknobit.refy.utilities.getItemRelations
 import com.tecknobit.refy.ui.viewmodels.collections.CollectionActivityViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.links.RefyLink

@@ -7,9 +7,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -18,6 +16,9 @@ import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme.Da
 import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme.Light
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 
+/**
+ * **lightScheme** default light colors scheme
+ */
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,
@@ -56,6 +57,9 @@ private val lightScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
+/**
+ * **darkScheme** default dark colors scheme
+ */
 private val darkScheme = darkColorScheme(
     primary = primaryDark,
     onPrimary = onPrimaryDark,
@@ -94,6 +98,9 @@ private val darkScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
+/**
+ * **mediumContrastLightColorScheme** default light colors scheme
+ */
 private val mediumContrastLightColorScheme = lightColorScheme(
     primary = primaryLightMediumContrast,
     onPrimary = onPrimaryLightMediumContrast,
@@ -132,6 +139,9 @@ private val mediumContrastLightColorScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLightMediumContrast,
 )
 
+/**
+ * **highContrastLightColorScheme** default light colors scheme
+ */
 private val highContrastLightColorScheme = lightColorScheme(
     primary = primaryLightHighContrast,
     onPrimary = onPrimaryLightHighContrast,
@@ -170,6 +180,9 @@ private val highContrastLightColorScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLightHighContrast,
 )
 
+/**
+ * **mediumContrastDarkColorScheme** default dark colors scheme
+ */
 private val mediumContrastDarkColorScheme = darkColorScheme(
     primary = primaryDarkMediumContrast,
     onPrimary = onPrimaryDarkMediumContrast,
@@ -208,6 +221,9 @@ private val mediumContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkMediumContrast,
 )
 
+/**
+ * **highContrastDarkColorScheme** default high contrast dark colors scheme
+ */
 private val highContrastDarkColorScheme = darkColorScheme(
     primary = primaryDarkHighContrast,
     onPrimary = onPrimaryDarkHighContrast,
@@ -246,18 +262,14 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
-@Immutable
-data class ColorFamily(
-    val color: Color,
-    val onColor: Color,
-    val colorContainer: Color,
-    val onColorContainer: Color
-)
-
-val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
-)
-
+/**
+ * Function to set the Refy theme to the content
+ *
+ * @param darkTheme: whether to use the dark or light theme
+ * @param dynamicColor: the dynamic color
+ * @param colorStatusBar: whether the status bar needs to be coloured
+ * @param content: the content to display
+ */
 @Composable
 fun RefyTheme(
     darkTheme: Boolean = when (localUser.theme) {

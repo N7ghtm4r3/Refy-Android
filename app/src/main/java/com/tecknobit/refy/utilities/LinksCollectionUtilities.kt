@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.utilities
+package com.tecknobit.refy.utilities
 
 import android.app.Activity
 import androidx.compose.material.icons.Icons

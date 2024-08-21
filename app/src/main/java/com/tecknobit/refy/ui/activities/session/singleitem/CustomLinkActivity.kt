@@ -41,8 +41,8 @@ import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
-import com.tecknobit.refy.ui.utilities.DeleteItemButton
-import com.tecknobit.refy.ui.utilities.ItemDescription
+import com.tecknobit.refy.utilities.DeleteItemButton
+import com.tecknobit.refy.utilities.ItemDescription
 import com.tecknobit.refy.ui.viewmodels.links.CustomLinkActivityViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import org.json.JSONObject

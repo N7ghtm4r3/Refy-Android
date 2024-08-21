@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.utilities
+package com.tecknobit.refy.utilities
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility

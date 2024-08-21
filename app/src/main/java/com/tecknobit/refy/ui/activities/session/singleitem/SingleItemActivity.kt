@@ -32,15 +32,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
-import com.tecknobit.refy.ui.helpers.SessionManager
+import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
-import com.tecknobit.refy.ui.utilities.ItemDescription
-import com.tecknobit.refy.ui.utilities.LineDivider
-import com.tecknobit.refy.ui.utilities.OptionsBar
-import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
-import com.tecknobit.refy.ui.utilities.UserPlaque
+import com.tecknobit.refy.utilities.ItemDescription
+import com.tecknobit.refy.utilities.LineDivider
+import com.tecknobit.refy.utilities.OptionsBar
+import com.tecknobit.refy.utilities.RefyLinkUtilities
+import com.tecknobit.refy.utilities.UserPlaque
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.links.RefyLink
 

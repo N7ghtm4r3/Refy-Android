@@ -46,7 +46,7 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.getFilePath
-import com.tecknobit.refy.ui.utilities.DefaultPlaque
+import com.tecknobit.refy.utilities.DefaultPlaque
 import com.tecknobit.refy.ui.viewmodels.create.CreateTeamViewModel
 import com.tecknobit.refycore.records.RefyUser.DEFAULT_PROFILE_PIC
 import com.tecknobit.refycore.records.Team

@@ -56,7 +56,7 @@ import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.theme.RefyTheme
 import com.tecknobit.refy.ui.theme.displayFontFamily
-import com.tecknobit.refy.ui.utilities.RefyLinkUtilities
+import com.tecknobit.refy.utilities.RefyLinkUtilities
 import com.tecknobit.refy.ui.viewmodels.ConnectViewModel
 import com.tecknobit.refycore.helpers.RefyInputValidator.isTagNameValid
 import com.tecknobit.refycore.records.links.RefyLink

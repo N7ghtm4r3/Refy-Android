@@ -2,17 +2,22 @@ package com.tecknobit.refy.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
-
-import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.tecknobit.refy.R
 
+/**
+ * **provider** -> the provider of Google fonts
+ */
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
     providerPackage = "com.google.android.gms",
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
+/**
+ * **bodyFontFamily** -> the Neutron's body font family
+ */
 val bodyFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Titillium Web"),
@@ -20,6 +25,9 @@ val bodyFontFamily = FontFamily(
     )
 )
 
+/**
+ * **displayFontFamily** -> the Neutron's font family
+ */
 val displayFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Ubuntu"),
@@ -27,9 +35,14 @@ val displayFontFamily = FontFamily(
     )
 )
 
-// Default Material 3 typography values
+/**
+ * **baseline** -> the Refy's baseline
+ */
 val baseline = Typography()
 
+/**
+ * **AppTypography** -> the Refy's Typography
+ */
 val AppTypography = Typography(
     displayLarge = baseline.displayLarge.copy(fontFamily = displayFontFamily),
     displayMedium = baseline.displayMedium.copy(fontFamily = displayFontFamily),
@@ -47,4 +60,3 @@ val AppTypography = Typography(
     labelMedium = baseline.labelMedium.copy(fontFamily = bodyFontFamily),
     labelSmall = baseline.labelSmall.copy(fontFamily = bodyFontFamily),
 )
-

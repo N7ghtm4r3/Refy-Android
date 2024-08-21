@@ -4,6 +4,13 @@ import android.app.Activity
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
 
+/**
+ * The **ReviewHelper** class is useful to send a review in-app with the related API
+ *
+ * @param activity: the activity where the review helper has been instantiated
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ */
 class ReviewHelper(
     val activity: Activity
 ) {

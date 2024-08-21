@@ -1,4 +1,4 @@
-package com.tecknobit.refy.ui.helpers
+package com.tecknobit.refy.helpers
 
 import android.content.Context
 import android.content.Intent
@@ -19,8 +19,21 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localU
 import com.tecknobit.refy.ui.screens.Screen.Companion.haveBeenDisconnected
 import com.tecknobit.refy.ui.screens.Screen.Companion.isServerOffline
 
+/**
+ * The **SessionManager** interface is useful to display the correct content based on the current scenario
+ * such server offline or device disconnected
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ */
 interface SessionManager {
 
+    /**
+     * Function to display the correct content based on the current scenario such server offline or
+     * device disconnected
+     *
+     * @param context: the current context where the function has been invoked
+     * @param content: the content to display in a normal scenario
+     */
     @Composable
     fun ManagedContent(
         context: Context,
@@ -46,12 +59,22 @@ interface SessionManager {
         }
     }
 
+    /**
+     * Function to instantiate the session flags to manage the different scenarios
+     *
+     * No-any params required
+     */
     @Composable
     private fun InstantiateSessionFlags() {
         isServerOffline = remember { mutableStateOf(false) }
         haveBeenDisconnected = remember { mutableStateOf(false) }
     }
 
+    /**
+     * Function to display the content when the server is offline
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun ServerOfflineUi() {
@@ -62,6 +85,11 @@ interface SessionManager {
         )
     }
 
+    /**
+     * Function to disconnect the current [localUser] from the session and navigate to the [ConnectActivity]
+     *
+     * @param context: the current context where the function has been invoked
+     */
     private fun haveBeenDisconnected(
         context: Context
     ) {

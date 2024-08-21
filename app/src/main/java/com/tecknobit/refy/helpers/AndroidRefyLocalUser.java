@@ -3,14 +3,33 @@ package com.tecknobit.refy.helpers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.tecknobit.equinox.environment.records.EquinoxLocalUser;
 import com.tecknobit.refycore.helpers.RefyLocalUser;
+import com.tecknobit.refycore.records.RefyUser;
 
+/**
+ * The {@code AndroidRefyLocalUser} class is useful to represent a {@link RefyUser} in the mobile
+ * applications
+ *
+ * @see EquinoxLocalUser
+ * @see RefyLocalUser
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ */
 public class AndroidRefyLocalUser extends RefyLocalUser {
 
-    private final SharedPreferences sharedPreferences;
+    /**
+     * {@code preferences} the manager of the local preferences
+     */
+    private final SharedPreferences preferences;
 
+    /**
+     * Constructor to init {@link AndroidRefyLocalUser} class
+     *
+     * @param context: the context where the local user has been instantiated
+     */
     public AndroidRefyLocalUser(Context context) {
-        this.sharedPreferences = context.getSharedPreferences(REFY_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        this.preferences = context.getSharedPreferences(REFY_PREFERENCES_FILE, Context.MODE_PRIVATE);
         initLocalUser();
     }
 
@@ -22,7 +41,7 @@ public class AndroidRefyLocalUser extends RefyLocalUser {
      */
     @Override
     protected void setPreference(String key, String value) {
-        sharedPreferences.edit().putString(key, value).apply();
+        preferences.edit().putString(key, value).apply();
     }
 
     /**
@@ -33,7 +52,7 @@ public class AndroidRefyLocalUser extends RefyLocalUser {
      */
     @Override
     protected String getPreference(String key) {
-        return sharedPreferences.getString(key, null);
+        return preferences.getString(key, null);
     }
 
     /**
@@ -43,7 +62,7 @@ public class AndroidRefyLocalUser extends RefyLocalUser {
     @Override
     public void clear() {
         super.clear();
-        sharedPreferences.edit().clear().apply();
+        preferences.edit().clear().apply();
     }
 
 }

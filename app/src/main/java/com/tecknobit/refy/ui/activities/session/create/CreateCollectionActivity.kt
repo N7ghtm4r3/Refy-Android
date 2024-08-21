@@ -37,7 +37,7 @@ import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.generateRandomColor
 import com.tecknobit.refy.ui.toColor
-import com.tecknobit.refy.ui.utilities.ItemDescription
+import com.tecknobit.refy.utilities.ItemDescription
 import com.tecknobit.refy.ui.viewmodels.create.CreateCollectionViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
