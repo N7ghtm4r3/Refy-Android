@@ -2,6 +2,8 @@
 
 package com.tecknobit.refy.ui.activities.session.create
 
+import androidx.activity.ComponentActivity
+import androidx.annotation.CallSuper
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height
@@ -35,17 +37,29 @@ import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.generateRandomColor
 import com.tecknobit.refy.ui.toColor
 import com.tecknobit.refy.utilities.ItemDescription
 import com.tecknobit.refy.viewmodels.create.CreateCollectionViewModel
 import com.tecknobit.refycore.records.LinksCollection
 
+/**
+ * The **CreateCollectionActivity** class is useful to create or edit a [LinksCollection]
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyItemBaseActivity
+ * @see CreateActivity
+ */
 class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectionViewModel>(
     items = localUser.getCollections(true),
     invalidMessage = R.string.invalid_collection
 ) {
 
+    /**
+     * *choseColor* -> the state to show the [EquinoxAlertDialog] to chose the color for the collection
+     */
     private lateinit var choseColor: MutableState<Boolean>
 
     init {
@@ -54,6 +68,12 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
         )
     }
 
+    /**
+     * Function to display the content of the activity
+     *
+     * No-any params required
+     */
+    @CallSuper
     @Composable
     override fun ActivityContent() {
         super.ActivityContent()
@@ -81,6 +101,11 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
         )
     }
 
+    /**
+     * Function to choose the color for the collection
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun ChoseCollectionColor() {
@@ -113,6 +138,11 @@ class CreateCollectionActivity : CreateActivity<LinksCollection, CreateCollectio
         )
     }
 
+    /**
+     * Function to create the section where choose the links to attach to the current collection
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun LinksSection() {

@@ -79,6 +79,11 @@ import com.tecknobit.refycore.records.Team.RefyTeamMember
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole
 import com.tecknobit.refycore.records.Team.RefyTeamMember.TeamRole.ADMIN
 
+/**
+ * Function to create an options bar for the cards of the [RefyItem]
+ *
+ * @param options: the row of the options available
+ */
 @Composable
 @NonRestartableComposable
 fun OptionsBar(
@@ -97,6 +102,11 @@ fun OptionsBar(
     )
 }
 
+/**
+ * Function to create a custom [HorizontalDivider]
+ *
+ * No-any params required
+ */
 @Composable
 @NonRestartableComposable
 fun LineDivider() {
@@ -113,6 +123,13 @@ fun LineDivider() {
     )
 }
 
+/**
+ * Function to display the description of an item
+ *
+ * @param modifier: the modifier to apply to the section
+ * @param description: the description value
+ * @param fontSize: the size to apply to the font
+ */
 @Composable
 @NonRestartableComposable
 @SuppressLint("ModifierParameter")
@@ -140,12 +157,30 @@ fun ItemDescription(
     }
 }
 
+/**
+ * Function to get whether the current [localUser] is the owner of the specified item
+ *
+ * @param item: the item to check whether the user is its owner
+ *
+ * @return whether the current [localUser] is the owner of the specified item as boolean
+ */
 fun <T : RefyItem> isItemOwner(
     item: T
 ): Boolean {
     return item.owner.id == localUser.userId
 }
 
+/**
+ * Function to get a list of items that not already belongs to a container such [LinksCollection] or
+ * [Team], so exclude them from the owned by the user
+ *
+ * @param userList: the list of the user owned items
+ * @param currentAttachments: the current attachments list of the item
+ *
+ * @return list of items that not already belongs to a container as [List] of [T]
+ *
+ * @param T: the [RefyItem] type
+ */
 fun <T: RefyItem> getItemRelations(
     userList: List<T>,
     currentAttachments: List<T>
@@ -160,6 +195,13 @@ fun <T: RefyItem> getItemRelations(
     return attachments
 }
 
+/**
+ * Function to draw just one side of a component such [Card]
+ *
+ * @param width: the width of the border to color
+ * @param color: the color of the border
+ * @param shape: the shape of the border
+ */
 fun Modifier.drawOneSideBorder(
     width: Dp,
     color: Color,
@@ -177,6 +219,16 @@ fun Modifier.drawOneSideBorder(
         )
     }
 
+/**
+ * Function to execute the action to add links to a teams
+ *
+ * @param show: whether show the [EquinoxAlertDialog] where is possible chose the links
+ * @param viewModel: the view model used to execute this operation
+ * @param icon: the representative icon to use
+ * @param availableItems: the list of available items identifiers where share with a container
+ * @param title: the resource identifier of the title text
+ * @param confirmAction: the action to execute when the user clicks the confirm button
+ */
 @Composable
 @NonRestartableComposable
 fun AddItemToContainer(
@@ -241,6 +293,13 @@ fun AddItemToContainer(
     )
 }
 
+/**
+ * Function to create a button to delete an item
+ *
+ * @param show: whether show the warn [EquinoxAlertDialog] about the item deletion
+ * @param deleteAction: the action to execute to delete the item
+ * @param tint: the tint for the [OptionButton]
+ */
 @Composable
 @NonRestartableComposable
 fun DeleteItemButton(
@@ -256,6 +315,15 @@ fun DeleteItemButton(
     )
 }
 
+/**
+ * Function to create an option button to execute any actions
+ *
+ * @param icon: the representative icon to use
+ * @param visible: whether the button must be visible or not
+ * @param show: whether show the warn [EquinoxAlertDialog] about the action
+ * @param optionAction: the option action to execute
+ * @param tint: the tint for the [OptionButton]
+ */
 @Composable
 @NonRestartableComposable
 fun OptionButton(
@@ -283,6 +351,13 @@ fun OptionButton(
     }
 }
 
+/**
+ * Function to create a [ModalBottomSheet] to display the teams where an item is shared
+ *
+ * @param viewModel: the view model used to in the screen where this function has been invoked
+ * @param show: whether show the [ModalBottomSheet]
+ * @param teams: the teams list
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @NonRestartableComposable
@@ -333,6 +408,13 @@ fun ExpandTeamMembers(
     }
 }
 
+/**
+ * Function to create an [Team.RefyTeamMember] details plaque
+ *
+ * @param team: the team of the member
+ * @param member: the member from get the details to show
+ * @param viewModel: the view model used to execute this operation
+ */
 @Composable
 @NonRestartableComposable
 fun TeamMemberPlaque(
@@ -374,6 +456,15 @@ fun TeamMemberPlaque(
     HorizontalDivider()
 }
 
+/**
+ * Function to create an [RefyUser] details plaque
+ *
+ * @param colors: the colors for the [ListItem] component
+ * @param profilePicSize: the size of the profile picture
+ * @param user: the user from get the details to show
+ * @param supportingContent: the content to place in the supporting zone
+ * @param trailingContent: the content to place in the traling zone
+ */
 @Composable
 @NonRestartableComposable
 fun UserPlaque(
@@ -394,6 +485,16 @@ fun UserPlaque(
     )
 }
 
+/**
+ * Function to create an [RefyUser] details plaque
+ *
+ * @param colors: the colors for the [ListItem] component
+ * @param profilePicSize: the size of the profile picture
+ * @param completeName: the complete name of the user
+ * @param tagName: the tag name of the user
+ * @param supportingContent: the content to place in the supporting zone
+ * @param trailingContent: the content to place in the traling zone
+ */
 @Composable
 @NonRestartableComposable
 fun DefaultPlaque(
@@ -430,6 +531,13 @@ fun DefaultPlaque(
     )
 }
 
+/**
+ * Function to display the roles menu to change the role of a member
+ *
+ * @param enableOption: whether the option is enabled
+ * @param viewModel: the view model used to execute this operation
+ * @param member: the member to change his/her role
+ */
 @Composable
 @NonRestartableComposable
 private fun RolesMenu(
@@ -487,6 +595,16 @@ private fun RolesMenu(
     }
 }
 
+/**
+ * Function to create and display a logo
+ *
+ * @param modifier: the modifier to apply to the [AsyncImage] component
+ * @param picSize: the size of the picture
+ * @param addShadow: whether add the shadow effect to the logo
+ * @param onClick: if set, the action to execute when the logo is clicked
+ * @param shape: the shape of the logo
+ * @param picUrl: the profile pic url
+ */
 @Composable
 @NonRestartableComposable
 fun Logo(

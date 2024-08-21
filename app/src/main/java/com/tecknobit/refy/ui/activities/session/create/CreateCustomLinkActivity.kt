@@ -2,6 +2,8 @@
 
 package com.tecknobit.refy.ui.activities.session.create
 
+import androidx.activity.ComponentActivity
+import androidx.annotation.CallSuper
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -52,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EquinoxOutlinedTextField
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.viewmodels.create.CreateCustomLinkViewModel
 import com.tecknobit.refycore.records.links.CustomRefyLink
 import com.tecknobit.refycore.records.links.CustomRefyLink.EXPIRED_TIME_KEY
@@ -65,6 +68,14 @@ import com.tecknobit.refycore.records.links.CustomRefyLink.ExpiredTime.THIRTY_MI
 import com.tecknobit.refycore.records.links.CustomRefyLink.ExpiredTime.entries
 import com.tecknobit.refycore.records.links.CustomRefyLink.UNIQUE_ACCESS_KEY
 
+/**
+ * The **CreateCustomLinkActivity** class is useful to create or edit a [CustomRefyLink]
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyItemBaseActivity
+ * @see CreateActivity
+ */
 class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkViewModel>(
     items = localUser.getCustomLinks(true),
     invalidMessage = R.string.invalid_custom_link,
@@ -77,6 +88,12 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         )
     }
 
+    /**
+     * Function to display the content of the activity
+     *
+     * No-any params required
+     */
+    @CallSuper
     @Composable
     override fun ActivityContent() {
         super.ActivityContent()
@@ -103,6 +120,12 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         )
     }
 
+    /**
+     * Function to display the custom options available to customize the link such [CustomRefyLink.UNIQUE_ACCESS_KEY]
+     * and [CustomRefyLink.EXPIRED_TIME_KEY]
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun Options() {
@@ -133,6 +156,11 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         )
     }
 
+    /**
+     * Function to display the section where the user can choose the [ExpiredTime] for the custom link
+     *
+     * @param selected: whether the expired time has been set
+     */
     @Composable
     @NonRestartableComposable
     private fun ExpireSection(
@@ -205,6 +233,13 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         }
     }
 
+    /**
+     * Function to get the related text in base of the [ExpiredTime] chosen
+     *
+     * @param expiredTime: the expired time from fetch the correct text
+     *
+     * @return the text related to the expired time chosen as [String]
+     */
     @Composable
     private fun getExpirationText(
         expiredTime: ExpiredTime
@@ -224,6 +259,14 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         )
     }
 
+    /**
+     * Function to display the options for the customization of the link
+     *
+     * @param modifier: the modifier of the [Row] container
+     * @param optionKey: the key of the option
+     * @param optionText: the resource identifier of the option text
+     * @param extraContent: an extra content to display
+     */
     @Composable
     @NonRestartableComposable
     private fun OptionsSection(
@@ -252,6 +295,15 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         }
     }
 
+    /**
+     * Function to display the payload section where the user can add custom details to attach to the
+     * custom link
+     *
+     * @param header: the resource identifier of the header text
+     * @param supportList: the support list where add the customization options such [CustomRefyLink.resources]
+     * or [CustomRefyLink.fields]
+     * @param itemName: the resource identifier of the name of the item
+     */
     @Composable
     @NonRestartableComposable
     private fun Payload(
@@ -365,6 +417,13 @@ class CreateCustomLinkActivity: CreateActivity<CustomRefyLink, CreateCustomLinkV
         }
     }
 
+    /**
+     * Function to check whether the current item can be saved because all the details has been
+     * correctly filled
+     *
+     * No-any params required
+     * @return whether the item can be saved as boolean
+     */
     override fun canBeSaved(): Boolean {
         if(editItemName.value)
             return false

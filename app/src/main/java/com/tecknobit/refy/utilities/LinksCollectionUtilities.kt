@@ -16,8 +16,23 @@ import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.Team
 
+/**
+ * The **LinksCollectionUtilities** interface is useful to manage the [LinksCollection] giving some
+ * common utilities that appear in different part of the application
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ */
 interface LinksCollectionUtilities {
 
+    /**
+     * Function to share the collection with teams
+     *
+     * @param viewModel: the view model used to execute this operation
+     * @param show: whether show the [EquinoxAlertDialog] where is possible chose the teams
+     * @param teams: the list of team identifiers where share the collection
+     * @param collection: the collection to share
+     * @param tint: the tint for the [OptionButton]
+     */
     @Composable
     @NonRestartableComposable
     fun AddTeamsButton(
@@ -43,6 +58,14 @@ interface LinksCollectionUtilities {
         )
     }
 
+    /**
+     * Function to execute the sharing of the collection with teams
+     *
+     * @param viewModel: the view model used to execute this operation
+     * @param show: whether show the [EquinoxAlertDialog] where is possible chose the teams
+     * @param availableTeams: the list of available team identifiers where share the collection
+     * @param collection: the collection to share
+     */
     @Composable
     @NonRestartableComposable
     private fun AddCollectionToTeam(
@@ -67,6 +90,15 @@ interface LinksCollectionUtilities {
         )
     }
 
+    /**
+     * Function to delete a collection
+     *
+     * @param activity: the activity where the action has been invoked
+     * @param viewModel: the view model used to execute this operation
+     * @param deleteCollection: whether the warn [EquinoxAlertDialog] is shown
+     * @param collection: the collection to share
+     * @param tint: the tint for the [OptionButton]
+     */
     @Composable
     @NonRestartableComposable
     fun DeleteCollectionButton(
@@ -90,6 +122,14 @@ interface LinksCollectionUtilities {
         )
     }
 
+    /**
+     * Function to execute the action to delete a collection
+     *
+     * @param activity: the activity where the action has been invoked
+     * @param viewModel: the view model used to execute this operation
+     * @param show: whether the warn [EquinoxAlertDialog] is shown
+     * @param collection: the collection to share
+     */
     @Composable
     @NonRestartableComposable
     private fun DeleteCollection(

@@ -3,8 +3,10 @@
 package com.tecknobit.refy.ui.activities.session.create
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.CallSuper
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -68,6 +70,21 @@ import com.tecknobit.refycore.helpers.RefyInputValidator.MAX_TITLE_LENGTH
 import com.tecknobit.refycore.helpers.RefyInputValidator.isDescriptionValid
 import com.tecknobit.refycore.records.RefyItem
 
+/**
+ * The **CreateActivity** class is useful to give the base behavior to create or edit a [RefyItem]'s
+ * item
+ *
+ * @param items: the items list
+ * @param invalidMessage: the resource identifier of the invalid message to display when the item is
+ * not valid or not found in [items] list
+ * @param scrollable: whether the view must be scrollable
+ *
+ * @param T: the [RefyItem] of the current activity displayed
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyItemBaseActivity
+ */
 @Structure
 abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     items : List<T>,
@@ -78,12 +95,31 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
     invalidMessage = invalidMessage
 ) {
 
+    /**
+     * *editItemName* -> whether the name of the item is currently in edit mode
+     */
     protected lateinit var editItemName: MutableState<Boolean>
 
+    /**
+     * *viewModel* -> the support view model to manage the requests to the backend
+     */
     protected lateinit var viewModel: V
 
+    /**
+     * *reviewHelper* -> the review helper instance
+     */
     private lateinit var reviewHelper: ReviewHelper
 
+    /**
+     * On create method
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     * If your ComponentActivity is annotated with {@link ContentView}, this will
+     * call {@link #setContentView(int)} for you.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setActiveContext(this::class.java)
@@ -102,6 +138,12 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         }
     }
 
+    /**
+     * Function to display the content of the activity
+     *
+     * No-any params required
+     */
+    @CallSuper
     @Composable
     protected open fun ActivityContent() {
         viewModel.initExistingItem(
@@ -127,6 +169,16 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         viewModel.itemDescriptionError = remember { mutableStateOf(false) }
     }
 
+    /**
+     * Function to create the [Scaffold] with the details to display
+     *
+     * @param modifier: the modifier of the scaffold
+     * @param colors: the scheme colors to use for the [LargeTopAppBar]
+     * @param placeholder: the resource identifier for the placeholder text
+     * @param saveButtonColor: the color of the save button
+     * @param customContent: the custom content to display
+     * @param extraContent: the extra content to display
+     */
     @Composable
     @NonRestartableComposable
     protected fun ScaffoldContent(
@@ -183,6 +235,11 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         }
     }
 
+    /**
+     * Wrapper function to create a back navigation button to nav at the previous caller activity
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun NavButton() {
@@ -196,6 +253,12 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         }
     }
 
+    /**
+     * Function to create the section that allows the user to edit or show the name of the item
+     *
+     * @param modifier: the modifier of the [TextField]
+     * @param placeholder: the resource identifier for the placeholder text
+     */
     @Composable
     @NonRestartableComposable
     protected fun ItemNameSection(
@@ -244,6 +307,11 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         }
     }
 
+    /**
+     * Wrapper function to create a save button to save the current item
+     *
+     * @param color: the color of the save button
+     */
     @Composable
     @NonRestartableComposable
     private fun SaveButton(
@@ -272,6 +340,12 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         }
     }
 
+    /**
+     * Function to check whether the keyboard is hidden and if positive clear the current focus from
+     * [ItemNameSection]
+     *
+     * No-anu params required
+     */
     @Composable
     private fun CheckWhetherKeyboardHidden() {
         if(!WindowInsets.isImeVisible) {
@@ -280,6 +354,11 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         }
     }
 
+    /**
+     * Function to create the section that allows the user to edit the description of the item
+     *
+     * @param modifier: the modifier of the [TextField]
+     */
     @Composable
     @NonRestartableComposable
     private fun DescriptionSection(
@@ -308,6 +387,12 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         )
     }
 
+    /**
+     * Function to display a custom section to display an items list
+     *
+     * @param header: the resource identifier of the header text
+     * @param content: the content of the [LazyColumn]
+     */
     @Composable
     @NonRestartableComposable
     protected fun CustomSection(
@@ -331,6 +416,14 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         )
     }
 
+    /**
+     * Wrapper function to create a custom check box that when clicked manage the current focus and
+     * set to *false* the [editItemName]
+     *
+     * @param checked: the state used to control whether the checkbox has been checked
+     * @param keyboardController: the current keyboard controller
+     * @param itemId: the identifier of the item attached to that [Checkbox]
+     */
     @Composable
     @NonRestartableComposable
     protected fun ItemCheckbox(
@@ -352,6 +445,13 @@ abstract class CreateActivity<T : RefyItem, V : CreateItemViewModel<T>>(
         )
     }
 
+    /**
+     * Function to check whether the current item can be saved because all the details has been
+     * correctly filled
+     *
+     * No-any params required
+     * @return whether the item can be saved as boolean
+     */
     protected open fun canBeSaved(): Boolean {
         if(editItemName.value)
             return false

@@ -2,11 +2,13 @@
 
 package com.tecknobit.refy.ui.activities.session.create
 
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia.ImageOnly
+import androidx.annotation.CallSuper
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -44,6 +46,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tecknobit.refy.R
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
+import com.tecknobit.refy.ui.activities.session.RefyItemBaseActivity
 import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.getFilePath
 import com.tecknobit.refy.utilities.DefaultPlaque
@@ -51,12 +54,23 @@ import com.tecknobit.refy.viewmodels.create.CreateTeamViewModel
 import com.tecknobit.refycore.records.RefyUser.DEFAULT_PROFILE_PIC
 import com.tecknobit.refycore.records.Team
 
+/**
+ * The **CreateTeamActivity** class is useful to create or edit a [Team]
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ComponentActivity
+ * @see RefyItemBaseActivity
+ * @see CreateActivity
+ */
 class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
     items = localUser.getTeams(true),
     invalidMessage = R.string.invalid_team,
     scrollable = true
 ) {
 
+    /**
+     * *photoPicker* -> the launcher to choose the logo picture for the team
+     */
     private lateinit var photoPicker: ActivityResultLauncher<PickVisualMediaRequest>
 
     init {
@@ -65,6 +79,12 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
         )
     }
 
+    /**
+     * Function to display the content of the activity
+     *
+     * No-any params required
+     */
+    @CallSuper
     @Composable
     override fun ActivityContent() {
         super.ActivityContent()
@@ -104,6 +124,11 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
         )
     }
 
+    /**
+     * Function to display the logo picture of the team
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun LogoSet() {
@@ -148,6 +173,11 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
         )
     }
 
+    /**
+     * Function to display the section to choose the logo picture for the team
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun LogoNotSet() {
@@ -193,6 +223,11 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
         }
     }
 
+    /**
+     * Function to display the section to choose the members of the team
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     private fun MembersSection() {
@@ -224,6 +259,13 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
         }
     }
 
+    /**
+     * Function to check whether the current item can be saved because all the details has been
+     * correctly filled
+     *
+     * No-any params required
+     * @return whether the item can be saved as boolean
+     */
     override fun canBeSaved(): Boolean {
         return super.canBeSaved() && viewModel.logoPic.value.isNotEmpty()
     }
