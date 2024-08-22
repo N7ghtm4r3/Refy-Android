@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * The **CustomLinksViewModel** class is the support class used by [CustomLinkActivity] to communicate
+ * The **CustomLinkActivityViewModel** class is the support class used by [CustomLinkActivity] to communicate
  * with the backend and to execute the refreshing routines to update the UI data and working with the
  * [CustomRefyLink]
  *

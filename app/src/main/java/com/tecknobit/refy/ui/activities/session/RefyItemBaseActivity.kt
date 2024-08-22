@@ -96,7 +96,7 @@ abstract class RefyItemBaseActivity <T : RefyItem> (
     }
 
     /**
-     * Function to create an header for an activity section
+     * Function to create a header for an activity section
      *
      * @param header: the resource identifier of the header text
      */

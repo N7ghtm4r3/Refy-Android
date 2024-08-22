@@ -174,7 +174,7 @@ interface RefyLinkUtilities<T : RefyLink> {
     }
 
     /**
-     * Function to share a link outside of the application
+     * Function to share a link outside the application
      *
      * @param context: the context where the share action has been requested
      * @param link: the link to share
@@ -193,7 +193,7 @@ interface RefyLinkUtilities<T : RefyLink> {
     }
 
     /**
-     * Function to share a link outside of the application
+     * Function to share a link outside the application
      *
      * @param context: the context where the share action has been requested
      * @param link: the link to share

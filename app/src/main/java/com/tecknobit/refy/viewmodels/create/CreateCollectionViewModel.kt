@@ -11,7 +11,7 @@ import com.tecknobit.refy.ui.toHex
 import com.tecknobit.refycore.records.LinksCollection
 
 /**
- * The **CreateCollectionViewModel** class is the support class used by [CreateCollectionViewModel]
+ * The **CreateCollectionViewModel** class is the support class used by [CreateCollectionActivity]
  * to communicate with the backend for the creation or the editing of a [LinksCollection]
  *
  * @param snackbarHostState: the host to launch the snackbar messages

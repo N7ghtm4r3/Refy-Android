@@ -58,7 +58,7 @@ abstract class RefyViewModel(
     fun setCurrentUserOwnedLinks(
         forceRefresh: Boolean = false
     ) {
-        if(!linksLoaded || forceRefresh) {
+        if (!linksLoaded || forceRefresh) {
             requester.sendRequest(
                 request = {
                     requester.getLinks(
@@ -83,7 +83,7 @@ abstract class RefyViewModel(
     fun setCurrentUserOwnedCollections(
         forceRefresh: Boolean = false
     ) {
-        if(!collectionsLoaded || forceRefresh) {
+        if (!collectionsLoaded || forceRefresh) {
             requester.sendRequest(
                 request = {
                     requester.getCollections(
@@ -108,7 +108,7 @@ abstract class RefyViewModel(
     fun setCurrentUserOwnedTeams(
         forceRefresh: Boolean = false
     ) {
-        if(!teamsLoaded || forceRefresh) {
+        if (!teamsLoaded || forceRefresh) {
             requester.sendRequest(
                 request = {
                     requester.getTeams(

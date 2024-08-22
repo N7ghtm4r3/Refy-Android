@@ -77,9 +77,9 @@ abstract class LinksViewModel <T : RefyLink>: LinksViewModelHelper<T>(
         link: T? = null,
         onSuccess: () -> Unit
     ) {
-        if(!linkDetailsValidated())
+        if (!linkDetailsValidated())
             return
-        if(link == null) {
+        if (link == null) {
             addNewLink {
                 onSuccess.invoke()
             }

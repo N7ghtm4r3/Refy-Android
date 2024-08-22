@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * The **CreateTeamViewModel** class is the support class used by [CreateTeamViewModel]
+ * The **CreateTeamViewModel** class is the support class used by [CreateTeamActivity]
  * to communicate with the backend for the creation or the editing of a [Team]
  *
  * @param snackbarHostState: the host to launch the snackbar messages
