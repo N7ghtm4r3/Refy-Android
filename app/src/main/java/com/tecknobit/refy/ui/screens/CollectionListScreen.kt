@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material3.Card
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.session.create.CreateCollectionActivity
 import com.tecknobit.refy.ui.activities.session.singleitem.CollectionActivity
@@ -36,12 +38,34 @@ import com.tecknobit.refy.viewmodels.collections.CollectionListViewModel
 import com.tecknobit.refycore.records.LinksCollection
 import com.tecknobit.refycore.records.links.RefyLink
 
+/**
+ * The **CollectionListScreen** class is useful to display the [LinksCollection]'s list
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see Screen
+ * @see SessionManager
+ * @see RefyLinkUtilities
+ * @see LinksCollectionUtilities
+ *
+ */
 class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollectionUtilities {
 
+    /**
+     * *viewModel* -> the support view model to manage the requests to the backend
+     */
     private val viewModel = CollectionListViewModel()
 
+    /**
+     * *collections* -> the list of the collections to display
+     */
     private lateinit var collections: List<LinksCollection>
 
+    /**
+     * Function to display the content of the screen
+     *
+     * No-any params required
+     */
     @Composable
     override fun ShowContent() {
         ManagedContent (
@@ -78,15 +102,30 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
         }
     }
 
+    /**
+     * Function to set the action to execute when the [FloatingActionButton] has been clicked
+     *
+     * No-any params required
+     */
     @Composable
     override fun SetFabAction() {
         context = LocalContext.current
     }
 
+    /**
+     * Function to execute the fab action previously set
+     *
+     * No-any params required
+     */
     override fun executeFabAction() {
         context.startActivity(Intent(context, CreateCollectionActivity::class.java))
     }
 
+    /**
+     * Function to create a properly [Card] to display the collection
+     *
+     * @param collection: the collection to display
+     */
     @Composable
     private fun CollectionCard(
         collection: LinksCollection
@@ -123,6 +162,11 @@ class CollectionListScreen : Screen(), RefyLinkUtilities<RefyLink>, LinksCollect
         )
     }
 
+    /**
+     * Function to create an options bar for the card of the [LinksCollection]
+     *
+     * @param collection: the collection to display
+     */
     @Composable
     private fun OptionsBar(
         collection: LinksCollection

@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tecknobit.equinoxcompose.components.EmptyListUI
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.session.create.CreateTeamActivity
 import com.tecknobit.refy.ui.activities.session.singleitem.TeamActivity
@@ -56,12 +57,34 @@ import com.tecknobit.refy.viewmodels.teams.TeamsListViewModel
 import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.links.RefyLink
 
+/**
+ * The **TeamsListScreen** class is useful to display the [Team]'s list
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see Screen
+ * @see SessionManager
+ * @see RefyLinkUtilities
+ * @see TeamsUtilities
+ *
+ */
 class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
 
+    /**
+     * *viewModel* -> the support view model to manage the requests to the backend
+     */
     private val viewModel = TeamsListViewModel()
 
+    /**
+     * *teams* -> the list of the teams to display
+     */
     private lateinit var teams: List<Team>
 
+    /**
+     * Function to display the content of the screen
+     *
+     * No-any params required
+     */
     @Composable
     override fun ShowContent() {
         ManagedContent (
@@ -96,15 +119,30 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
         }
     }
 
+    /**
+     * Function to set the action to execute when the [FloatingActionButton] has been clicked
+     *
+     * No-any params required
+     */
     @Composable
     override fun SetFabAction() {
         context = LocalContext.current
     }
 
+    /**
+     * Function to execute the fab action previously set
+     *
+     * No-any params required
+     */
     override fun executeFabAction() {
         context.startActivity(Intent(context, CreateTeamActivity::class.java))
     }
 
+    /**
+     * Function to create a properly [Card] to display the team
+     *
+     * @param team: the team to display
+     */
     @Composable
     @NonRestartableComposable
     private fun TeamCard(
@@ -158,6 +196,11 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
         }
     }
 
+    /**
+     * Function to display the details of the team
+     *
+     * @param team: the team to display
+     */
     @Composable
     @NonRestartableComposable
     private fun TeamDetails(
@@ -211,6 +254,12 @@ class TeamsListScreen: Screen(), TeamsUtilities, RefyLinkUtilities<RefyLink> {
         )
     }
 
+    /**
+     * Function to create an options bar for the card of the [Team]
+     *
+     * @param isAdmin: whether the member is an admin of the team
+     * @param team: the team to display
+     */
     @Composable
     @NonRestartableComposable
     private fun OptionsBar(

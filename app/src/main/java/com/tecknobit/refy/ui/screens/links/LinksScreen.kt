@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.FolderCopy
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.LinkOff
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -29,7 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.components.EmptyListUI
+import com.tecknobit.equinoxcompose.components.EquinoxAlertDialog
 import com.tecknobit.refy.R
+import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
 import com.tecknobit.refy.ui.activities.session.MainActivity.Companion.snackbarHostState
 import com.tecknobit.refy.ui.screens.Screen
@@ -42,13 +45,34 @@ import com.tecknobit.refy.viewmodels.links.LinksViewModel
 import com.tecknobit.refycore.records.RefyItem
 import com.tecknobit.refycore.records.links.RefyLink
 
+/**
+ * The **LinksScreen** class is useful to give the basic structure for a screen to display
+ * the a [RefyLink]'s list
+ *
+ * @param viewModel: the view model used to execute this operation
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see Screen
+ * @see SessionManager
+ * 
+ * @param T: the type of the [RefyLink] between [RefyLink] and [CustomRefyLink]
+ */
 @Structure
 abstract class LinksScreen <T : RefyLink> (
     val viewModel: LinksViewModel<T>
 ) : Screen(), RefyLinkUtilities<T> {
 
+    /**
+     * *links* -> the list of the links to display
+     */
     private lateinit var links: List<T>
 
+    /**
+     * Function to display the [links] list
+     *
+     * No-any params required
+     */
     @Composable
     @NonRestartableComposable
     protected fun LinksList() {
@@ -77,12 +101,26 @@ abstract class LinksScreen <T : RefyLink> (
         }
     }
 
+    /**
+     * Function to create a properly [Card] to display the link
+     *
+     * @param link: the link to display
+     */
     @Composable
     @NonRestartableComposable
     abstract fun LinkCard(
         link: T
     )
 
+    /**
+     * Function to create a [Card] to display the [RefyLink]'s details
+     *
+     * @param link: the link to display
+     * @param onClick: the action to execute when the card has been clicked
+     * @param onLongClick: the action to execute when the card has been clicked for a long period
+     * @param showCompleteOptionsBar: whether show the complete options bar if the [localUser] is
+     * authorized
+     */
     @Composable
     @NonRestartableComposable
     fun RefyLinkCard(
@@ -126,6 +164,12 @@ abstract class LinksScreen <T : RefyLink> (
         )
     }
 
+    /**
+     * Function to create an options bar for the card of the [RefyLink]
+     *
+     * @param context: the content where the function has been invoked
+     * @param link: the link to display
+     */
     @Composable
     @NonRestartableComposable
     private fun OptionsBar(
@@ -168,7 +212,7 @@ abstract class LinksScreen <T : RefyLink> (
                             show = addToTeam,
                             visible = { teams.isNotEmpty() },
                             optionAction = {
-                                AddLinkToTeam(
+                                AddLinkToTeams(
                                     show = addToTeam,
                                     availableTeams = teams,
                                     link = link
@@ -189,6 +233,12 @@ abstract class LinksScreen <T : RefyLink> (
         )
     }
 
+    /**
+     * Function to create the actions [Row] to operate with the link of the card
+     *
+     * @param link: the link to display
+     * @param userCanUpdate: whether the user can update the link
+     */
     @Composable
     @NonRestartableComposable
     private fun Actions(
@@ -219,6 +269,13 @@ abstract class LinksScreen <T : RefyLink> (
         }
     }
 
+    /**
+     * Function to add the link to collections
+     *
+     * @param show: whether show the [EquinoxAlertDialog] where is possible chose the collections
+     * @param availableCollection: the available collections where add the link
+     * @param link: the link to add
+     */
     @Composable
     @NonRestartableComposable
     private fun AddLinkToCollections(
@@ -242,9 +299,16 @@ abstract class LinksScreen <T : RefyLink> (
         )
     }
 
+    /**
+     * Function to share the link to teams
+     *
+     * @param show: whether show the [EquinoxAlertDialog] where is possible chose the teams
+     * @param availableTeams: the available teams where share the link
+     * @param link: the link to share
+     */
     @Composable
     @NonRestartableComposable
-    private fun AddLinkToTeam(
+    private fun AddLinkToTeams(
         show: MutableState<Boolean>,
         availableTeams: List<RefyItem>,
         link: T

@@ -2,6 +2,8 @@ package com.tecknobit.refy.viewmodels
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.ViewModel
+import com.tecknobit.equinox.FetcherManager.FetcherManagerWrapper
 import com.tecknobit.equinox.environment.records.EquinoxUser.ApplicationTheme
 import com.tecknobit.equinox.environment.records.EquinoxUser.PROFILE_PIC_KEY
 import com.tecknobit.equinox.inputs.InputValidator.isEmailValid
@@ -11,6 +13,17 @@ import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localU
 import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.requester
 import java.io.File
 
+/**
+ * The **ProfileActivityViewModel** class is the support class used by the [ProfileActivity] to
+ * change the user account settings or preferences
+ *
+ * @param snackbarHostState: the host to launch the snackbar messages
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see EquinoxViewModel
+ * @see ViewModel
+ * @see FetcherManagerWrapper
+ */
 class ProfileActivityViewModel(
     snackbarHostState: SnackbarHostState
 ): EquinoxViewModel(

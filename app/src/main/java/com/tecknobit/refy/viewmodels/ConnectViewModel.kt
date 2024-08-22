@@ -1,10 +1,13 @@
 package com.tecknobit.refy.viewmodels
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
+import androidx.lifecycle.ViewModel
 import com.tecknobit.apimanager.formatters.JsonHelper
+import com.tecknobit.equinox.FetcherManager.FetcherManagerWrapper
 import com.tecknobit.equinox.environment.records.EquinoxItem.IDENTIFIER_KEY
 import com.tecknobit.equinox.environment.records.EquinoxUser
 import com.tecknobit.equinox.environment.records.EquinoxUser.LANGUAGE_KEY
@@ -26,8 +29,20 @@ import com.tecknobit.refy.ui.activities.session.MainActivity
 import com.tecknobit.refycore.helpers.RefyInputValidator.isTagNameValid
 import com.tecknobit.refycore.records.RefyUser.TAG_NAME_KEY
 
+/**
+ * The **ConnectViewModel** class is the support class used by the [ConnectActivity]
+ * to execute the authentication requests to the backend
+ *
+ * @param snackbarHostState: the host to launch the snackbar messages
+ * @param context: the current context where this model has been created
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see EquinoxViewModel
+ * @see ViewModel
+ * @see FetcherManagerWrapper
+ */
 class ConnectViewModel (
-    val context: Context,
+    @SuppressLint("StaticFieldLeak") val context: Context,
     snackbarHostState: SnackbarHostState
 ) : EquinoxViewModel(
     snackbarHostState = snackbarHostState

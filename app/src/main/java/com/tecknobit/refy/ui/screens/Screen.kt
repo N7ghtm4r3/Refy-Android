@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,20 +27,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.tecknobit.equinoxcompose.components.ErrorUI
+import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
-import com.tecknobit.refy.R
-import com.tecknobit.refy.ui.activities.auth.ConnectActivity
-import com.tecknobit.refy.ui.activities.navigation.SplashScreen.Companion.localUser
-import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.helpers.SessionManager
+import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
 import com.tecknobit.refy.ui.theme.displayFontFamily
 import com.tecknobit.refy.utilities.ExpandTeamMembers
@@ -54,30 +48,75 @@ import com.tecknobit.refycore.records.Team
 import com.tecknobit.refycore.records.Team.IDENTIFIER_KEY
 import com.tecknobit.refycore.records.Team.MAX_TEAMS_DISPLAYED
 
+/**
+ * The **Screen** class is useful to give the basic structure for a Refy's screen to display
+ * the [RefyItem]'s list
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see SessionManager
+ */
+@Structure
 abstract class Screen : SessionManager {
 
+    /**
+     * *screenViewModel* -> the support view model used in the screen to manage the requests to the backend
+     */
     protected lateinit var screenViewModel: EquinoxViewModel
 
+    /**
+     * *currentScreenContext* -> the current context of the screen displayed
+     */
     protected lateinit var currentScreenContext: Class<*>
 
+    /**
+     * *context* -> the support context instance
+     */
     protected lateinit var context: Context
 
     companion object {
 
+        /**
+         * *isServerOffline* -> state to manage the server offline scenario
+         */
         lateinit var isServerOffline: MutableState<Boolean>
 
+        /**
+         * *haveBeenDisconnected* -> when the account has been deleted and the session needs to
+         * be detached from the device
+         */
         lateinit var haveBeenDisconnected: MutableState<Boolean>
 
     }
 
+    /**
+     * Function to display the content of the screen
+     *
+     * No-any params required
+     */
     @Composable
     abstract fun ShowContent()
 
+    /**
+     * Function to set the action to execute when the [FloatingActionButton] has been clicked
+     *
+     * No-any params required
+     */
     @Composable
     abstract fun SetFabAction()
 
+    /**
+     * Function to execute the fab action previously set
+     *
+     * No-any params required
+     */
     abstract fun executeFabAction()
 
+    /**
+     * Function to restart the refresher of the screen displayed
+     *
+     * No-any params required
+     */
     fun restartScreenRefreshing() {
         if(::screenViewModel.isInitialized) {
             screenViewModel.setActiveContext(currentScreenContext)
@@ -85,10 +124,28 @@ abstract class Screen : SessionManager {
         }
     }
 
+    /**
+     * Function to suspend the refresher of the screen displayed
+     *
+     * No-any params required
+     */
     fun suspendScreenRefreshing() {
         screenViewModel.suspendRefresher()
     }
 
+    /**
+     * Function to create a [Card] to display the [RefyItem]'s details
+     *
+     * @param item: the item to display
+     * @param borderColor: the color to apply to one border
+     * @param onClick: the action to execute when the card has been clicked
+     * @param onDoubleClick: the action to execute when the card has been clicked twice
+     * @param onLongClick: the action to execute when the card has been clicked for a long period
+     * @param title: the title of the item
+     * @param description: the description of the item
+     * @param teams: the teams where the item is shared
+     * @param optionsBar: the options bar available for the item
+     */
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     @NonRestartableComposable
@@ -165,6 +222,11 @@ abstract class Screen : SessionManager {
         }
     }
 
+    /**
+     * Function to display the section relating the teams where the item is shared
+     *
+     * @param teams: the teams where the item is shared
+     */
     @Composable
     @NonRestartableComposable
     private fun TeamSections(
@@ -198,6 +260,13 @@ abstract class Screen : SessionManager {
         }
     }
 
+    /**
+     * Function to create a [Card] to display the [RefyItem]'s details
+     *
+     * @param onClick: the action to execute when the card has been clicked
+     * @param pictures: the pictures to display in a row
+     * @param pictureSize: the size to apply to the pictures
+     */
     @Composable
     @NonRestartableComposable
     protected fun PicturesRow(
@@ -241,23 +310,12 @@ abstract class Screen : SessionManager {
         }
     }
 
-    @Composable
-    @NonRestartableComposable
-    private fun ServerOfflineUi() {
-        ErrorUI(
-            errorIcon = Icons.Default.Warning,
-            errorMessage = stringResource(R.string.server_currently_offline),
-            retryText = ""
-        )
-    }
-
-    private fun haveBeenDisconnected(
-        context: Context
-    ) {
-        localUser.clear()
-        context.startActivity(Intent(context, ConnectActivity::class.java))
-    }
-
+    /**
+     * Function to nav to a dedicated [Activity] related to the item
+     *
+     * @param itemId: the identifier of the item
+     * @param destination: the destination to reach
+     */
     protected fun navToDedicatedItemActivity(
         itemId: String,
         destination: Class<*>
