@@ -166,7 +166,7 @@ class CreateTeamActivity : CreateActivity<Team, CreateTeamViewModel>(
                 )
                 .crossfade(enable = true)
                 .crossfade(500)
-                //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
+                .error(R.drawable.error_logo)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop

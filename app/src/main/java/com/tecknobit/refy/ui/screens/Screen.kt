@@ -35,6 +35,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tecknobit.apimanager.annotations.Structure
 import com.tecknobit.equinoxcompose.helpers.EquinoxViewModel
+import com.tecknobit.refy.R
 import com.tecknobit.refy.helpers.SessionManager
 import com.tecknobit.refy.ui.getCompleteMediaItemUrl
 import com.tecknobit.refy.ui.theme.AppTypography
@@ -301,7 +302,7 @@ abstract class Screen : SessionManager {
                         )
                         .crossfade(enable = true)
                         .crossfade(500)
-                        //.error() //TODO: TO SET THE ERROR IMAGE CORRECTLY
+                        .error(R.drawable.error_logo)
                         .build(),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds
