@@ -640,6 +640,6 @@ fun Logo(
             .error(R.drawable.error_logo)
             .build(),
         contentDescription = null,
-        contentScale = ContentScale.FillBounds
+        contentScale = ContentScale.Crop
     )
 }
