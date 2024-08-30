@@ -1,7 +1,6 @@
 package com.tecknobit.refy.viewmodels.links
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import com.tecknobit.apimanager.annotations.Structure
@@ -35,10 +34,8 @@ abstract class LinksViewModel <T : RefyLink>: LinksViewModelHelper<T>(
     /**
      * **_links** -> the current links list displayed
      */
-    protected val _links = MutableStateFlow<SnapshotStateList<T>>(
-        value = mutableStateListOf()
-    )
-    val links: StateFlow<List<T>> = _links
+    protected lateinit var _links: MutableStateFlow<SnapshotStateList<T>>
+    lateinit var links: StateFlow<List<T>>
 
     /**
      * *linkReference* -> the url reference to of the link
