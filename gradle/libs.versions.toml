@@ -4,6 +4,7 @@ apimanager = "2.2.3"
 appUpdateKtx = "2.1.0"
 coilCompose = "2.7.0"
 colorpickerCompose = "1.1.2"
+dokkaBase = "1.9.20"
 equinox = "1.0.2"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
@@ -20,8 +21,10 @@ reviewKtx = "2.0.1"
 richeditorCompose = "1.0.0-rc05-k2"
 uiTextGoogleFonts = "1.6.8"
 appcompat = "1.7.0"
+dokka = "1.9.20"
 
 [libraries]
+android-documentation-plugin = { module = "org.jetbrains.dokka:android-documentation-plugin", version.ref = "dokkaBase" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 apimanager = { module = "com.github.N7ghtm4r3:APIManager", version.ref = "apimanager" }
@@ -29,6 +32,7 @@ app-update = { module = "com.google.android.play:app-update", version.ref = "app
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdateKtx" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 colorpicker-compose = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorpickerCompose" }
+dokka-base = { module = "org.jetbrains.dokka:dokka-base", version.ref = "dokkaBase" }
 equinox = { module = "com.github.N7ghtm4r3:Equinox", version.ref = "equinox" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -54,4 +58,5 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
