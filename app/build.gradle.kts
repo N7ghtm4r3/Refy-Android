@@ -1,7 +1,12 @@
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.dokka)
 }
 
 android {
@@ -82,6 +87,22 @@ dependencies {
     implementation(libs.app.update.ktx)
     implementation("com.github.N7ghtm4r3:Equinox-Compose:1.0.0") {
         exclude("com.github.N7ghtm4r3.Equinox-Compose", "library-jvm")
+    }
+    dokkaPlugin(libs.android.documentation.plugin)
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set("Refy")
+            moduleVersion.set(android.defaultConfig.versionName)
+            outputDirectory.set(layout.projectDirectory.dir("../docs"))
+        }
+    }
+
+    pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+        customAssets = listOf(file("../docs/logo-icon.svg"))
+        footerMessage = "(c) 2024 Tecknobit"
     }
 }
 
